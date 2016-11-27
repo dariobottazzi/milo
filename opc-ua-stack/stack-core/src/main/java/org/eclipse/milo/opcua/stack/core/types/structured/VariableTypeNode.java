@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -133,8 +133,8 @@ public class VariableTypeNode extends TypeNode {
     }
 
     static {
-        DelegateRegistry.registerEncoder(VariableTypeNode::encode, VariableTypeNode.class, BinaryEncodingId, XmlEncodingId);
-        DelegateRegistry.registerDecoder(VariableTypeNode::decode, VariableTypeNode.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerEncoder(VariableTypeNode::encode, VariableTypeNode.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerDecoder(VariableTypeNode::decode, VariableTypeNode.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

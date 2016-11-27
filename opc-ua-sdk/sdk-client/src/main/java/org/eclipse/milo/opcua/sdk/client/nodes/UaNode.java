@@ -27,8 +27,8 @@ import org.eclipse.milo.opcua.stack.core.AttributeId;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.DecoderDelegate;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.TypeDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
 import org.eclipse.milo.opcua.stack.core.serialization.binary.BinaryDecoder;
@@ -347,7 +347,7 @@ public abstract class UaNode implements Node {
      */
     protected static <T> T cast(Object o, Class<T> clazz) {
         if (UaEnumeration.class.isAssignableFrom(clazz) && o instanceof Integer) {
-            return DelegateRegistry.getInstance().getDecoder(clazz).decode(
+            return OpcUaTypeDictionary.getInstance().getDecoder(clazz).decode(
                 new EnumDecoder((Integer) o)
             );
         } else if (UaStructure.class.isAssignableFrom(clazz) && o instanceof ExtensionObject) {
@@ -375,7 +375,7 @@ public abstract class UaNode implements Node {
         public <T extends UaEnumeration> T decodeEnumeration(
             String field, Class<T> clazz) throws UaSerializationException {
 
-            DecoderDelegate<T> delegate = DelegateRegistry.getInstance().getDecoder(clazz);
+            TypeDecoder<T> delegate = OpcUaTypeDictionary.getInstance().getDecoder(clazz);
 
             return delegate.decode(this);
         }

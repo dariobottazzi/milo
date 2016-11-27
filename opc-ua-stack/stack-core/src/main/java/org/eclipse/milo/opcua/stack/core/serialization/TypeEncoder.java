@@ -13,6 +13,6 @@
 
 package org.eclipse.milo.opcua.stack.core.serialization;
 
-public interface EncoderDelegate<T> {
+public interface TypeEncoder<T> {
     void encode(T encodable, UaEncoder encoder);
 }

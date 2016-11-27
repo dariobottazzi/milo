@@ -20,14 +20,42 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.XmlElement;
 
 public interface DataTypeEncoding {
 
-    public static final DataTypeEncoding OPC_UA = new OpcUaDataTypeEncoding();
+    DataTypeEncoding OPC_UA = new OpcUaDataTypeEncoding();
 
-    ByteString encodeToByteString(Object object, NodeId encodingTypeId) throws UaSerializationException;
+    ByteString encodeToByteString(
+        Object object,
+        NodeId encodingTypeId) throws UaSerializationException;
 
-    Object decodeFromByteString(ByteString encoded, NodeId encodingTypeId) throws UaSerializationException;
+    ByteString encodeToByteString(
+        Object object,
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException;
 
-    XmlElement encodeToXmlElement(Object object, NodeId encodingTypeId) throws UaSerializationException;
+    XmlElement encodeToXmlElement(
+        Object object,
+        NodeId encodingTypeId) throws UaSerializationException;
 
-    Object decodeFromXmlElement(XmlElement encoded, NodeId encodingTypeId) throws UaSerializationException;
+    XmlElement encodeToXmlElement(
+        Object object,
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException;
+
+    Object decodeFromByteString(
+        ByteString encoded,
+        NodeId encodingTypeId) throws UaSerializationException;
+
+    Object decodeFromByteString(
+        ByteString encoded,
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException;
+
+    Object decodeFromXmlElement(
+        XmlElement encoded,
+        NodeId encodingTypeId) throws UaSerializationException;
+
+    Object decodeFromXmlElement(
+        XmlElement encoded,
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException;
 
 }

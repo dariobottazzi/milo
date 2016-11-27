@@ -14,7 +14,7 @@
 package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -78,8 +78,8 @@ public class TestStackExResponse implements UaResponseMessage {
     }
 
     static {
-        DelegateRegistry.registerEncoder(TestStackExResponse::encode, TestStackExResponse.class, BinaryEncodingId, XmlEncodingId);
-        DelegateRegistry.registerDecoder(TestStackExResponse::decode, TestStackExResponse.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerEncoder(TestStackExResponse::encode, TestStackExResponse.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerDecoder(TestStackExResponse::decode, TestStackExResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

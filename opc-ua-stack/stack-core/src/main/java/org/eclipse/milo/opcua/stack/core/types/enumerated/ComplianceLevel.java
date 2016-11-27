@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -64,8 +64,8 @@ public enum ComplianceLevel implements UaEnumeration {
     }
 
     static {
-        DelegateRegistry.registerEncoder(ComplianceLevel::encode, ComplianceLevel.class);
-        DelegateRegistry.registerDecoder(ComplianceLevel::decode, ComplianceLevel.class);
+        OpcUaTypeDictionary.registerEncoder(ComplianceLevel::encode, ComplianceLevel.class);
+        OpcUaTypeDictionary.registerDecoder(ComplianceLevel::decode, ComplianceLevel.class);
     }
 
 }

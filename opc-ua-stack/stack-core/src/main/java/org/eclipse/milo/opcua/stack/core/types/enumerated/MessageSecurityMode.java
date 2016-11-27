@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -64,8 +64,8 @@ public enum MessageSecurityMode implements UaEnumeration {
     }
 
     static {
-        DelegateRegistry.registerEncoder(MessageSecurityMode::encode, MessageSecurityMode.class);
-        DelegateRegistry.registerDecoder(MessageSecurityMode::decode, MessageSecurityMode.class);
+        OpcUaTypeDictionary.registerEncoder(MessageSecurityMode::encode, MessageSecurityMode.class);
+        OpcUaTypeDictionary.registerDecoder(MessageSecurityMode::decode, MessageSecurityMode.class);
     }
 
 }

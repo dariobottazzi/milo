@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -63,8 +63,8 @@ public enum AxisScaleEnumeration implements UaEnumeration {
     }
 
     static {
-        DelegateRegistry.registerEncoder(AxisScaleEnumeration::encode, AxisScaleEnumeration.class);
-        DelegateRegistry.registerDecoder(AxisScaleEnumeration::decode, AxisScaleEnumeration.class);
+        OpcUaTypeDictionary.registerEncoder(AxisScaleEnumeration::encode, AxisScaleEnumeration.class);
+        OpcUaTypeDictionary.registerDecoder(AxisScaleEnumeration::decode, AxisScaleEnumeration.class);
     }
 
 }

@@ -1,7 +1,7 @@
 package org.eclipse.milo.opcua.stack.core.serialization.binary;
 
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.structured.Argument;
 import org.testng.annotations.Test;
@@ -21,8 +21,8 @@ public class BinaryDecoderTest extends BinarySerializationFixture {
             LocalizedText.NULL_VALUE
         );
 
-        DelegateRegistry.getInstance().getEncoder(Argument.class).encode(argument, encoder);
-        Argument decoded = DelegateRegistry.getInstance().getDecoder(Argument.class).decode(decoder);
+        OpcUaTypeDictionary.getInstance().getEncoder(Argument.class).encode(argument, encoder);
+        Argument decoded = OpcUaTypeDictionary.getInstance().getDecoder(Argument.class).decode(decoder);
 
         assertEquals(decoded.getName(), argument.getName());
 

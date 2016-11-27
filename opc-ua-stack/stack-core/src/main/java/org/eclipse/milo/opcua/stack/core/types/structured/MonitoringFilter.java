@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -57,8 +57,8 @@ public class MonitoringFilter implements UaStructure {
     }
 
     static {
-        DelegateRegistry.registerEncoder(MonitoringFilter::encode, MonitoringFilter.class, BinaryEncodingId, XmlEncodingId);
-        DelegateRegistry.registerDecoder(MonitoringFilter::decode, MonitoringFilter.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerEncoder(MonitoringFilter::encode, MonitoringFilter.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerDecoder(MonitoringFilter::decode, MonitoringFilter.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

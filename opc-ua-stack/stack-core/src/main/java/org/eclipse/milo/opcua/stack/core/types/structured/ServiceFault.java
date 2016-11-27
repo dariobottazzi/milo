@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -68,8 +68,8 @@ public class ServiceFault implements UaResponseMessage {
     }
 
     static {
-        DelegateRegistry.registerEncoder(ServiceFault::encode, ServiceFault.class, BinaryEncodingId, XmlEncodingId);
-        DelegateRegistry.registerDecoder(ServiceFault::decode, ServiceFault.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerEncoder(ServiceFault::encode, ServiceFault.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerDecoder(ServiceFault::decode, ServiceFault.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

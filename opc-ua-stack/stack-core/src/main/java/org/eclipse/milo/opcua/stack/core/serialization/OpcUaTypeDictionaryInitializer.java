@@ -274,12 +274,13 @@ import org.eclipse.milo.opcua.stack.core.types.structured.XVType;
 
 
 /**
- * Registers the encoders and decoders for all the built-in enumerations and structures with {@link DelegateRegistry}.
- *
+ * Registers the encoders and decoders for all the built-in enumerations and structures with
+ * {@link OpcUaTypeDictionary}.
+ * <p>
  * This class is semi-auto-generated; if the UA spec version changes and adds or removes structures these methods will
  * need to be updated.
  */
-class DelegateRegistryInitializer {
+class OpcUaTypeDictionaryInitializer {
 
     static void initialize() {
         initializeEnumerated();
@@ -287,142 +288,142 @@ class DelegateRegistryInitializer {
     }
 
     private static void initializeEnumerated() {
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ApplicationType::encode,
             ApplicationType::decode,
             ApplicationType.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AttributeWriteMask::encode,
             AttributeWriteMask::decode,
             AttributeWriteMask.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AxisScaleEnumeration::encode,
             AxisScaleEnumeration::decode,
             AxisScaleEnumeration.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowseDirection::encode,
             BrowseDirection::decode,
             BrowseDirection.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowseResultMask::encode,
             BrowseResultMask::decode,
             BrowseResultMask.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ComplianceLevel::encode,
             ComplianceLevel::decode,
             ComplianceLevel.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DataChangeTrigger::encode,
             DataChangeTrigger::decode,
             DataChangeTrigger.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeadbandType::encode,
             DeadbandType::decode,
             DeadbandType.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EnumeratedTestType::encode,
             EnumeratedTestType::decode,
             EnumeratedTestType.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ExceptionDeviationFormat::encode,
             ExceptionDeviationFormat::decode,
             ExceptionDeviationFormat.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             FilterOperator::encode,
             FilterOperator::decode,
             FilterOperator.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryUpdateType::encode,
             HistoryUpdateType::decode,
             HistoryUpdateType.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             IdType::encode,
             IdType::decode,
             IdType.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MessageSecurityMode::encode,
             MessageSecurityMode::decode,
             MessageSecurityMode.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ModelChangeStructureVerbMask::encode,
             ModelChangeStructureVerbMask::decode,
             ModelChangeStructureVerbMask.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MonitoringMode::encode,
             MonitoringMode::decode,
             MonitoringMode.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NamingRuleType::encode,
             NamingRuleType::decode,
             NamingRuleType.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NodeAttributesMask::encode,
             NodeAttributesMask::decode,
             NodeAttributesMask.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NodeClass::encode,
             NodeClass::decode,
             NodeClass.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NodeIdType::encode,
             NodeIdType::decode,
             NodeIdType.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             OpenFileMode::encode,
             OpenFileMode::decode,
             OpenFileMode.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             PerformUpdateType::encode,
             PerformUpdateType::decode,
             PerformUpdateType.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RedundancySupport::encode,
             RedundancySupport::decode,
             RedundancySupport.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SecurityTokenRequestType::encode,
             SecurityTokenRequestType::decode,
             SecurityTokenRequestType.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ServerState::encode,
             ServerState::decode,
             ServerState.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TimestampsToReturn::encode,
             TimestampsToReturn::decode,
             TimestampsToReturn.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TrustListMasks::encode,
             TrustListMasks::decode,
             TrustListMasks.class
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             UserTokenType::encode,
             UserTokenType::decode,
             UserTokenType.class
@@ -430,1610 +431,1610 @@ class DelegateRegistryInitializer {
     }
 
     private static void initializeStructured() {
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ActivateSessionRequest::encode,
             ActivateSessionRequest::decode,
             ActivateSessionRequest.class,
             ActivateSessionRequest.BinaryEncodingId,
             ActivateSessionRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ActivateSessionResponse::encode,
             ActivateSessionResponse::decode,
             ActivateSessionResponse.class,
             ActivateSessionResponse.BinaryEncodingId,
             ActivateSessionResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AddNodesItem::encode,
             AddNodesItem::decode,
             AddNodesItem.class,
             AddNodesItem.BinaryEncodingId,
             AddNodesItem.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AddNodesRequest::encode,
             AddNodesRequest::decode,
             AddNodesRequest.class,
             AddNodesRequest.BinaryEncodingId,
             AddNodesRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AddNodesResponse::encode,
             AddNodesResponse::decode,
             AddNodesResponse.class,
             AddNodesResponse.BinaryEncodingId,
             AddNodesResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AddNodesResult::encode,
             AddNodesResult::decode,
             AddNodesResult.class,
             AddNodesResult.BinaryEncodingId,
             AddNodesResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AddReferencesItem::encode,
             AddReferencesItem::decode,
             AddReferencesItem.class,
             AddReferencesItem.BinaryEncodingId,
             AddReferencesItem.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AddReferencesRequest::encode,
             AddReferencesRequest::decode,
             AddReferencesRequest.class,
             AddReferencesRequest.BinaryEncodingId,
             AddReferencesRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AddReferencesResponse::encode,
             AddReferencesResponse::decode,
             AddReferencesResponse.class,
             AddReferencesResponse.BinaryEncodingId,
             AddReferencesResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AggregateConfiguration::encode,
             AggregateConfiguration::decode,
             AggregateConfiguration.class,
             AggregateConfiguration.BinaryEncodingId,
             AggregateConfiguration.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AggregateFilter::encode,
             AggregateFilter::decode,
             AggregateFilter.class,
             AggregateFilter.BinaryEncodingId,
             AggregateFilter.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AggregateFilterResult::encode,
             AggregateFilterResult::decode,
             AggregateFilterResult.class,
             AggregateFilterResult.BinaryEncodingId,
             AggregateFilterResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             Annotation::encode,
             Annotation::decode,
             Annotation.class,
             Annotation.BinaryEncodingId,
             Annotation.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AnonymousIdentityToken::encode,
             AnonymousIdentityToken::decode,
             AnonymousIdentityToken.class,
             AnonymousIdentityToken.BinaryEncodingId,
             AnonymousIdentityToken.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ApplicationDescription::encode,
             ApplicationDescription::decode,
             ApplicationDescription.class,
             ApplicationDescription.BinaryEncodingId,
             ApplicationDescription.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             Argument::encode,
             Argument::decode,
             Argument.class,
             Argument.BinaryEncodingId,
             Argument.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ArrayTestType::encode,
             ArrayTestType::decode,
             ArrayTestType.class,
             ArrayTestType.BinaryEncodingId,
             ArrayTestType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AttributeOperand::encode,
             AttributeOperand::decode,
             AttributeOperand.class,
             AttributeOperand.BinaryEncodingId,
             AttributeOperand.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             AxisInformation::encode,
             AxisInformation::decode,
             AxisInformation.class,
             AxisInformation.BinaryEncodingId,
             AxisInformation.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowseDescription::encode,
             BrowseDescription::decode,
             BrowseDescription.class,
             BrowseDescription.BinaryEncodingId,
             BrowseDescription.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowseNextRequest::encode,
             BrowseNextRequest::decode,
             BrowseNextRequest.class,
             BrowseNextRequest.BinaryEncodingId,
             BrowseNextRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowseNextResponse::encode,
             BrowseNextResponse::decode,
             BrowseNextResponse.class,
             BrowseNextResponse.BinaryEncodingId,
             BrowseNextResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowsePath::encode,
             BrowsePath::decode,
             BrowsePath.class,
             BrowsePath.BinaryEncodingId,
             BrowsePath.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowsePathResult::encode,
             BrowsePathResult::decode,
             BrowsePathResult.class,
             BrowsePathResult.BinaryEncodingId,
             BrowsePathResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowsePathTarget::encode,
             BrowsePathTarget::decode,
             BrowsePathTarget.class,
             BrowsePathTarget.BinaryEncodingId,
             BrowsePathTarget.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowseRequest::encode,
             BrowseRequest::decode,
             BrowseRequest.class,
             BrowseRequest.BinaryEncodingId,
             BrowseRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowseResponse::encode,
             BrowseResponse::decode,
             BrowseResponse.class,
             BrowseResponse.BinaryEncodingId,
             BrowseResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BrowseResult::encode,
             BrowseResult::decode,
             BrowseResult.class,
             BrowseResult.BinaryEncodingId,
             BrowseResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             BuildInfo::encode,
             BuildInfo::decode,
             BuildInfo.class,
             BuildInfo.BinaryEncodingId,
             BuildInfo.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CallMethodRequest::encode,
             CallMethodRequest::decode,
             CallMethodRequest.class,
             CallMethodRequest.BinaryEncodingId,
             CallMethodRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CallMethodResult::encode,
             CallMethodResult::decode,
             CallMethodResult.class,
             CallMethodResult.BinaryEncodingId,
             CallMethodResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CallRequest::encode,
             CallRequest::decode,
             CallRequest.class,
             CallRequest.BinaryEncodingId,
             CallRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CallResponse::encode,
             CallResponse::decode,
             CallResponse.class,
             CallResponse.BinaryEncodingId,
             CallResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CancelRequest::encode,
             CancelRequest::decode,
             CancelRequest.class,
             CancelRequest.BinaryEncodingId,
             CancelRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CancelResponse::encode,
             CancelResponse::decode,
             CancelResponse.class,
             CancelResponse.BinaryEncodingId,
             CancelResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ChannelSecurityToken::encode,
             ChannelSecurityToken::decode,
             ChannelSecurityToken.class,
             ChannelSecurityToken.BinaryEncodingId,
             ChannelSecurityToken.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CloseSecureChannelRequest::encode,
             CloseSecureChannelRequest::decode,
             CloseSecureChannelRequest.class,
             CloseSecureChannelRequest.BinaryEncodingId,
             CloseSecureChannelRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CloseSecureChannelResponse::encode,
             CloseSecureChannelResponse::decode,
             CloseSecureChannelResponse.class,
             CloseSecureChannelResponse.BinaryEncodingId,
             CloseSecureChannelResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CloseSessionRequest::encode,
             CloseSessionRequest::decode,
             CloseSessionRequest.class,
             CloseSessionRequest.BinaryEncodingId,
             CloseSessionRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CloseSessionResponse::encode,
             CloseSessionResponse::decode,
             CloseSessionResponse.class,
             CloseSessionResponse.BinaryEncodingId,
             CloseSessionResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ComplexNumberType::encode,
             ComplexNumberType::decode,
             ComplexNumberType.class,
             ComplexNumberType.BinaryEncodingId,
             ComplexNumberType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CompositeTestType::encode,
             CompositeTestType::decode,
             CompositeTestType.class,
             CompositeTestType.BinaryEncodingId,
             CompositeTestType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ContentFilter::encode,
             ContentFilter::decode,
             ContentFilter.class,
             ContentFilter.BinaryEncodingId,
             ContentFilter.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ContentFilterElement::encode,
             ContentFilterElement::decode,
             ContentFilterElement.class,
             ContentFilterElement.BinaryEncodingId,
             ContentFilterElement.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ContentFilterElementResult::encode,
             ContentFilterElementResult::decode,
             ContentFilterElementResult.class,
             ContentFilterElementResult.BinaryEncodingId,
             ContentFilterElementResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ContentFilterResult::encode,
             ContentFilterResult::decode,
             ContentFilterResult.class,
             ContentFilterResult.BinaryEncodingId,
             ContentFilterResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CreateMonitoredItemsRequest::encode,
             CreateMonitoredItemsRequest::decode,
             CreateMonitoredItemsRequest.class,
             CreateMonitoredItemsRequest.BinaryEncodingId,
             CreateMonitoredItemsRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CreateMonitoredItemsResponse::encode,
             CreateMonitoredItemsResponse::decode,
             CreateMonitoredItemsResponse.class,
             CreateMonitoredItemsResponse.BinaryEncodingId,
             CreateMonitoredItemsResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CreateSessionRequest::encode,
             CreateSessionRequest::decode,
             CreateSessionRequest.class,
             CreateSessionRequest.BinaryEncodingId,
             CreateSessionRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CreateSessionResponse::encode,
             CreateSessionResponse::decode,
             CreateSessionResponse.class,
             CreateSessionResponse.BinaryEncodingId,
             CreateSessionResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CreateSubscriptionRequest::encode,
             CreateSubscriptionRequest::decode,
             CreateSubscriptionRequest.class,
             CreateSubscriptionRequest.BinaryEncodingId,
             CreateSubscriptionRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             CreateSubscriptionResponse::encode,
             CreateSubscriptionResponse::decode,
             CreateSubscriptionResponse.class,
             CreateSubscriptionResponse.BinaryEncodingId,
             CreateSubscriptionResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DataChangeFilter::encode,
             DataChangeFilter::decode,
             DataChangeFilter.class,
             DataChangeFilter.BinaryEncodingId,
             DataChangeFilter.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DataChangeNotification::encode,
             DataChangeNotification::decode,
             DataChangeNotification.class,
             DataChangeNotification.BinaryEncodingId,
             DataChangeNotification.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DataTypeAttributes::encode,
             DataTypeAttributes::decode,
             DataTypeAttributes.class,
             DataTypeAttributes.BinaryEncodingId,
             DataTypeAttributes.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DataTypeNode::encode,
             DataTypeNode::decode,
             DataTypeNode.class,
             DataTypeNode.BinaryEncodingId,
             DataTypeNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteAtTimeDetails::encode,
             DeleteAtTimeDetails::decode,
             DeleteAtTimeDetails.class,
             DeleteAtTimeDetails.BinaryEncodingId,
             DeleteAtTimeDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteEventDetails::encode,
             DeleteEventDetails::decode,
             DeleteEventDetails.class,
             DeleteEventDetails.BinaryEncodingId,
             DeleteEventDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteMonitoredItemsRequest::encode,
             DeleteMonitoredItemsRequest::decode,
             DeleteMonitoredItemsRequest.class,
             DeleteMonitoredItemsRequest.BinaryEncodingId,
             DeleteMonitoredItemsRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteMonitoredItemsResponse::encode,
             DeleteMonitoredItemsResponse::decode,
             DeleteMonitoredItemsResponse.class,
             DeleteMonitoredItemsResponse.BinaryEncodingId,
             DeleteMonitoredItemsResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteNodesItem::encode,
             DeleteNodesItem::decode,
             DeleteNodesItem.class,
             DeleteNodesItem.BinaryEncodingId,
             DeleteNodesItem.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteNodesRequest::encode,
             DeleteNodesRequest::decode,
             DeleteNodesRequest.class,
             DeleteNodesRequest.BinaryEncodingId,
             DeleteNodesRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteNodesResponse::encode,
             DeleteNodesResponse::decode,
             DeleteNodesResponse.class,
             DeleteNodesResponse.BinaryEncodingId,
             DeleteNodesResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteRawModifiedDetails::encode,
             DeleteRawModifiedDetails::decode,
             DeleteRawModifiedDetails.class,
             DeleteRawModifiedDetails.BinaryEncodingId,
             DeleteRawModifiedDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteReferencesItem::encode,
             DeleteReferencesItem::decode,
             DeleteReferencesItem.class,
             DeleteReferencesItem.BinaryEncodingId,
             DeleteReferencesItem.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteReferencesRequest::encode,
             DeleteReferencesRequest::decode,
             DeleteReferencesRequest.class,
             DeleteReferencesRequest.BinaryEncodingId,
             DeleteReferencesRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteReferencesResponse::encode,
             DeleteReferencesResponse::decode,
             DeleteReferencesResponse.class,
             DeleteReferencesResponse.BinaryEncodingId,
             DeleteReferencesResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteSubscriptionsRequest::encode,
             DeleteSubscriptionsRequest::decode,
             DeleteSubscriptionsRequest.class,
             DeleteSubscriptionsRequest.BinaryEncodingId,
             DeleteSubscriptionsRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DeleteSubscriptionsResponse::encode,
             DeleteSubscriptionsResponse::decode,
             DeleteSubscriptionsResponse.class,
             DeleteSubscriptionsResponse.BinaryEncodingId,
             DeleteSubscriptionsResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DiscoveryConfiguration::encode,
             DiscoveryConfiguration::decode,
             DiscoveryConfiguration.class,
             DiscoveryConfiguration.BinaryEncodingId,
             DiscoveryConfiguration.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             DoubleComplexNumberType::encode,
             DoubleComplexNumberType::decode,
             DoubleComplexNumberType.class,
             DoubleComplexNumberType.BinaryEncodingId,
             DoubleComplexNumberType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ElementOperand::encode,
             ElementOperand::decode,
             ElementOperand.class,
             ElementOperand.BinaryEncodingId,
             ElementOperand.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EndpointConfiguration::encode,
             EndpointConfiguration::decode,
             EndpointConfiguration.class,
             EndpointConfiguration.BinaryEncodingId,
             EndpointConfiguration.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EndpointDescription::encode,
             EndpointDescription::decode,
             EndpointDescription.class,
             EndpointDescription.BinaryEncodingId,
             EndpointDescription.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EndpointUrlListDataType::encode,
             EndpointUrlListDataType::decode,
             EndpointUrlListDataType.class,
             EndpointUrlListDataType.BinaryEncodingId,
             EndpointUrlListDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EnumValueType::encode,
             EnumValueType::decode,
             EnumValueType.class,
             EnumValueType.BinaryEncodingId,
             EnumValueType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EUInformation::encode,
             EUInformation::decode,
             EUInformation.class,
             EUInformation.BinaryEncodingId,
             EUInformation.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EventFieldList::encode,
             EventFieldList::decode,
             EventFieldList.class,
             EventFieldList.BinaryEncodingId,
             EventFieldList.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EventFilter::encode,
             EventFilter::decode,
             EventFilter.class,
             EventFilter.BinaryEncodingId,
             EventFilter.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EventFilterResult::encode,
             EventFilterResult::decode,
             EventFilterResult.class,
             EventFilterResult.BinaryEncodingId,
             EventFilterResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             EventNotificationList::encode,
             EventNotificationList::decode,
             EventNotificationList.class,
             EventNotificationList.BinaryEncodingId,
             EventNotificationList.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             FilterOperand::encode,
             FilterOperand::decode,
             FilterOperand.class,
             FilterOperand.BinaryEncodingId,
             FilterOperand.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             FindServersOnNetworkRequest::encode,
             FindServersOnNetworkRequest::decode,
             FindServersOnNetworkRequest.class,
             FindServersOnNetworkRequest.BinaryEncodingId,
             FindServersOnNetworkRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             FindServersOnNetworkResponse::encode,
             FindServersOnNetworkResponse::decode,
             FindServersOnNetworkResponse.class,
             FindServersOnNetworkResponse.BinaryEncodingId,
             FindServersOnNetworkResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             FindServersRequest::encode,
             FindServersRequest::decode,
             FindServersRequest.class,
             FindServersRequest.BinaryEncodingId,
             FindServersRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             FindServersResponse::encode,
             FindServersResponse::decode,
             FindServersResponse.class,
             FindServersResponse.BinaryEncodingId,
             FindServersResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             GetEndpointsRequest::encode,
             GetEndpointsRequest::decode,
             GetEndpointsRequest.class,
             GetEndpointsRequest.BinaryEncodingId,
             GetEndpointsRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             GetEndpointsResponse::encode,
             GetEndpointsResponse::decode,
             GetEndpointsResponse.class,
             GetEndpointsResponse.BinaryEncodingId,
             GetEndpointsResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryData::encode,
             HistoryData::decode,
             HistoryData.class,
             HistoryData.BinaryEncodingId,
             HistoryData.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryEvent::encode,
             HistoryEvent::decode,
             HistoryEvent.class,
             HistoryEvent.BinaryEncodingId,
             HistoryEvent.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryEventFieldList::encode,
             HistoryEventFieldList::decode,
             HistoryEventFieldList.class,
             HistoryEventFieldList.BinaryEncodingId,
             HistoryEventFieldList.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryModifiedData::encode,
             HistoryModifiedData::decode,
             HistoryModifiedData.class,
             HistoryModifiedData.BinaryEncodingId,
             HistoryModifiedData.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryReadDetails::encode,
             HistoryReadDetails::decode,
             HistoryReadDetails.class,
             HistoryReadDetails.BinaryEncodingId,
             HistoryReadDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryReadRequest::encode,
             HistoryReadRequest::decode,
             HistoryReadRequest.class,
             HistoryReadRequest.BinaryEncodingId,
             HistoryReadRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryReadResponse::encode,
             HistoryReadResponse::decode,
             HistoryReadResponse.class,
             HistoryReadResponse.BinaryEncodingId,
             HistoryReadResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryReadResult::encode,
             HistoryReadResult::decode,
             HistoryReadResult.class,
             HistoryReadResult.BinaryEncodingId,
             HistoryReadResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryReadValueId::encode,
             HistoryReadValueId::decode,
             HistoryReadValueId.class,
             HistoryReadValueId.BinaryEncodingId,
             HistoryReadValueId.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryUpdateDetails::encode,
             HistoryUpdateDetails::decode,
             HistoryUpdateDetails.class,
             HistoryUpdateDetails.BinaryEncodingId,
             HistoryUpdateDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryUpdateRequest::encode,
             HistoryUpdateRequest::decode,
             HistoryUpdateRequest.class,
             HistoryUpdateRequest.BinaryEncodingId,
             HistoryUpdateRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryUpdateResponse::encode,
             HistoryUpdateResponse::decode,
             HistoryUpdateResponse.class,
             HistoryUpdateResponse.BinaryEncodingId,
             HistoryUpdateResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             HistoryUpdateResult::encode,
             HistoryUpdateResult::decode,
             HistoryUpdateResult.class,
             HistoryUpdateResult.BinaryEncodingId,
             HistoryUpdateResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             InstanceNode::encode,
             InstanceNode::decode,
             InstanceNode.class,
             InstanceNode.BinaryEncodingId,
             InstanceNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             IssuedIdentityToken::encode,
             IssuedIdentityToken::decode,
             IssuedIdentityToken.class,
             IssuedIdentityToken.BinaryEncodingId,
             IssuedIdentityToken.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             KerberosIdentityToken::encode,
             KerberosIdentityToken::decode,
             KerberosIdentityToken.class,
             KerberosIdentityToken.BinaryEncodingId,
             KerberosIdentityToken.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             LiteralOperand::encode,
             LiteralOperand::decode,
             LiteralOperand.class,
             LiteralOperand.BinaryEncodingId,
             LiteralOperand.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MdnsDiscoveryConfiguration::encode,
             MdnsDiscoveryConfiguration::decode,
             MdnsDiscoveryConfiguration.class,
             MdnsDiscoveryConfiguration.BinaryEncodingId,
             MdnsDiscoveryConfiguration.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MethodAttributes::encode,
             MethodAttributes::decode,
             MethodAttributes.class,
             MethodAttributes.BinaryEncodingId,
             MethodAttributes.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MethodNode::encode,
             MethodNode::decode,
             MethodNode.class,
             MethodNode.BinaryEncodingId,
             MethodNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ModelChangeStructureDataType::encode,
             ModelChangeStructureDataType::decode,
             ModelChangeStructureDataType.class,
             ModelChangeStructureDataType.BinaryEncodingId,
             ModelChangeStructureDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ModificationInfo::encode,
             ModificationInfo::decode,
             ModificationInfo.class,
             ModificationInfo.BinaryEncodingId,
             ModificationInfo.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ModifyMonitoredItemsRequest::encode,
             ModifyMonitoredItemsRequest::decode,
             ModifyMonitoredItemsRequest.class,
             ModifyMonitoredItemsRequest.BinaryEncodingId,
             ModifyMonitoredItemsRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ModifyMonitoredItemsResponse::encode,
             ModifyMonitoredItemsResponse::decode,
             ModifyMonitoredItemsResponse.class,
             ModifyMonitoredItemsResponse.BinaryEncodingId,
             ModifyMonitoredItemsResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ModifySubscriptionRequest::encode,
             ModifySubscriptionRequest::decode,
             ModifySubscriptionRequest.class,
             ModifySubscriptionRequest.BinaryEncodingId,
             ModifySubscriptionRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ModifySubscriptionResponse::encode,
             ModifySubscriptionResponse::decode,
             ModifySubscriptionResponse.class,
             ModifySubscriptionResponse.BinaryEncodingId,
             ModifySubscriptionResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MonitoredItemCreateRequest::encode,
             MonitoredItemCreateRequest::decode,
             MonitoredItemCreateRequest.class,
             MonitoredItemCreateRequest.BinaryEncodingId,
             MonitoredItemCreateRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MonitoredItemCreateResult::encode,
             MonitoredItemCreateResult::decode,
             MonitoredItemCreateResult.class,
             MonitoredItemCreateResult.BinaryEncodingId,
             MonitoredItemCreateResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MonitoredItemModifyRequest::encode,
             MonitoredItemModifyRequest::decode,
             MonitoredItemModifyRequest.class,
             MonitoredItemModifyRequest.BinaryEncodingId,
             MonitoredItemModifyRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MonitoredItemModifyResult::encode,
             MonitoredItemModifyResult::decode,
             MonitoredItemModifyResult.class,
             MonitoredItemModifyResult.BinaryEncodingId,
             MonitoredItemModifyResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MonitoredItemNotification::encode,
             MonitoredItemNotification::decode,
             MonitoredItemNotification.class,
             MonitoredItemNotification.BinaryEncodingId,
             MonitoredItemNotification.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MonitoringFilter::encode,
             MonitoringFilter::decode,
             MonitoringFilter.class,
             MonitoringFilter.BinaryEncodingId,
             MonitoringFilter.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MonitoringFilterResult::encode,
             MonitoringFilterResult::decode,
             MonitoringFilterResult.class,
             MonitoringFilterResult.BinaryEncodingId,
             MonitoringFilterResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             MonitoringParameters::encode,
             MonitoringParameters::decode,
             MonitoringParameters.class,
             MonitoringParameters.BinaryEncodingId,
             MonitoringParameters.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NetworkGroupDataType::encode,
             NetworkGroupDataType::decode,
             NetworkGroupDataType.class,
             NetworkGroupDataType.BinaryEncodingId,
             NetworkGroupDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             Node::encode,
             Node::decode,
             Node.class,
             Node.BinaryEncodingId,
             Node.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NodeAttributes::encode,
             NodeAttributes::decode,
             NodeAttributes.class,
             NodeAttributes.BinaryEncodingId,
             NodeAttributes.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NodeReference::encode,
             NodeReference::decode,
             NodeReference.class,
             NodeReference.BinaryEncodingId,
             NodeReference.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NodeTypeDescription::encode,
             NodeTypeDescription::decode,
             NodeTypeDescription.class,
             NodeTypeDescription.BinaryEncodingId,
             NodeTypeDescription.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NotificationData::encode,
             NotificationData::decode,
             NotificationData.class,
             NotificationData.BinaryEncodingId,
             NotificationData.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             NotificationMessage::encode,
             NotificationMessage::decode,
             NotificationMessage.class,
             NotificationMessage.BinaryEncodingId,
             NotificationMessage.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ObjectAttributes::encode,
             ObjectAttributes::decode,
             ObjectAttributes.class,
             ObjectAttributes.BinaryEncodingId,
             ObjectAttributes.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ObjectNode::encode,
             ObjectNode::decode,
             ObjectNode.class,
             ObjectNode.BinaryEncodingId,
             ObjectNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ObjectTypeAttributes::encode,
             ObjectTypeAttributes::decode,
             ObjectTypeAttributes.class,
             ObjectTypeAttributes.BinaryEncodingId,
             ObjectTypeAttributes.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ObjectTypeNode::encode,
             ObjectTypeNode::decode,
             ObjectTypeNode.class,
             ObjectTypeNode.BinaryEncodingId,
             ObjectTypeNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             OpenSecureChannelRequest::encode,
             OpenSecureChannelRequest::decode,
             OpenSecureChannelRequest.class,
             OpenSecureChannelRequest.BinaryEncodingId,
             OpenSecureChannelRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             OpenSecureChannelResponse::encode,
             OpenSecureChannelResponse::decode,
             OpenSecureChannelResponse.class,
             OpenSecureChannelResponse.BinaryEncodingId,
             OpenSecureChannelResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             OptionSet::encode,
             OptionSet::decode,
             OptionSet.class,
             OptionSet.BinaryEncodingId,
             OptionSet.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ParsingResult::encode,
             ParsingResult::decode,
             ParsingResult.class,
             ParsingResult.BinaryEncodingId,
             ParsingResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ProgramDiagnosticDataType::encode,
             ProgramDiagnosticDataType::decode,
             ProgramDiagnosticDataType.class,
             ProgramDiagnosticDataType.BinaryEncodingId,
             ProgramDiagnosticDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             PublishRequest::encode,
             PublishRequest::decode,
             PublishRequest.class,
             PublishRequest.BinaryEncodingId,
             PublishRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             PublishResponse::encode,
             PublishResponse::decode,
             PublishResponse.class,
             PublishResponse.BinaryEncodingId,
             PublishResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             QueryDataDescription::encode,
             QueryDataDescription::decode,
             QueryDataDescription.class,
             QueryDataDescription.BinaryEncodingId,
             QueryDataDescription.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             QueryDataSet::encode,
             QueryDataSet::decode,
             QueryDataSet.class,
             QueryDataSet.BinaryEncodingId,
             QueryDataSet.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             QueryFirstRequest::encode,
             QueryFirstRequest::decode,
             QueryFirstRequest.class,
             QueryFirstRequest.BinaryEncodingId,
             QueryFirstRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             QueryFirstResponse::encode,
             QueryFirstResponse::decode,
             QueryFirstResponse.class,
             QueryFirstResponse.BinaryEncodingId,
             QueryFirstResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             QueryNextRequest::encode,
             QueryNextRequest::decode,
             QueryNextRequest.class,
             QueryNextRequest.BinaryEncodingId,
             QueryNextRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             QueryNextResponse::encode,
             QueryNextResponse::decode,
             QueryNextResponse.class,
             QueryNextResponse.BinaryEncodingId,
             QueryNextResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             Range::encode,
             Range::decode,
             Range.class,
             Range.BinaryEncodingId,
             Range.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReadAtTimeDetails::encode,
             ReadAtTimeDetails::decode,
             ReadAtTimeDetails.class,
             ReadAtTimeDetails.BinaryEncodingId,
             ReadAtTimeDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReadEventDetails::encode,
             ReadEventDetails::decode,
             ReadEventDetails.class,
             ReadEventDetails.BinaryEncodingId,
             ReadEventDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReadProcessedDetails::encode,
             ReadProcessedDetails::decode,
             ReadProcessedDetails.class,
             ReadProcessedDetails.BinaryEncodingId,
             ReadProcessedDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReadRawModifiedDetails::encode,
             ReadRawModifiedDetails::decode,
             ReadRawModifiedDetails.class,
             ReadRawModifiedDetails.BinaryEncodingId,
             ReadRawModifiedDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReadRequest::encode,
             ReadRequest::decode,
             ReadRequest.class,
             ReadRequest.BinaryEncodingId,
             ReadRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReadResponse::encode,
             ReadResponse::decode,
             ReadResponse.class,
             ReadResponse.BinaryEncodingId,
             ReadResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReadValueId::encode,
             ReadValueId::decode,
             ReadValueId.class,
             ReadValueId.BinaryEncodingId,
             ReadValueId.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RedundantServerDataType::encode,
             RedundantServerDataType::decode,
             RedundantServerDataType.class,
             RedundantServerDataType.BinaryEncodingId,
             RedundantServerDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReferenceDescription::encode,
             ReferenceDescription::decode,
             ReferenceDescription.class,
             ReferenceDescription.BinaryEncodingId,
             ReferenceDescription.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReferenceNode::encode,
             ReferenceNode::decode,
             ReferenceNode.class,
             ReferenceNode.BinaryEncodingId,
             ReferenceNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReferenceTypeAttributes::encode,
             ReferenceTypeAttributes::decode,
             ReferenceTypeAttributes.class,
             ReferenceTypeAttributes.BinaryEncodingId,
             ReferenceTypeAttributes.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ReferenceTypeNode::encode,
             ReferenceTypeNode::decode,
             ReferenceTypeNode.class,
             ReferenceTypeNode.BinaryEncodingId,
             ReferenceTypeNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RegisteredServer::encode,
             RegisteredServer::decode,
             RegisteredServer.class,
             RegisteredServer.BinaryEncodingId,
             RegisteredServer.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RegisterNodesRequest::encode,
             RegisterNodesRequest::decode,
             RegisterNodesRequest.class,
             RegisterNodesRequest.BinaryEncodingId,
             RegisterNodesRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RegisterNodesResponse::encode,
             RegisterNodesResponse::decode,
             RegisterNodesResponse.class,
             RegisterNodesResponse.BinaryEncodingId,
             RegisterNodesResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RegisterServer2Request::encode,
             RegisterServer2Request::decode,
             RegisterServer2Request.class,
             RegisterServer2Request.BinaryEncodingId,
             RegisterServer2Request.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RegisterServer2Response::encode,
             RegisterServer2Response::decode,
             RegisterServer2Response.class,
             RegisterServer2Response.BinaryEncodingId,
             RegisterServer2Response.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RegisterServerRequest::encode,
             RegisterServerRequest::decode,
             RegisterServerRequest.class,
             RegisterServerRequest.BinaryEncodingId,
             RegisterServerRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RegisterServerResponse::encode,
             RegisterServerResponse::decode,
             RegisterServerResponse.class,
             RegisterServerResponse.BinaryEncodingId,
             RegisterServerResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RelativePath::encode,
             RelativePath::decode,
             RelativePath.class,
             RelativePath.BinaryEncodingId,
             RelativePath.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RelativePathElement::encode,
             RelativePathElement::decode,
             RelativePathElement.class,
             RelativePathElement.BinaryEncodingId,
             RelativePathElement.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RepublishRequest::encode,
             RepublishRequest::decode,
             RepublishRequest.class,
             RepublishRequest.BinaryEncodingId,
             RepublishRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RepublishResponse::encode,
             RepublishResponse::decode,
             RepublishResponse.class,
             RepublishResponse.BinaryEncodingId,
             RepublishResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             RequestHeader::encode,
             RequestHeader::decode,
             RequestHeader.class,
             RequestHeader.BinaryEncodingId,
             RequestHeader.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ResponseHeader::encode,
             ResponseHeader::decode,
             ResponseHeader.class,
             ResponseHeader.BinaryEncodingId,
             ResponseHeader.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SamplingIntervalDiagnosticsDataType::encode,
             SamplingIntervalDiagnosticsDataType::decode,
             SamplingIntervalDiagnosticsDataType.class,
             SamplingIntervalDiagnosticsDataType.BinaryEncodingId,
             SamplingIntervalDiagnosticsDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ScalarTestType::encode,
             ScalarTestType::decode,
             ScalarTestType.class,
             ScalarTestType.BinaryEncodingId,
             ScalarTestType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SemanticChangeStructureDataType::encode,
             SemanticChangeStructureDataType::decode,
             SemanticChangeStructureDataType.class,
             SemanticChangeStructureDataType.BinaryEncodingId,
             SemanticChangeStructureDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ServerDiagnosticsSummaryDataType::encode,
             ServerDiagnosticsSummaryDataType::decode,
             ServerDiagnosticsSummaryDataType.class,
             ServerDiagnosticsSummaryDataType.BinaryEncodingId,
             ServerDiagnosticsSummaryDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ServerOnNetwork::encode,
             ServerOnNetwork::decode,
             ServerOnNetwork.class,
             ServerOnNetwork.BinaryEncodingId,
             ServerOnNetwork.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ServerStatusDataType::encode,
             ServerStatusDataType::decode,
             ServerStatusDataType.class,
             ServerStatusDataType.BinaryEncodingId,
             ServerStatusDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ServiceCounterDataType::encode,
             ServiceCounterDataType::decode,
             ServiceCounterDataType.class,
             ServiceCounterDataType.BinaryEncodingId,
             ServiceCounterDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ServiceFault::encode,
             ServiceFault::decode,
             ServiceFault.class,
             ServiceFault.BinaryEncodingId,
             ServiceFault.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SessionDiagnosticsDataType::encode,
             SessionDiagnosticsDataType::decode,
             SessionDiagnosticsDataType.class,
             SessionDiagnosticsDataType.BinaryEncodingId,
             SessionDiagnosticsDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SessionSecurityDiagnosticsDataType::encode,
             SessionSecurityDiagnosticsDataType::decode,
             SessionSecurityDiagnosticsDataType.class,
             SessionSecurityDiagnosticsDataType.BinaryEncodingId,
             SessionSecurityDiagnosticsDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SetMonitoringModeRequest::encode,
             SetMonitoringModeRequest::decode,
             SetMonitoringModeRequest.class,
             SetMonitoringModeRequest.BinaryEncodingId,
             SetMonitoringModeRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SetMonitoringModeResponse::encode,
             SetMonitoringModeResponse::decode,
             SetMonitoringModeResponse.class,
             SetMonitoringModeResponse.BinaryEncodingId,
             SetMonitoringModeResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SetPublishingModeRequest::encode,
             SetPublishingModeRequest::decode,
             SetPublishingModeRequest.class,
             SetPublishingModeRequest.BinaryEncodingId,
             SetPublishingModeRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SetPublishingModeResponse::encode,
             SetPublishingModeResponse::decode,
             SetPublishingModeResponse.class,
             SetPublishingModeResponse.BinaryEncodingId,
             SetPublishingModeResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SetTriggeringRequest::encode,
             SetTriggeringRequest::decode,
             SetTriggeringRequest.class,
             SetTriggeringRequest.BinaryEncodingId,
             SetTriggeringRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SetTriggeringResponse::encode,
             SetTriggeringResponse::decode,
             SetTriggeringResponse.class,
             SetTriggeringResponse.BinaryEncodingId,
             SetTriggeringResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SignatureData::encode,
             SignatureData::decode,
             SignatureData.class,
             SignatureData.BinaryEncodingId,
             SignatureData.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SignedSoftwareCertificate::encode,
             SignedSoftwareCertificate::decode,
             SignedSoftwareCertificate.class,
             SignedSoftwareCertificate.BinaryEncodingId,
             SignedSoftwareCertificate.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SimpleAttributeOperand::encode,
             SimpleAttributeOperand::decode,
             SimpleAttributeOperand.class,
             SimpleAttributeOperand.BinaryEncodingId,
             SimpleAttributeOperand.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SoftwareCertificate::encode,
             SoftwareCertificate::decode,
             SoftwareCertificate.class,
             SoftwareCertificate.BinaryEncodingId,
             SoftwareCertificate.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             StatusChangeNotification::encode,
             StatusChangeNotification::decode,
             StatusChangeNotification.class,
             StatusChangeNotification.BinaryEncodingId,
             StatusChangeNotification.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             StatusResult::encode,
             StatusResult::decode,
             StatusResult.class,
             StatusResult.BinaryEncodingId,
             StatusResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SubscriptionAcknowledgement::encode,
             SubscriptionAcknowledgement::decode,
             SubscriptionAcknowledgement.class,
             SubscriptionAcknowledgement.BinaryEncodingId,
             SubscriptionAcknowledgement.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SubscriptionDiagnosticsDataType::encode,
             SubscriptionDiagnosticsDataType::decode,
             SubscriptionDiagnosticsDataType.class,
             SubscriptionDiagnosticsDataType.BinaryEncodingId,
             SubscriptionDiagnosticsDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             SupportedProfile::encode,
             SupportedProfile::decode,
             SupportedProfile.class,
             SupportedProfile.BinaryEncodingId,
             SupportedProfile.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TestStackExRequest::encode,
             TestStackExRequest::decode,
             TestStackExRequest.class,
             TestStackExRequest.BinaryEncodingId,
             TestStackExRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TestStackExResponse::encode,
             TestStackExResponse::decode,
             TestStackExResponse.class,
             TestStackExResponse.BinaryEncodingId,
             TestStackExResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TestStackRequest::encode,
             TestStackRequest::decode,
             TestStackRequest.class,
             TestStackRequest.BinaryEncodingId,
             TestStackRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TestStackResponse::encode,
             TestStackResponse::decode,
             TestStackResponse.class,
             TestStackResponse.BinaryEncodingId,
             TestStackResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TimeZoneDataType::encode,
             TimeZoneDataType::decode,
             TimeZoneDataType.class,
             TimeZoneDataType.BinaryEncodingId,
             TimeZoneDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TransferResult::encode,
             TransferResult::decode,
             TransferResult.class,
             TransferResult.BinaryEncodingId,
             TransferResult.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TransferSubscriptionsRequest::encode,
             TransferSubscriptionsRequest::decode,
             TransferSubscriptionsRequest.class,
             TransferSubscriptionsRequest.BinaryEncodingId,
             TransferSubscriptionsRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TransferSubscriptionsResponse::encode,
             TransferSubscriptionsResponse::decode,
             TransferSubscriptionsResponse.class,
             TransferSubscriptionsResponse.BinaryEncodingId,
             TransferSubscriptionsResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TranslateBrowsePathsToNodeIdsRequest::encode,
             TranslateBrowsePathsToNodeIdsRequest::decode,
             TranslateBrowsePathsToNodeIdsRequest.class,
             TranslateBrowsePathsToNodeIdsRequest.BinaryEncodingId,
             TranslateBrowsePathsToNodeIdsRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TranslateBrowsePathsToNodeIdsResponse::encode,
             TranslateBrowsePathsToNodeIdsResponse::decode,
             TranslateBrowsePathsToNodeIdsResponse.class,
             TranslateBrowsePathsToNodeIdsResponse.BinaryEncodingId,
             TranslateBrowsePathsToNodeIdsResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TrustListDataType::encode,
             TrustListDataType::decode,
             TrustListDataType.class,
             TrustListDataType.BinaryEncodingId,
             TrustListDataType.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             TypeNode::encode,
             TypeNode::decode,
             TypeNode.class,
             TypeNode.BinaryEncodingId,
             TypeNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             Union::encode,
             Union::decode,
             Union.class,
             Union.BinaryEncodingId,
             Union.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             UnregisterNodesRequest::encode,
             UnregisterNodesRequest::decode,
             UnregisterNodesRequest.class,
             UnregisterNodesRequest.BinaryEncodingId,
             UnregisterNodesRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             UnregisterNodesResponse::encode,
             UnregisterNodesResponse::decode,
             UnregisterNodesResponse.class,
             UnregisterNodesResponse.BinaryEncodingId,
             UnregisterNodesResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             UpdateDataDetails::encode,
             UpdateDataDetails::decode,
             UpdateDataDetails.class,
             UpdateDataDetails.BinaryEncodingId,
             UpdateDataDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             UpdateEventDetails::encode,
             UpdateEventDetails::decode,
             UpdateEventDetails.class,
             UpdateEventDetails.BinaryEncodingId,
             UpdateEventDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             UpdateStructureDataDetails::encode,
             UpdateStructureDataDetails::decode,
             UpdateStructureDataDetails.class,
             UpdateStructureDataDetails.BinaryEncodingId,
             UpdateStructureDataDetails.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             UserIdentityToken::encode,
             UserIdentityToken::decode,
             UserIdentityToken.class,
             UserIdentityToken.BinaryEncodingId,
             UserIdentityToken.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             UserNameIdentityToken::encode,
             UserNameIdentityToken::decode,
             UserNameIdentityToken.class,
             UserNameIdentityToken.BinaryEncodingId,
             UserNameIdentityToken.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             UserTokenPolicy::encode,
             UserTokenPolicy::decode,
             UserTokenPolicy.class,
             UserTokenPolicy.BinaryEncodingId,
             UserTokenPolicy.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             VariableAttributes::encode,
             VariableAttributes::decode,
             VariableAttributes.class,
             VariableAttributes.BinaryEncodingId,
             VariableAttributes.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             VariableNode::encode,
             VariableNode::decode,
             VariableNode.class,
             VariableNode.BinaryEncodingId,
             VariableNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             VariableTypeAttributes::encode,
             VariableTypeAttributes::decode,
             VariableTypeAttributes.class,
             VariableTypeAttributes.BinaryEncodingId,
             VariableTypeAttributes.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             VariableTypeNode::encode,
             VariableTypeNode::decode,
             VariableTypeNode.class,
             VariableTypeNode.BinaryEncodingId,
             VariableTypeNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ViewAttributes::encode,
             ViewAttributes::decode,
             ViewAttributes.class,
             ViewAttributes.BinaryEncodingId,
             ViewAttributes.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ViewDescription::encode,
             ViewDescription::decode,
             ViewDescription.class,
             ViewDescription.BinaryEncodingId,
             ViewDescription.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             ViewNode::encode,
             ViewNode::decode,
             ViewNode.class,
             ViewNode.BinaryEncodingId,
             ViewNode.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             WriteRequest::encode,
             WriteRequest::decode,
             WriteRequest.class,
             WriteRequest.BinaryEncodingId,
             WriteRequest.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             WriteResponse::encode,
             WriteResponse::decode,
             WriteResponse.class,
             WriteResponse.BinaryEncodingId,
             WriteResponse.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             WriteValue::encode,
             WriteValue::decode,
             WriteValue.class,
             WriteValue.BinaryEncodingId,
             WriteValue.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             X509IdentityToken::encode,
             X509IdentityToken::decode,
             X509IdentityToken.class,
             X509IdentityToken.BinaryEncodingId,
             X509IdentityToken.XmlEncodingId
         );
-        DelegateRegistry.register(
+        OpcUaTypeDictionary.register(
             XVType::encode,
             XVType::decode,
             XVType.class,

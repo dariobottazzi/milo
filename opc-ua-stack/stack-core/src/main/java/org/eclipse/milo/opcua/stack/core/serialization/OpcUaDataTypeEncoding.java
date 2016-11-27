@@ -33,73 +33,180 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.XmlElement;
 
 public class OpcUaDataTypeEncoding implements DataTypeEncoding {
 
-    private static final DelegateRegistry.Instance DELEGATE_REGISTRY = DelegateRegistry.getInstance();
+    private static final OpcUaTypeDictionary.Instance TYPE_DICTIONARY = OpcUaTypeDictionary.getInstance();
 
     private final ByteBufAllocator allocator = ByteBufAllocator.DEFAULT;
 
     @Override
     public ByteString encodeToByteString(Object object, NodeId encodingTypeId) {
-        EncoderDelegate<Object> delegate = DELEGATE_REGISTRY.getEncoder(encodingTypeId);
+        try {
+            @SuppressWarnings("unchecked")
+            TypeEncoder<Object> typeEncoder = (TypeEncoder<Object>) TYPE_DICTIONARY.getEncoder(encodingTypeId);
 
-        ByteBuf buffer = allocator.buffer().order(ByteOrder.LITTLE_ENDIAN);
+            ByteBuf buffer = allocator.buffer().order(ByteOrder.LITTLE_ENDIAN);
 
-        BinaryEncoder encoder = new BinaryEncoder();
-        encoder.setBuffer(buffer);
+            BinaryEncoder encoder = new BinaryEncoder();
+            encoder.setBuffer(buffer);
 
-        delegate.encode(object, encoder);
+            typeEncoder.encode(object, encoder);
 
-        byte[] bs = new byte[buffer.readableBytes()];
-        buffer.readBytes(bs);
-        buffer.release();
+            byte[] bs = new byte[buffer.readableBytes()];
+            buffer.readBytes(bs);
+            buffer.release();
 
-        return ByteString.of(bs);
+            return ByteString.of(bs);
+        } catch (ClassCastException e) {
+            throw new UaSerializationException(StatusCodes.Bad_EncodingError, e);
+        }
     }
 
     @Override
-    public Object decodeFromByteString(ByteString encoded, NodeId encodingTypeId) {
-        DecoderDelegate<Object> delegate = DELEGATE_REGISTRY.getDecoder(encodingTypeId);
+    public ByteString encodeToByteString(
+        Object object,
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException {
 
-        byte[] bs = encoded.bytes();
-        if (bs == null) bs = new byte[0];
+        try {
+            @SuppressWarnings("unchecked")
+            TypeEncoder<Object> typeEncoder = (TypeEncoder<Object>) typeManager.getEncoder(encodingTypeId);
 
-        ByteBuf buffer = Unpooled
-            .wrappedBuffer(bs)
-            .order(ByteOrder.LITTLE_ENDIAN);
+            ByteBuf buffer = allocator.buffer().order(ByteOrder.LITTLE_ENDIAN);
 
-        BinaryDecoder decoder = new BinaryDecoder();
-        decoder.setBuffer(buffer);
+            BinaryEncoder encoder = new BinaryEncoder(typeManager);
+            encoder.setBuffer(buffer);
 
-        return delegate.decode(decoder);
+            typeEncoder.encode(object, encoder);
+
+            byte[] bs = new byte[buffer.readableBytes()];
+            buffer.readBytes(bs);
+            buffer.release();
+
+            return ByteString.of(bs);
+        } catch (ClassCastException e) {
+            throw new UaSerializationException(StatusCodes.Bad_EncodingError, e);
+        }
     }
 
     @Override
     public XmlElement encodeToXmlElement(Object object, NodeId encodingTypeId) {
         try {
-            EncoderDelegate<Object> delegate = DELEGATE_REGISTRY.getEncoder(encodingTypeId);
+            @SuppressWarnings("unchecked")
+            TypeEncoder<Object> typeEncoder = (TypeEncoder<Object>) TYPE_DICTIONARY.getEncoder(encodingTypeId);
 
             StringWriter stringWriter = new StringWriter();
 
             XmlEncoder encoder = new XmlEncoder();
             encoder.setOutput(stringWriter);
 
-            delegate.encode(object, encoder);
+            typeEncoder.encode(object, encoder);
 
             return new XmlElement(stringWriter.toString());
-        } catch (XMLStreamException e) {
+        } catch (ClassCastException | XMLStreamException e) {
             throw new UaSerializationException(StatusCodes.Bad_EncodingError, e);
+        }
+    }
+
+    @Override
+    public XmlElement encodeToXmlElement(
+        Object object,
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException {
+
+        try {
+            @SuppressWarnings("unchecked")
+            TypeEncoder<Object> typeEncoder = (TypeEncoder<Object>) typeManager.getEncoder(encodingTypeId);
+
+            StringWriter stringWriter = new StringWriter();
+
+            XmlEncoder encoder = new XmlEncoder(typeManager);
+            encoder.setOutput(stringWriter);
+
+            typeEncoder.encode(object, encoder);
+
+            return new XmlElement(stringWriter.toString());
+        } catch (ClassCastException | XMLStreamException e) {
+            throw new UaSerializationException(StatusCodes.Bad_EncodingError, e);
+        }
+    }
+
+    @Override
+    public Object decodeFromByteString(ByteString encoded, NodeId encodingTypeId) {
+        try {
+            @SuppressWarnings("unchecked")
+            TypeDecoder<Object> typeDecoder = (TypeDecoder<Object>) TYPE_DICTIONARY.getDecoder(encodingTypeId);
+
+            byte[] bs = encoded.bytes();
+            if (bs == null) bs = new byte[0];
+
+            ByteBuf buffer = Unpooled
+                .wrappedBuffer(bs)
+                .order(ByteOrder.LITTLE_ENDIAN);
+
+            BinaryDecoder decoder = new BinaryDecoder();
+            decoder.setBuffer(buffer);
+
+            return typeDecoder.decode(decoder);
+        } catch (ClassCastException e) {
+            throw new UaSerializationException(StatusCodes.Bad_DecodingError, e);
+        }
+    }
+
+    @Override
+    public Object decodeFromByteString(
+        ByteString encoded,
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException {
+
+        try {
+            @SuppressWarnings("unchecked")
+            TypeDecoder<Object> typeDecoder = (TypeDecoder<Object>) typeManager.getDecoder(encodingTypeId);
+
+            byte[] bs = encoded.bytes();
+            if (bs == null) bs = new byte[0];
+
+            ByteBuf buffer = Unpooled
+                .wrappedBuffer(bs)
+                .order(ByteOrder.LITTLE_ENDIAN);
+
+            BinaryDecoder decoder = new BinaryDecoder(typeManager);
+            decoder.setBuffer(buffer);
+
+            return typeDecoder.decode(decoder);
+        } catch (ClassCastException e) {
+            throw new UaSerializationException(StatusCodes.Bad_DecodingError, e);
         }
     }
 
     @Override
     public Object decodeFromXmlElement(XmlElement encoded, NodeId encodingTypeId) {
         try {
-            DecoderDelegate<Object> delegate = DELEGATE_REGISTRY.getDecoder(encodingTypeId);
+            @SuppressWarnings("unchecked")
+            TypeDecoder<Object> typeDecoder = (TypeDecoder<Object>) TYPE_DICTIONARY.getDecoder(encodingTypeId);
 
             XmlDecoder decoder = new XmlDecoder();
             decoder.setInput(new StringReader(encoded.getFragment()));
 
-            return delegate.decode(decoder);
-        } catch (XMLStreamException e) {
+            return typeDecoder.decode(decoder);
+        } catch (ClassCastException | XMLStreamException e) {
+            throw new UaSerializationException(StatusCodes.Bad_DecodingError, e);
+        }
+    }
+
+    @Override
+    public Object decodeFromXmlElement(
+        XmlElement encoded,
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException {
+
+        try {
+            @SuppressWarnings("unchecked")
+            TypeDecoder<Object> typeDecoder = (TypeDecoder<Object>) typeManager.getDecoder(encodingTypeId);
+
+            XmlDecoder decoder = new XmlDecoder(typeManager);
+            decoder.setInput(new StringReader(encoded.getFragment()));
+
+            return typeDecoder.decode(decoder);
+        } catch (ClassCastException | XMLStreamException e) {
             throw new UaSerializationException(StatusCodes.Bad_DecodingError, e);
         }
     }

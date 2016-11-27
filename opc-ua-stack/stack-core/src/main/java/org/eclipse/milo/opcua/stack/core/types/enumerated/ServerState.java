@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -68,8 +68,8 @@ public enum ServerState implements UaEnumeration {
     }
 
     static {
-        DelegateRegistry.registerEncoder(ServerState::encode, ServerState.class);
-        DelegateRegistry.registerDecoder(ServerState::decode, ServerState.class);
+        OpcUaTypeDictionary.registerEncoder(ServerState::encode, ServerState.class);
+        OpcUaTypeDictionary.registerDecoder(ServerState::decode, ServerState.class);
     }
 
 }

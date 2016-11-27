@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -66,8 +66,8 @@ public enum TrustListMasks implements UaEnumeration {
     }
 
     static {
-        DelegateRegistry.registerEncoder(TrustListMasks::encode, TrustListMasks.class);
-        DelegateRegistry.registerDecoder(TrustListMasks::decode, TrustListMasks.class);
+        OpcUaTypeDictionary.registerEncoder(TrustListMasks::encode, TrustListMasks.class);
+        OpcUaTypeDictionary.registerDecoder(TrustListMasks::decode, TrustListMasks.class);
     }
 
 }

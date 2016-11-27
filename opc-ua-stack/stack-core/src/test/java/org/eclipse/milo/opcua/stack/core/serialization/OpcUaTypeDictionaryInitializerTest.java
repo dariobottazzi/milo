@@ -7,11 +7,11 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertNotEquals;
 
-public class DelegateRegistryInitializerTest {
+public class OpcUaTypeDictionaryInitializerTest {
 
     @Test
     public void testInitialize() throws Exception {
-        DelegateRegistryInitializer.initialize();
+        OpcUaTypeDictionaryInitializer.initialize();
 
         ClassLoader classLoader = getClass().getClassLoader();
         ClassPath classPath = ClassPath.from(classLoader);
@@ -28,8 +28,8 @@ public class DelegateRegistryInitializerTest {
         for (ClassPath.ClassInfo classInfo : Sets.union(structures, enumerations)) {
             Class<?> clazz = classInfo.load();
 
-            DelegateRegistry.getInstance().getEncoder(clazz);
-            DelegateRegistry.getInstance().getDecoder(clazz);
+            OpcUaTypeDictionary.getInstance().getEncoder(clazz);
+            OpcUaTypeDictionary.getInstance().getDecoder(clazz);
         }
     }
 

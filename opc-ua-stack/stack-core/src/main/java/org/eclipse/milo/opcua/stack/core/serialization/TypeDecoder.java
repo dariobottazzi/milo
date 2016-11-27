@@ -13,6 +13,6 @@
 
 package org.eclipse.milo.opcua.stack.core.serialization;
 
-public interface DecoderDelegate<T> {
+public interface TypeDecoder<T> {
     T decode(UaDecoder decoder);
 }

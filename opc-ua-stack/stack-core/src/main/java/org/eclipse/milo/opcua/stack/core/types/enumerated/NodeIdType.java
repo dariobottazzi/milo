@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -66,8 +66,8 @@ public enum NodeIdType implements UaEnumeration {
     }
 
     static {
-        DelegateRegistry.registerEncoder(NodeIdType::encode, NodeIdType.class);
-        DelegateRegistry.registerDecoder(NodeIdType::decode, NodeIdType.class);
+        OpcUaTypeDictionary.registerEncoder(NodeIdType::encode, NodeIdType.class);
+        OpcUaTypeDictionary.registerDecoder(NodeIdType::decode, NodeIdType.class);
     }
 
 }

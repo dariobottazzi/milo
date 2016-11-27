@@ -24,8 +24,10 @@ import io.netty.buffer.ByteBuf;
 import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.channel.ChannelConfig;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
-import org.eclipse.milo.opcua.stack.core.serialization.EncoderDelegate;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.TypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.TypeEncoder;
+import org.eclipse.milo.opcua.stack.core.serialization.TypeManager;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
 import org.eclipse.milo.opcua.stack.core.serialization.UaSerializable;
@@ -54,18 +56,28 @@ import org.slf4j.LoggerFactory;
 
 public class BinaryEncoder implements UaEncoder {
 
-    private static final DelegateRegistry.Instance DELEGATE_REGISTRY = DelegateRegistry.getInstance();
+    private static final OpcUaTypeDictionary.Instance TYPE_DICTIONARY = OpcUaTypeDictionary.getInstance();
 
     private volatile ByteBuf buffer;
 
+    private final TypeManager typeManager;
     private final int maxArrayLength;
     private final int maxStringLength;
 
     public BinaryEncoder() {
-        this(ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+        this(TypeManager.BUILTIN, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+    }
+
+    public BinaryEncoder(TypeManager typeManager) {
+        this(typeManager, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
     }
 
     public BinaryEncoder(int maxArrayLength, int maxStringLength) {
+        this(TypeManager.BUILTIN, maxArrayLength, maxStringLength);
+    }
+
+    public BinaryEncoder(TypeManager typeManager, int maxArrayLength, int maxStringLength) {
+        this.typeManager = typeManager;
         this.maxArrayLength = maxArrayLength;
         this.maxStringLength = maxStringLength;
     }
@@ -597,12 +609,13 @@ public class BinaryEncoder implements UaEncoder {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends UaStructure> void encodeMessage(String field, T message) throws UaSerializationException {
-        EncoderDelegate<T> delegate = DELEGATE_REGISTRY.getEncoder(message.getBinaryEncodingId());
+        TypeEncoder<T> encoder = (TypeEncoder<T>) TYPE_DICTIONARY.getEncoder(message.getBinaryEncodingId());
 
         encodeNodeId(null, message.getBinaryEncodingId());
 
-        delegate.encode(message, this);
+        encoder.encode(message, this);
     }
 
     @Override
@@ -610,17 +623,88 @@ public class BinaryEncoder implements UaEncoder {
         if (value == null) {
             encodeInt32(null, -1);
         } else {
-            EncoderDelegate<T> delegate = DELEGATE_REGISTRY.getEncoder(value);
+            TypeEncoder<T> encoder = TYPE_DICTIONARY.getEncoder(value);
 
-            delegate.encode(value, this);
+            encoder.encode(value, this);
         }
     }
 
     @Override
     public <T extends UaSerializable> void encodeSerializable(String field, T value) throws UaSerializationException {
-        EncoderDelegate<T> delegate = DELEGATE_REGISTRY.getEncoder(value);
+        TypeEncoder<T> encoder = TYPE_DICTIONARY.getEncoder(value);
 
-        delegate.encode(value, this);
+        encoder.encode(value, this);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> void encodeStructuredType(
+        String field,
+        T value,
+        String namespaceUri) throws UaSerializationException {
+
+        TypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
+
+        if (typeDictionary == null) {
+            throw new UaSerializationException(
+                StatusCodes.Bad_EncodingError,
+                "no TypeDictionary registered for namespaceUri=" + namespaceUri);
+        }
+
+        try {
+            TypeEncoder<T> encoder = (TypeEncoder<T>) typeDictionary.getEncoder(value.getClass());
+
+            if (encoder == null) {
+                throw new UaSerializationException(
+                    StatusCodes.Bad_EncodingError,
+                    String.format(
+                        "no TypeDecoder registered for typeClass=%s under namespaceUri=%s",
+                        value.getClass(), namespaceUri)
+                );
+            }
+
+            encoder.encode(value, this);
+        } catch (UaSerializationException e) {
+            throw e;
+        } catch (Throwable t) {
+            throw new UaSerializationException(StatusCodes.Bad_EncodingError, t);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void encodeStructuredType(
+        String field,
+        Object value,
+        String namespaceUri,
+        String typeName) throws UaSerializationException {
+
+        TypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
+
+        if (typeDictionary == null) {
+            throw new UaSerializationException(
+                StatusCodes.Bad_EncodingError,
+                "no TypeDictionary registered for namespaceUri=" + namespaceUri);
+        }
+
+        try {
+            TypeEncoder<Object> encoder = (TypeEncoder<Object>) typeDictionary.getEncoder(typeName);
+
+            if (encoder == null) {
+                throw new UaSerializationException(
+                    StatusCodes.Bad_EncodingError,
+                    String.format(
+                        "no TypeDecoder registered for typeName=%s under namespaceUri=%s",
+                        typeName, namespaceUri)
+                );
+            }
+
+            encoder.encode(value, this);
+        } catch (UaSerializationException e) {
+            throw e;
+        } catch (Throwable t) {
+            throw new UaSerializationException(StatusCodes.Bad_EncodingError, t);
+        }
     }
 
     @Override

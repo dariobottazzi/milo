@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -109,8 +109,8 @@ public class BuildInfo implements UaStructure {
     }
 
     static {
-        DelegateRegistry.registerEncoder(BuildInfo::encode, BuildInfo.class, BinaryEncodingId, XmlEncodingId);
-        DelegateRegistry.registerDecoder(BuildInfo::decode, BuildInfo.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerEncoder(BuildInfo::encode, BuildInfo.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerDecoder(BuildInfo::decode, BuildInfo.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

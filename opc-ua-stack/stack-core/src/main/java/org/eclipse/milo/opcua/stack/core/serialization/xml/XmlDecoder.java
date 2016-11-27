@@ -31,6 +31,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.channel.ChannelConfig;
+import org.eclipse.milo.opcua.stack.core.serialization.TypeManager;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
 import org.eclipse.milo.opcua.stack.core.serialization.UaSerializable;
@@ -60,14 +62,35 @@ public class XmlDecoder implements UaDecoder {
 
     private volatile XMLStreamReader streamReader;
 
+    private final TypeManager typeManager;
+    private final int maxArrayLength;
+    private final int maxStringLength;
+
     public XmlDecoder() {
+        this(TypeManager.BUILTIN, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+    }
+
+    public XmlDecoder(TypeManager typeManager) {
+        this(typeManager, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+    }
+
+    public XmlDecoder(int maxArrayLength, int maxStringLength) {
+        this(TypeManager.BUILTIN, maxArrayLength, maxStringLength);
+    }
+
+    public XmlDecoder(TypeManager typeManager, int maxArrayLength, int maxStringLength) {
+        this.typeManager = typeManager;
+        this.maxArrayLength = maxArrayLength;
+        this.maxStringLength = maxStringLength;
     }
 
     public XmlDecoder(InputStream inputStream) throws XMLStreamException {
+        this();
         setInput(inputStream);
     }
 
     public XmlDecoder(Reader reader) throws XMLStreamException {
+        this();
         setInput(reader);
     }
 
@@ -639,6 +662,24 @@ public class XmlDecoder implements UaDecoder {
 
     @Override
     public <T extends UaSerializable> T decodeSerializable(String field, Class<T> clazz) {
+        return null;
+    }
+
+    @Override
+    public <T> T decodeStructuredType(
+        String field,
+        String namespaceUri,
+        Class<T> typeClass) throws UaSerializationException {
+
+        return null;
+    }
+
+    @Override
+    public Object decodeStructuredType(
+        String field,
+        String namespaceUri,
+        String typeName) throws UaSerializationException {
+
         return null;
     }
 

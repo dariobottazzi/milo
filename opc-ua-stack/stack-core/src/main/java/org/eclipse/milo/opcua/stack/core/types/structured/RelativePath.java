@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -71,8 +71,8 @@ public class RelativePath implements UaStructure {
     }
 
     static {
-        DelegateRegistry.registerEncoder(RelativePath::encode, RelativePath.class, BinaryEncodingId, XmlEncodingId);
-        DelegateRegistry.registerDecoder(RelativePath::decode, RelativePath.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerEncoder(RelativePath::encode, RelativePath.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerDecoder(RelativePath::decode, RelativePath.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

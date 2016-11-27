@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -64,8 +64,8 @@ public enum HistoryUpdateType implements UaEnumeration {
     }
 
     static {
-        DelegateRegistry.registerEncoder(HistoryUpdateType::encode, HistoryUpdateType.class);
-        DelegateRegistry.registerDecoder(HistoryUpdateType::decode, HistoryUpdateType.class);
+        OpcUaTypeDictionary.registerEncoder(HistoryUpdateType::encode, HistoryUpdateType.class);
+        OpcUaTypeDictionary.registerDecoder(HistoryUpdateType::decode, HistoryUpdateType.class);
     }
 
 }

@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -65,8 +65,8 @@ public enum UserTokenType implements UaEnumeration {
     }
 
     static {
-        DelegateRegistry.registerEncoder(UserTokenType::encode, UserTokenType.class);
-        DelegateRegistry.registerDecoder(UserTokenType::decode, UserTokenType.class);
+        OpcUaTypeDictionary.registerEncoder(UserTokenType::encode, UserTokenType.class);
+        OpcUaTypeDictionary.registerDecoder(UserTokenType::decode, UserTokenType.class);
     }
 
 }

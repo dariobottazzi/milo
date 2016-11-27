@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -63,8 +63,8 @@ public enum DataChangeTrigger implements UaEnumeration {
     }
 
     static {
-        DelegateRegistry.registerEncoder(DataChangeTrigger::encode, DataChangeTrigger.class);
-        DelegateRegistry.registerDecoder(DataChangeTrigger::decode, DataChangeTrigger.class);
+        OpcUaTypeDictionary.registerEncoder(DataChangeTrigger::encode, DataChangeTrigger.class);
+        OpcUaTypeDictionary.registerDecoder(DataChangeTrigger::decode, DataChangeTrigger.class);
     }
 
 }

@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -96,8 +96,8 @@ public class GetEndpointsRequest implements UaRequestMessage {
     }
 
     static {
-        DelegateRegistry.registerEncoder(GetEndpointsRequest::encode, GetEndpointsRequest.class, BinaryEncodingId, XmlEncodingId);
-        DelegateRegistry.registerDecoder(GetEndpointsRequest::decode, GetEndpointsRequest.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerEncoder(GetEndpointsRequest::encode, GetEndpointsRequest.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerDecoder(GetEndpointsRequest::decode, GetEndpointsRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

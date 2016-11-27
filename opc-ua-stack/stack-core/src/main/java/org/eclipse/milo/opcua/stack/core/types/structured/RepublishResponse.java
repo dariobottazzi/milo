@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -76,8 +76,8 @@ public class RepublishResponse implements UaResponseMessage {
     }
 
     static {
-        DelegateRegistry.registerEncoder(RepublishResponse::encode, RepublishResponse.class, BinaryEncodingId, XmlEncodingId);
-        DelegateRegistry.registerDecoder(RepublishResponse::decode, RepublishResponse.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerEncoder(RepublishResponse::encode, RepublishResponse.class, BinaryEncodingId, XmlEncodingId);
+        OpcUaTypeDictionary.registerDecoder(RepublishResponse::decode, RepublishResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -25,8 +25,10 @@ import io.netty.buffer.ByteBuf;
 import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.channel.ChannelConfig;
-import org.eclipse.milo.opcua.stack.core.serialization.DecoderDelegate;
-import org.eclipse.milo.opcua.stack.core.serialization.DelegateRegistry;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.TypeDecoder;
+import org.eclipse.milo.opcua.stack.core.serialization.TypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.TypeManager;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
 import org.eclipse.milo.opcua.stack.core.serialization.UaSerializable;
@@ -53,18 +55,28 @@ import org.eclipse.milo.opcua.stack.core.util.TypeUtil;
 
 public class BinaryDecoder implements UaDecoder {
 
-    private static final DelegateRegistry.Instance DELEGATE_REGISTRY = DelegateRegistry.getInstance();
+    private static final OpcUaTypeDictionary.Instance TYPE_DICTIONARY = OpcUaTypeDictionary.getInstance();
 
     private volatile ByteBuf buffer;
 
+    private final TypeManager typeManager;
     private final int maxArrayLength;
     private final int maxStringLength;
 
     public BinaryDecoder() {
-        this(ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+        this(TypeManager.BUILTIN, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+    }
+
+    public BinaryDecoder(TypeManager typeManager) {
+        this(typeManager, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
     }
 
     public BinaryDecoder(int maxArrayLength, int maxStringLength) {
+        this(TypeManager.BUILTIN, maxArrayLength, maxStringLength);
+    }
+
+    public BinaryDecoder(TypeManager typeManager, int maxArrayLength, int maxStringLength) {
+        this.typeManager = typeManager;
         this.maxArrayLength = maxArrayLength;
         this.maxStringLength = maxStringLength;
     }
@@ -383,27 +395,86 @@ public class BinaryDecoder implements UaDecoder {
     public <T extends UaStructure> T decodeMessage(String field) throws UaSerializationException {
         NodeId encodingId = decodeNodeId(null);
 
-        DecoderDelegate<?> delegate = DELEGATE_REGISTRY.getDecoder(encodingId);
+        TypeDecoder<?> decoder = TYPE_DICTIONARY.getDecoder(encodingId);
 
-        return (T) delegate.decode(this);
+        return (T) decoder.decode(this);
     }
 
     @Override
     public <T extends UaEnumeration> T decodeEnumeration(String field,
                                                          Class<T> clazz) throws UaSerializationException {
 
-        DecoderDelegate<T> delegate = DELEGATE_REGISTRY.getDecoder(clazz);
+        TypeDecoder<T> decoder = TYPE_DICTIONARY.getDecoder(clazz);
 
-        return delegate.decode(this);
+        return decoder.decode(this);
     }
 
     @Override
     public <T extends UaSerializable> T decodeSerializable(String field,
                                                            Class<T> clazz) throws UaSerializationException {
 
-        DecoderDelegate<T> delegate = DELEGATE_REGISTRY.getDecoder(clazz);
+        TypeDecoder<T> decoder = TYPE_DICTIONARY.getDecoder(clazz);
 
-        return delegate.decode(this);
+        return decoder.decode(this);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T decodeStructuredType(
+        String field,
+        String namespaceUri,
+        Class<T> typeClass) throws UaSerializationException {
+
+        TypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
+        if (typeDictionary == null) {
+            throw new UaSerializationException(
+                StatusCodes.Bad_DecodingError,
+                "no TypeDictionary registered for namespaceUri=" + namespaceUri);
+        }
+
+        TypeDecoder<?> decoder = typeDictionary.getDecoder(typeClass);
+        if (decoder == null) {
+            throw new UaSerializationException(
+                StatusCodes.Bad_DecodingError,
+                String.format(
+                    "no TypeDecoder registered for typeClass=%s under namespaceUri=%s",
+                    typeClass, namespaceUri)
+            );
+        }
+
+        try {
+            return (T) decoder.decode(this);
+        } catch (UaSerializationException e) {
+            throw e;
+        } catch (Throwable t) {
+            throw new UaSerializationException(StatusCodes.Bad_DecodingError, t);
+        }
+    }
+
+    @Override
+    public Object decodeStructuredType(
+        String field,
+        String namespaceUri,
+        String typeName) throws UaSerializationException {
+
+        TypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
+        if (typeDictionary == null) {
+            throw new UaSerializationException(
+                StatusCodes.Bad_DecodingError,
+                "no TypeDictionary registered for namespaceUri=" + namespaceUri);
+        }
+
+        TypeDecoder<?> decoder = typeDictionary.getDecoder(typeName);
+        if (decoder == null) {
+            throw new UaSerializationException(
+                StatusCodes.Bad_DecodingError,
+                String.format(
+                    "no TypeDecoder registered for typeName=%s under namespaceUri=%s",
+                    typeName, namespaceUri)
+            );
+        }
+
+        return decoder.decode(this);
     }
 
     @Override
