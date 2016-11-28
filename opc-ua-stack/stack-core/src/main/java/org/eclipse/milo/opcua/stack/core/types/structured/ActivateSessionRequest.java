@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -57,28 +56,46 @@ public class ActivateSessionRequest implements UaRequestMessage {
         this._userTokenSignature = _userTokenSignature;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public SignatureData getClientSignature() { return _clientSignature; }
+    public SignatureData getClientSignature() {
+        return _clientSignature;
+    }
 
     @Nullable
-    public SignedSoftwareCertificate[] getClientSoftwareCertificates() { return _clientSoftwareCertificates; }
+    public SignedSoftwareCertificate[] getClientSoftwareCertificates() {
+        return _clientSoftwareCertificates;
+    }
 
     @Nullable
-    public String[] getLocaleIds() { return _localeIds; }
+    public String[] getLocaleIds() {
+        return _localeIds;
+    }
 
-    public ExtensionObject getUserIdentityToken() { return _userIdentityToken; }
+    public ExtensionObject getUserIdentityToken() {
+        return _userIdentityToken;
+    }
 
-    public SignatureData getUserTokenSignature() { return _userTokenSignature; }
+    public SignatureData getUserTokenSignature() {
+        return _userTokenSignature;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -110,11 +127,6 @@ public class ActivateSessionRequest implements UaRequestMessage {
         SignatureData _userTokenSignature = decoder.decodeSerializable("UserTokenSignature", SignatureData.class);
 
         return new ActivateSessionRequest(_requestHeader, _clientSignature, _clientSoftwareCertificates, _localeIds, _userIdentityToken, _userTokenSignature);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ActivateSessionRequest::encode, ActivateSessionRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ActivateSessionRequest::decode, ActivateSessionRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

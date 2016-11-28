@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -44,19 +43,29 @@ public class AddNodesRequest implements UaRequestMessage {
         this._nodesToAdd = _nodesToAdd;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
     @Nullable
-    public AddNodesItem[] getNodesToAdd() { return _nodesToAdd; }
+    public AddNodesItem[] getNodesToAdd() {
+        return _nodesToAdd;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class AddNodesRequest implements UaRequestMessage {
         AddNodesItem[] _nodesToAdd = decoder.decodeArray("NodesToAdd", decoder::decodeSerializable, AddNodesItem.class);
 
         return new AddNodesRequest(_requestHeader, _nodesToAdd);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(AddNodesRequest::encode, AddNodesRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(AddNodesRequest::decode, AddNodesRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

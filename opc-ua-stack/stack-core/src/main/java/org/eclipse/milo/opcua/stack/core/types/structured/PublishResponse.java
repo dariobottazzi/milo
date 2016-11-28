@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -62,31 +61,51 @@ public class PublishResponse implements UaResponseMessage {
         this._diagnosticInfos = _diagnosticInfos;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
-    public UInteger getSubscriptionId() { return _subscriptionId; }
-
-    @Nullable
-    public UInteger[] getAvailableSequenceNumbers() { return _availableSequenceNumbers; }
-
-    public Boolean getMoreNotifications() { return _moreNotifications; }
-
-    public NotificationMessage getNotificationMessage() { return _notificationMessage; }
+    public UInteger getSubscriptionId() {
+        return _subscriptionId;
+    }
 
     @Nullable
-    public StatusCode[] getResults() { return _results; }
+    public UInteger[] getAvailableSequenceNumbers() {
+        return _availableSequenceNumbers;
+    }
+
+    public Boolean getMoreNotifications() {
+        return _moreNotifications;
+    }
+
+    public NotificationMessage getNotificationMessage() {
+        return _notificationMessage;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getDiagnosticInfos() { return _diagnosticInfos; }
+    public StatusCode[] getResults() {
+        return _results;
+    }
+
+    @Nullable
+    public DiagnosticInfo[] getDiagnosticInfos() {
+        return _diagnosticInfos;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -121,11 +140,6 @@ public class PublishResponse implements UaResponseMessage {
         DiagnosticInfo[] _diagnosticInfos = decoder.decodeArray("DiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
 
         return new PublishResponse(_responseHeader, _subscriptionId, _availableSequenceNumbers, _moreNotifications, _notificationMessage, _results, _diagnosticInfos);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(PublishResponse::encode, PublishResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(PublishResponse::decode, PublishResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

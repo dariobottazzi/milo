@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -41,16 +40,24 @@ public class LiteralOperand extends FilterOperand {
         this._value = _value;
     }
 
-    public Variant getValue() { return _value; }
+    public Variant getValue() {
+        return _value;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -67,11 +74,6 @@ public class LiteralOperand extends FilterOperand {
         Variant _value = decoder.decodeVariant("Value");
 
         return new LiteralOperand(_value);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(LiteralOperand::encode, LiteralOperand.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(LiteralOperand::decode, LiteralOperand.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -43,18 +42,28 @@ public class AddNodesResult implements UaStructure {
         this._addedNodeId = _addedNodeId;
     }
 
-    public StatusCode getStatusCode() { return _statusCode; }
+    public StatusCode getStatusCode() {
+        return _statusCode;
+    }
 
-    public NodeId getAddedNodeId() { return _addedNodeId; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getAddedNodeId() {
+        return _addedNodeId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -74,11 +83,6 @@ public class AddNodesResult implements UaStructure {
         NodeId _addedNodeId = decoder.decodeNodeId("AddedNodeId");
 
         return new AddNodesResult(_statusCode, _addedNodeId);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(AddNodesResult::encode, AddNodesResult.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(AddNodesResult::decode, AddNodesResult.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

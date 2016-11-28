@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -58,26 +57,44 @@ public class ServerStatusDataType implements UaStructure {
         this._shutdownReason = _shutdownReason;
     }
 
-    public DateTime getStartTime() { return _startTime; }
+    public DateTime getStartTime() {
+        return _startTime;
+    }
 
-    public DateTime getCurrentTime() { return _currentTime; }
+    public DateTime getCurrentTime() {
+        return _currentTime;
+    }
 
-    public ServerState getState() { return _state; }
+    public ServerState getState() {
+        return _state;
+    }
 
-    public BuildInfo getBuildInfo() { return _buildInfo; }
+    public BuildInfo getBuildInfo() {
+        return _buildInfo;
+    }
 
-    public UInteger getSecondsTillShutdown() { return _secondsTillShutdown; }
+    public UInteger getSecondsTillShutdown() {
+        return _secondsTillShutdown;
+    }
 
-    public LocalizedText getShutdownReason() { return _shutdownReason; }
+    public LocalizedText getShutdownReason() {
+        return _shutdownReason;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -109,11 +126,6 @@ public class ServerStatusDataType implements UaStructure {
         LocalizedText _shutdownReason = decoder.decodeLocalizedText("ShutdownReason");
 
         return new ServerStatusDataType(_startTime, _currentTime, _state, _buildInfo, _secondsTillShutdown, _shutdownReason);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ServerStatusDataType::encode, ServerStatusDataType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ServerStatusDataType::decode, ServerStatusDataType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

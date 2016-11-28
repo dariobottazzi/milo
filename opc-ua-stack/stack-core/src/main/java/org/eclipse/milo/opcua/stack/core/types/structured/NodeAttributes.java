@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -53,24 +52,40 @@ public class NodeAttributes implements UaStructure {
         this._userWriteMask = _userWriteMask;
     }
 
-    public UInteger getSpecifiedAttributes() { return _specifiedAttributes; }
+    public UInteger getSpecifiedAttributes() {
+        return _specifiedAttributes;
+    }
 
-    public LocalizedText getDisplayName() { return _displayName; }
+    public LocalizedText getDisplayName() {
+        return _displayName;
+    }
 
-    public LocalizedText getDescription() { return _description; }
+    public LocalizedText getDescription() {
+        return _description;
+    }
 
-    public UInteger getWriteMask() { return _writeMask; }
+    public UInteger getWriteMask() {
+        return _writeMask;
+    }
 
-    public UInteger getUserWriteMask() { return _userWriteMask; }
+    public UInteger getUserWriteMask() {
+        return _userWriteMask;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -99,11 +114,6 @@ public class NodeAttributes implements UaStructure {
         UInteger _userWriteMask = decoder.decodeUInt32("UserWriteMask");
 
         return new NodeAttributes(_specifiedAttributes, _displayName, _description, _writeMask, _userWriteMask);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(NodeAttributes::encode, NodeAttributes.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(NodeAttributes::decode, NodeAttributes.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

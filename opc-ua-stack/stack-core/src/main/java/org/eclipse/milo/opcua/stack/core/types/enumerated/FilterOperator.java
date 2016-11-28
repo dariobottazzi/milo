@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.enumerated;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
@@ -75,11 +74,6 @@ public enum FilterOperator implements UaEnumeration {
         int value = decoder.decodeInt32(null);
 
         return VALUES.getOrDefault(value, null);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(FilterOperator::encode, FilterOperator.class);
-        OpcUaTypeDictionary.registerDecoder(FilterOperator::decode, FilterOperator.class);
     }
 
 }

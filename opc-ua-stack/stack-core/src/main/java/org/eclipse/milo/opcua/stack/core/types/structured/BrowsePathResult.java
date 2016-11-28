@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -45,19 +44,29 @@ public class BrowsePathResult implements UaStructure {
         this._targets = _targets;
     }
 
-    public StatusCode getStatusCode() { return _statusCode; }
+    public StatusCode getStatusCode() {
+        return _statusCode;
+    }
 
     @Nullable
-    public BrowsePathTarget[] getTargets() { return _targets; }
+    public BrowsePathTarget[] getTargets() {
+        return _targets;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -77,11 +86,6 @@ public class BrowsePathResult implements UaStructure {
         BrowsePathTarget[] _targets = decoder.decodeArray("Targets", decoder::decodeSerializable, BrowsePathTarget.class);
 
         return new BrowsePathResult(_statusCode, _targets);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(BrowsePathResult::encode, BrowsePathResult.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(BrowsePathResult::decode, BrowsePathResult.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

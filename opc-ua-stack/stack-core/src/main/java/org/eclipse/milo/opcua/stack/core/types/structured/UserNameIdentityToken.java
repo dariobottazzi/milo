@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -47,20 +46,32 @@ public class UserNameIdentityToken extends UserIdentityToken {
         this._encryptionAlgorithm = _encryptionAlgorithm;
     }
 
-    public String getUserName() { return _userName; }
+    public String getUserName() {
+        return _userName;
+    }
 
-    public ByteString getPassword() { return _password; }
+    public ByteString getPassword() {
+        return _password;
+    }
 
-    public String getEncryptionAlgorithm() { return _encryptionAlgorithm; }
+    public String getEncryptionAlgorithm() {
+        return _encryptionAlgorithm;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -86,11 +97,6 @@ public class UserNameIdentityToken extends UserIdentityToken {
         String _encryptionAlgorithm = decoder.decodeString("EncryptionAlgorithm");
 
         return new UserNameIdentityToken(_policyId, _userName, _password, _encryptionAlgorithm);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(UserNameIdentityToken::encode, UserNameIdentityToken.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(UserNameIdentityToken::decode, UserNameIdentityToken.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

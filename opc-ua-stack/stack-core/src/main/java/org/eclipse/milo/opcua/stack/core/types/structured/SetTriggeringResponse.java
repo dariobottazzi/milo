@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -55,28 +54,44 @@ public class SetTriggeringResponse implements UaResponseMessage {
         this._removeDiagnosticInfos = _removeDiagnosticInfos;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
     @Nullable
-    public StatusCode[] getAddResults() { return _addResults; }
+    public StatusCode[] getAddResults() {
+        return _addResults;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getAddDiagnosticInfos() { return _addDiagnosticInfos; }
+    public DiagnosticInfo[] getAddDiagnosticInfos() {
+        return _addDiagnosticInfos;
+    }
 
     @Nullable
-    public StatusCode[] getRemoveResults() { return _removeResults; }
+    public StatusCode[] getRemoveResults() {
+        return _removeResults;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getRemoveDiagnosticInfos() { return _removeDiagnosticInfos; }
+    public DiagnosticInfo[] getRemoveDiagnosticInfos() {
+        return _removeDiagnosticInfos;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -105,11 +120,6 @@ public class SetTriggeringResponse implements UaResponseMessage {
         DiagnosticInfo[] _removeDiagnosticInfos = decoder.decodeArray("RemoveDiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
 
         return new SetTriggeringResponse(_responseHeader, _addResults, _addDiagnosticInfos, _removeResults, _removeDiagnosticInfos);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(SetTriggeringResponse::encode, SetTriggeringResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(SetTriggeringResponse::decode, SetTriggeringResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

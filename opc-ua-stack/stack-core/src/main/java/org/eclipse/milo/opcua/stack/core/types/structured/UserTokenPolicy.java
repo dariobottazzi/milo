@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -52,24 +51,40 @@ public class UserTokenPolicy implements UaStructure {
         this._securityPolicyUri = _securityPolicyUri;
     }
 
-    public String getPolicyId() { return _policyId; }
+    public String getPolicyId() {
+        return _policyId;
+    }
 
-    public UserTokenType getTokenType() { return _tokenType; }
+    public UserTokenType getTokenType() {
+        return _tokenType;
+    }
 
-    public String getIssuedTokenType() { return _issuedTokenType; }
+    public String getIssuedTokenType() {
+        return _issuedTokenType;
+    }
 
-    public String getIssuerEndpointUrl() { return _issuerEndpointUrl; }
+    public String getIssuerEndpointUrl() {
+        return _issuerEndpointUrl;
+    }
 
-    public String getSecurityPolicyUri() { return _securityPolicyUri; }
+    public String getSecurityPolicyUri() {
+        return _securityPolicyUri;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -98,11 +113,6 @@ public class UserTokenPolicy implements UaStructure {
         String _securityPolicyUri = decoder.decodeString("SecurityPolicyUri");
 
         return new UserTokenPolicy(_policyId, _tokenType, _issuedTokenType, _issuerEndpointUrl, _securityPolicyUri);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(UserTokenPolicy::encode, UserTokenPolicy.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(UserTokenPolicy::decode, UserTokenPolicy.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

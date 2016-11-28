@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -51,22 +50,36 @@ public class MonitoredItemModifyResult implements UaStructure {
         this._filterResult = _filterResult;
     }
 
-    public StatusCode getStatusCode() { return _statusCode; }
+    public StatusCode getStatusCode() {
+        return _statusCode;
+    }
 
-    public Double getRevisedSamplingInterval() { return _revisedSamplingInterval; }
+    public Double getRevisedSamplingInterval() {
+        return _revisedSamplingInterval;
+    }
 
-    public UInteger getRevisedQueueSize() { return _revisedQueueSize; }
+    public UInteger getRevisedQueueSize() {
+        return _revisedQueueSize;
+    }
 
-    public ExtensionObject getFilterResult() { return _filterResult; }
+    public ExtensionObject getFilterResult() {
+        return _filterResult;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -92,11 +105,6 @@ public class MonitoredItemModifyResult implements UaStructure {
         ExtensionObject _filterResult = decoder.decodeExtensionObject("FilterResult");
 
         return new MonitoredItemModifyResult(_statusCode, _revisedSamplingInterval, _revisedQueueSize, _filterResult);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(MonitoredItemModifyResult::encode, MonitoredItemModifyResult.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(MonitoredItemModifyResult::decode, MonitoredItemModifyResult.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

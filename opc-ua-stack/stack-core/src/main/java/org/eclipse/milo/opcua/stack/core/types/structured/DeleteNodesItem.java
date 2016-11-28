@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -42,18 +41,28 @@ public class DeleteNodesItem implements UaStructure {
         this._deleteTargetReferences = _deleteTargetReferences;
     }
 
-    public NodeId getNodeId() { return _nodeId; }
+    public NodeId getNodeId() {
+        return _nodeId;
+    }
 
-    public Boolean getDeleteTargetReferences() { return _deleteTargetReferences; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Boolean getDeleteTargetReferences() {
+        return _deleteTargetReferences;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +82,6 @@ public class DeleteNodesItem implements UaStructure {
         Boolean _deleteTargetReferences = decoder.decodeBoolean("DeleteTargetReferences");
 
         return new DeleteNodesItem(_nodeId, _deleteTargetReferences);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(DeleteNodesItem::encode, DeleteNodesItem.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(DeleteNodesItem::decode, DeleteNodesItem.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

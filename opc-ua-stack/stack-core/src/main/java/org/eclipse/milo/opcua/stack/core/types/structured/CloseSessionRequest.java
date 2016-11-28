@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -42,18 +41,28 @@ public class CloseSessionRequest implements UaRequestMessage {
         this._deleteSubscriptions = _deleteSubscriptions;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public Boolean getDeleteSubscriptions() { return _deleteSubscriptions; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Boolean getDeleteSubscriptions() {
+        return _deleteSubscriptions;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +82,6 @@ public class CloseSessionRequest implements UaRequestMessage {
         Boolean _deleteSubscriptions = decoder.decodeBoolean("DeleteSubscriptions");
 
         return new CloseSessionRequest(_requestHeader, _deleteSubscriptions);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CloseSessionRequest::encode, CloseSessionRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CloseSessionRequest::decode, CloseSessionRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

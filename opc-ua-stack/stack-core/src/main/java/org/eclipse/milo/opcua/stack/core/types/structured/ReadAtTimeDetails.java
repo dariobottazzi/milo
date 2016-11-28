@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -47,18 +46,28 @@ public class ReadAtTimeDetails extends HistoryReadDetails {
     }
 
     @Nullable
-    public DateTime[] getReqTimes() { return _reqTimes; }
+    public DateTime[] getReqTimes() {
+        return _reqTimes;
+    }
 
-    public Boolean getUseSimpleBounds() { return _useSimpleBounds; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Boolean getUseSimpleBounds() {
+        return _useSimpleBounds;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -78,11 +87,6 @@ public class ReadAtTimeDetails extends HistoryReadDetails {
         Boolean _useSimpleBounds = decoder.decodeBoolean("UseSimpleBounds");
 
         return new ReadAtTimeDetails(_reqTimes, _useSimpleBounds);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ReadAtTimeDetails::encode, ReadAtTimeDetails.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ReadAtTimeDetails::decode, ReadAtTimeDetails.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

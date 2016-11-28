@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -47,20 +46,32 @@ public class AggregateFilterResult extends MonitoringFilterResult {
         this._revisedAggregateConfiguration = _revisedAggregateConfiguration;
     }
 
-    public DateTime getRevisedStartTime() { return _revisedStartTime; }
+    public DateTime getRevisedStartTime() {
+        return _revisedStartTime;
+    }
 
-    public Double getRevisedProcessingInterval() { return _revisedProcessingInterval; }
+    public Double getRevisedProcessingInterval() {
+        return _revisedProcessingInterval;
+    }
 
-    public AggregateConfiguration getRevisedAggregateConfiguration() { return _revisedAggregateConfiguration; }
+    public AggregateConfiguration getRevisedAggregateConfiguration() {
+        return _revisedAggregateConfiguration;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -83,11 +94,6 @@ public class AggregateFilterResult extends MonitoringFilterResult {
         AggregateConfiguration _revisedAggregateConfiguration = decoder.decodeSerializable("RevisedAggregateConfiguration", AggregateConfiguration.class);
 
         return new AggregateFilterResult(_revisedStartTime, _revisedProcessingInterval, _revisedAggregateConfiguration);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(AggregateFilterResult::encode, AggregateFilterResult.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(AggregateFilterResult::decode, AggregateFilterResult.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

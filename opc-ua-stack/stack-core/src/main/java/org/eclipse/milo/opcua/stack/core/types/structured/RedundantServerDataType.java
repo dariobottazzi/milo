@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -47,20 +46,32 @@ public class RedundantServerDataType implements UaStructure {
         this._serverState = _serverState;
     }
 
-    public String getServerId() { return _serverId; }
+    public String getServerId() {
+        return _serverId;
+    }
 
-    public UByte getServiceLevel() { return _serviceLevel; }
+    public UByte getServiceLevel() {
+        return _serviceLevel;
+    }
 
-    public ServerState getServerState() { return _serverState; }
+    public ServerState getServerState() {
+        return _serverState;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -83,11 +94,6 @@ public class RedundantServerDataType implements UaStructure {
         ServerState _serverState = decoder.decodeEnumeration("ServerState", ServerState.class);
 
         return new RedundantServerDataType(_serverId, _serviceLevel, _serverState);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(RedundantServerDataType::encode, RedundantServerDataType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(RedundantServerDataType::decode, RedundantServerDataType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

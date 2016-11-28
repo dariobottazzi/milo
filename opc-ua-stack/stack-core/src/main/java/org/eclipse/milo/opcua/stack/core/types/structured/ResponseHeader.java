@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -61,27 +60,45 @@ public class ResponseHeader implements UaStructure {
         this._additionalHeader = _additionalHeader;
     }
 
-    public DateTime getTimestamp() { return _timestamp; }
+    public DateTime getTimestamp() {
+        return _timestamp;
+    }
 
-    public UInteger getRequestHandle() { return _requestHandle; }
+    public UInteger getRequestHandle() {
+        return _requestHandle;
+    }
 
-    public StatusCode getServiceResult() { return _serviceResult; }
+    public StatusCode getServiceResult() {
+        return _serviceResult;
+    }
 
-    public DiagnosticInfo getServiceDiagnostics() { return _serviceDiagnostics; }
+    public DiagnosticInfo getServiceDiagnostics() {
+        return _serviceDiagnostics;
+    }
 
     @Nullable
-    public String[] getStringTable() { return _stringTable; }
+    public String[] getStringTable() {
+        return _stringTable;
+    }
 
-    public ExtensionObject getAdditionalHeader() { return _additionalHeader; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public ExtensionObject getAdditionalHeader() {
+        return _additionalHeader;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -113,11 +130,6 @@ public class ResponseHeader implements UaStructure {
         ExtensionObject _additionalHeader = decoder.decodeExtensionObject("AdditionalHeader");
 
         return new ResponseHeader(_timestamp, _requestHandle, _serviceResult, _serviceDiagnostics, _stringTable, _additionalHeader);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ResponseHeader::encode, ResponseHeader.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ResponseHeader::decode, ResponseHeader.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

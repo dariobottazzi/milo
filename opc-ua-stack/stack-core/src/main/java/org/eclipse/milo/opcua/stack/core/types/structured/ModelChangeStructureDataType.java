@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -46,20 +45,32 @@ public class ModelChangeStructureDataType implements UaStructure {
         this._verb = _verb;
     }
 
-    public NodeId getAffected() { return _affected; }
+    public NodeId getAffected() {
+        return _affected;
+    }
 
-    public NodeId getAffectedType() { return _affectedType; }
+    public NodeId getAffectedType() {
+        return _affectedType;
+    }
 
-    public UByte getVerb() { return _verb; }
+    public UByte getVerb() {
+        return _verb;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -82,11 +93,6 @@ public class ModelChangeStructureDataType implements UaStructure {
         UByte _verb = decoder.decodeByte("Verb");
 
         return new ModelChangeStructureDataType(_affected, _affectedType, _verb);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ModelChangeStructureDataType::encode, ModelChangeStructureDataType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ModelChangeStructureDataType::decode, ModelChangeStructureDataType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

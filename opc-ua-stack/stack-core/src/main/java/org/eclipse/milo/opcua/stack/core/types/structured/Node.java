@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -66,31 +65,53 @@ public class Node implements UaStructure {
         this._references = _references;
     }
 
-    public NodeId getNodeId() { return _nodeId; }
+    public NodeId getNodeId() {
+        return _nodeId;
+    }
 
-    public NodeClass getNodeClass() { return _nodeClass; }
+    public NodeClass getNodeClass() {
+        return _nodeClass;
+    }
 
-    public QualifiedName getBrowseName() { return _browseName; }
+    public QualifiedName getBrowseName() {
+        return _browseName;
+    }
 
-    public LocalizedText getDisplayName() { return _displayName; }
+    public LocalizedText getDisplayName() {
+        return _displayName;
+    }
 
-    public LocalizedText getDescription() { return _description; }
+    public LocalizedText getDescription() {
+        return _description;
+    }
 
-    public UInteger getWriteMask() { return _writeMask; }
+    public UInteger getWriteMask() {
+        return _writeMask;
+    }
 
-    public UInteger getUserWriteMask() { return _userWriteMask; }
+    public UInteger getUserWriteMask() {
+        return _userWriteMask;
+    }
 
     @Nullable
-    public ReferenceNode[] getReferences() { return _references; }
+    public ReferenceNode[] getReferences() {
+        return _references;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -128,11 +149,6 @@ public class Node implements UaStructure {
         ReferenceNode[] _references = decoder.decodeArray("References", decoder::decodeSerializable, ReferenceNode.class);
 
         return new Node(_nodeId, _nodeClass, _browseName, _displayName, _description, _writeMask, _userWriteMask, _references);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(Node::encode, Node.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(Node::decode, Node.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

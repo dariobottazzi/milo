@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -48,21 +47,33 @@ public class CallMethodRequest implements UaStructure {
         this._inputArguments = _inputArguments;
     }
 
-    public NodeId getObjectId() { return _objectId; }
+    public NodeId getObjectId() {
+        return _objectId;
+    }
 
-    public NodeId getMethodId() { return _methodId; }
+    public NodeId getMethodId() {
+        return _methodId;
+    }
 
     @Nullable
-    public Variant[] getInputArguments() { return _inputArguments; }
+    public Variant[] getInputArguments() {
+        return _inputArguments;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -85,11 +96,6 @@ public class CallMethodRequest implements UaStructure {
         Variant[] _inputArguments = decoder.decodeArray("InputArguments", decoder::decodeVariant, Variant.class);
 
         return new CallMethodRequest(_objectId, _methodId, _inputArguments);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CallMethodRequest::encode, CallMethodRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CallMethodRequest::decode, CallMethodRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -52,24 +51,40 @@ public class CreateSubscriptionResponse implements UaResponseMessage {
         this._revisedMaxKeepAliveCount = _revisedMaxKeepAliveCount;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
-    public UInteger getSubscriptionId() { return _subscriptionId; }
+    public UInteger getSubscriptionId() {
+        return _subscriptionId;
+    }
 
-    public Double getRevisedPublishingInterval() { return _revisedPublishingInterval; }
+    public Double getRevisedPublishingInterval() {
+        return _revisedPublishingInterval;
+    }
 
-    public UInteger getRevisedLifetimeCount() { return _revisedLifetimeCount; }
+    public UInteger getRevisedLifetimeCount() {
+        return _revisedLifetimeCount;
+    }
 
-    public UInteger getRevisedMaxKeepAliveCount() { return _revisedMaxKeepAliveCount; }
+    public UInteger getRevisedMaxKeepAliveCount() {
+        return _revisedMaxKeepAliveCount;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -98,11 +113,6 @@ public class CreateSubscriptionResponse implements UaResponseMessage {
         UInteger _revisedMaxKeepAliveCount = decoder.decodeUInt32("RevisedMaxKeepAliveCount");
 
         return new CreateSubscriptionResponse(_responseHeader, _subscriptionId, _revisedPublishingInterval, _revisedLifetimeCount, _revisedMaxKeepAliveCount);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CreateSubscriptionResponse::encode, CreateSubscriptionResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CreateSubscriptionResponse::decode, CreateSubscriptionResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

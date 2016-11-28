@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -70,36 +69,62 @@ public class CreateSessionResponse implements UaResponseMessage {
         this._maxRequestMessageSize = _maxRequestMessageSize;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
-    public NodeId getSessionId() { return _sessionId; }
+    public NodeId getSessionId() {
+        return _sessionId;
+    }
 
-    public NodeId getAuthenticationToken() { return _authenticationToken; }
+    public NodeId getAuthenticationToken() {
+        return _authenticationToken;
+    }
 
-    public Double getRevisedSessionTimeout() { return _revisedSessionTimeout; }
+    public Double getRevisedSessionTimeout() {
+        return _revisedSessionTimeout;
+    }
 
-    public ByteString getServerNonce() { return _serverNonce; }
+    public ByteString getServerNonce() {
+        return _serverNonce;
+    }
 
-    public ByteString getServerCertificate() { return _serverCertificate; }
+    public ByteString getServerCertificate() {
+        return _serverCertificate;
+    }
 
     @Nullable
-    public EndpointDescription[] getServerEndpoints() { return _serverEndpoints; }
+    public EndpointDescription[] getServerEndpoints() {
+        return _serverEndpoints;
+    }
 
     @Nullable
-    public SignedSoftwareCertificate[] getServerSoftwareCertificates() { return _serverSoftwareCertificates; }
+    public SignedSoftwareCertificate[] getServerSoftwareCertificates() {
+        return _serverSoftwareCertificates;
+    }
 
-    public SignatureData getServerSignature() { return _serverSignature; }
+    public SignatureData getServerSignature() {
+        return _serverSignature;
+    }
 
-    public UInteger getMaxRequestMessageSize() { return _maxRequestMessageSize; }
+    public UInteger getMaxRequestMessageSize() {
+        return _maxRequestMessageSize;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -143,11 +168,6 @@ public class CreateSessionResponse implements UaResponseMessage {
         UInteger _maxRequestMessageSize = decoder.decodeUInt32("MaxRequestMessageSize");
 
         return new CreateSessionResponse(_responseHeader, _sessionId, _authenticationToken, _revisedSessionTimeout, _serverNonce, _serverCertificate, _serverEndpoints, _serverSoftwareCertificates, _serverSignature, _maxRequestMessageSize);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CreateSessionResponse::encode, CreateSessionResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CreateSessionResponse::decode, CreateSessionResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

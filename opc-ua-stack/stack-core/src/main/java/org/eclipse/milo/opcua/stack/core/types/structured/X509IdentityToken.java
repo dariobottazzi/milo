@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -41,16 +40,24 @@ public class X509IdentityToken extends UserIdentityToken {
         this._certificateData = _certificateData;
     }
 
-    public ByteString getCertificateData() { return _certificateData; }
+    public ByteString getCertificateData() {
+        return _certificateData;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -70,11 +77,6 @@ public class X509IdentityToken extends UserIdentityToken {
         ByteString _certificateData = decoder.decodeByteString("CertificateData");
 
         return new X509IdentityToken(_policyId, _certificateData);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(X509IdentityToken::encode, X509IdentityToken.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(X509IdentityToken::decode, X509IdentityToken.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -45,18 +44,28 @@ public class MethodAttributes extends NodeAttributes {
         this._userExecutable = _userExecutable;
     }
 
-    public Boolean getExecutable() { return _executable; }
+    public Boolean getExecutable() {
+        return _executable;
+    }
 
-    public Boolean getUserExecutable() { return _userExecutable; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Boolean getUserExecutable() {
+        return _userExecutable;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -91,11 +100,6 @@ public class MethodAttributes extends NodeAttributes {
         Boolean _userExecutable = decoder.decodeBoolean("UserExecutable");
 
         return new MethodAttributes(_specifiedAttributes, _displayName, _description, _writeMask, _userWriteMask, _executable, _userExecutable);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(MethodAttributes::encode, MethodAttributes.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(MethodAttributes::decode, MethodAttributes.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

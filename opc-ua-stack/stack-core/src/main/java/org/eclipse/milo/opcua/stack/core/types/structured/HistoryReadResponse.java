@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -48,22 +47,34 @@ public class HistoryReadResponse implements UaResponseMessage {
         this._diagnosticInfos = _diagnosticInfos;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
     @Nullable
-    public HistoryReadResult[] getResults() { return _results; }
+    public HistoryReadResult[] getResults() {
+        return _results;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getDiagnosticInfos() { return _diagnosticInfos; }
+    public DiagnosticInfo[] getDiagnosticInfos() {
+        return _diagnosticInfos;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -86,11 +97,6 @@ public class HistoryReadResponse implements UaResponseMessage {
         DiagnosticInfo[] _diagnosticInfos = decoder.decodeArray("DiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
 
         return new HistoryReadResponse(_responseHeader, _results, _diagnosticInfos);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(HistoryReadResponse::encode, HistoryReadResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(HistoryReadResponse::decode, HistoryReadResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -43,18 +42,28 @@ public class SignatureData implements UaStructure {
         this._signature = _signature;
     }
 
-    public String getAlgorithm() { return _algorithm; }
+    public String getAlgorithm() {
+        return _algorithm;
+    }
 
-    public ByteString getSignature() { return _signature; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public ByteString getSignature() {
+        return _signature;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -74,11 +83,6 @@ public class SignatureData implements UaStructure {
         ByteString _signature = decoder.decodeByteString("Signature");
 
         return new SignatureData(_algorithm, _signature);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(SignatureData::encode, SignatureData.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(SignatureData::decode, SignatureData.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -52,23 +51,37 @@ public class ModifyMonitoredItemsRequest implements UaRequestMessage {
         this._itemsToModify = _itemsToModify;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public UInteger getSubscriptionId() { return _subscriptionId; }
+    public UInteger getSubscriptionId() {
+        return _subscriptionId;
+    }
 
-    public TimestampsToReturn getTimestampsToReturn() { return _timestampsToReturn; }
+    public TimestampsToReturn getTimestampsToReturn() {
+        return _timestampsToReturn;
+    }
 
     @Nullable
-    public MonitoredItemModifyRequest[] getItemsToModify() { return _itemsToModify; }
+    public MonitoredItemModifyRequest[] getItemsToModify() {
+        return _itemsToModify;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -94,11 +107,6 @@ public class ModifyMonitoredItemsRequest implements UaRequestMessage {
         MonitoredItemModifyRequest[] _itemsToModify = decoder.decodeArray("ItemsToModify", decoder::decodeSerializable, MonitoredItemModifyRequest.class);
 
         return new ModifyMonitoredItemsRequest(_requestHeader, _subscriptionId, _timestampsToReturn, _itemsToModify);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ModifyMonitoredItemsRequest::encode, ModifyMonitoredItemsRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ModifyMonitoredItemsRequest::decode, ModifyMonitoredItemsRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

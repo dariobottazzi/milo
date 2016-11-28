@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -55,25 +54,41 @@ public class HistoryReadRequest implements UaRequestMessage {
         this._nodesToRead = _nodesToRead;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public ExtensionObject getHistoryReadDetails() { return _historyReadDetails; }
+    public ExtensionObject getHistoryReadDetails() {
+        return _historyReadDetails;
+    }
 
-    public TimestampsToReturn getTimestampsToReturn() { return _timestampsToReturn; }
+    public TimestampsToReturn getTimestampsToReturn() {
+        return _timestampsToReturn;
+    }
 
-    public Boolean getReleaseContinuationPoints() { return _releaseContinuationPoints; }
+    public Boolean getReleaseContinuationPoints() {
+        return _releaseContinuationPoints;
+    }
 
     @Nullable
-    public HistoryReadValueId[] getNodesToRead() { return _nodesToRead; }
+    public HistoryReadValueId[] getNodesToRead() {
+        return _nodesToRead;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -102,11 +117,6 @@ public class HistoryReadRequest implements UaRequestMessage {
         HistoryReadValueId[] _nodesToRead = decoder.decodeArray("NodesToRead", decoder::decodeSerializable, HistoryReadValueId.class);
 
         return new HistoryReadRequest(_requestHeader, _historyReadDetails, _timestampsToReturn, _releaseContinuationPoints, _nodesToRead);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(HistoryReadRequest::encode, HistoryReadRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(HistoryReadRequest::decode, HistoryReadRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

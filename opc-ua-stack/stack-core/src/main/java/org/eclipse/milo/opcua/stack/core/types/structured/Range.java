@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -42,18 +41,28 @@ public class Range implements UaStructure {
         this._high = _high;
     }
 
-    public Double getLow() { return _low; }
+    public Double getLow() {
+        return _low;
+    }
 
-    public Double getHigh() { return _high; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Double getHigh() {
+        return _high;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +82,6 @@ public class Range implements UaStructure {
         Double _high = decoder.decodeDouble("High");
 
         return new Range(_low, _high);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(Range::encode, Range.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(Range::decode, Range.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

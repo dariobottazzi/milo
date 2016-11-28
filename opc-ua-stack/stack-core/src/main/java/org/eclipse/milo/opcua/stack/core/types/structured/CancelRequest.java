@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -43,18 +42,28 @@ public class CancelRequest implements UaRequestMessage {
         this._requestHandle = _requestHandle;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public UInteger getRequestHandle() { return _requestHandle; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public UInteger getRequestHandle() {
+        return _requestHandle;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -74,11 +83,6 @@ public class CancelRequest implements UaRequestMessage {
         UInteger _requestHandle = decoder.decodeUInt32("RequestHandle");
 
         return new CancelRequest(_requestHeader, _requestHandle);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CancelRequest::encode, CancelRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CancelRequest::decode, CancelRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -54,26 +53,42 @@ public class SetTriggeringRequest implements UaRequestMessage {
         this._linksToRemove = _linksToRemove;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public UInteger getSubscriptionId() { return _subscriptionId; }
+    public UInteger getSubscriptionId() {
+        return _subscriptionId;
+    }
 
-    public UInteger getTriggeringItemId() { return _triggeringItemId; }
+    public UInteger getTriggeringItemId() {
+        return _triggeringItemId;
+    }
 
     @Nullable
-    public UInteger[] getLinksToAdd() { return _linksToAdd; }
+    public UInteger[] getLinksToAdd() {
+        return _linksToAdd;
+    }
 
     @Nullable
-    public UInteger[] getLinksToRemove() { return _linksToRemove; }
+    public UInteger[] getLinksToRemove() {
+        return _linksToRemove;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -102,11 +117,6 @@ public class SetTriggeringRequest implements UaRequestMessage {
         UInteger[] _linksToRemove = decoder.decodeArray("LinksToRemove", decoder::decodeUInt32, UInteger.class);
 
         return new SetTriggeringRequest(_requestHeader, _subscriptionId, _triggeringItemId, _linksToAdd, _linksToRemove);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(SetTriggeringRequest::encode, SetTriggeringRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(SetTriggeringRequest::decode, SetTriggeringRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

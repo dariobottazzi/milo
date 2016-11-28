@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -50,22 +49,36 @@ public class ReadValueId implements UaStructure {
         this._dataEncoding = _dataEncoding;
     }
 
-    public NodeId getNodeId() { return _nodeId; }
+    public NodeId getNodeId() {
+        return _nodeId;
+    }
 
-    public UInteger getAttributeId() { return _attributeId; }
+    public UInteger getAttributeId() {
+        return _attributeId;
+    }
 
-    public String getIndexRange() { return _indexRange; }
+    public String getIndexRange() {
+        return _indexRange;
+    }
 
-    public QualifiedName getDataEncoding() { return _dataEncoding; }
+    public QualifiedName getDataEncoding() {
+        return _dataEncoding;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -91,11 +104,6 @@ public class ReadValueId implements UaStructure {
         QualifiedName _dataEncoding = decoder.decodeQualifiedName("DataEncoding");
 
         return new ReadValueId(_nodeId, _attributeId, _indexRange, _dataEncoding);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ReadValueId::encode, ReadValueId.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ReadValueId::decode, ReadValueId.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

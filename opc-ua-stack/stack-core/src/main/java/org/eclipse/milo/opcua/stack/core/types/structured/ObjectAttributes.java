@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -43,16 +42,24 @@ public class ObjectAttributes extends NodeAttributes {
         this._eventNotifier = _eventNotifier;
     }
 
-    public UByte getEventNotifier() { return _eventNotifier; }
+    public UByte getEventNotifier() {
+        return _eventNotifier;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -84,11 +91,6 @@ public class ObjectAttributes extends NodeAttributes {
         UByte _eventNotifier = decoder.decodeByte("EventNotifier");
 
         return new ObjectAttributes(_specifiedAttributes, _displayName, _description, _writeMask, _userWriteMask, _eventNotifier);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ObjectAttributes::encode, ObjectAttributes.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ObjectAttributes::decode, ObjectAttributes.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

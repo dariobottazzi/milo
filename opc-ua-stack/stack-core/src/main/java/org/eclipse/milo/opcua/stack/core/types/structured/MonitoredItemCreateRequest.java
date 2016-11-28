@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -46,20 +45,32 @@ public class MonitoredItemCreateRequest implements UaStructure {
         this._requestedParameters = _requestedParameters;
     }
 
-    public ReadValueId getItemToMonitor() { return _itemToMonitor; }
+    public ReadValueId getItemToMonitor() {
+        return _itemToMonitor;
+    }
 
-    public MonitoringMode getMonitoringMode() { return _monitoringMode; }
+    public MonitoringMode getMonitoringMode() {
+        return _monitoringMode;
+    }
 
-    public MonitoringParameters getRequestedParameters() { return _requestedParameters; }
+    public MonitoringParameters getRequestedParameters() {
+        return _requestedParameters;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -82,11 +93,6 @@ public class MonitoredItemCreateRequest implements UaStructure {
         MonitoringParameters _requestedParameters = decoder.decodeSerializable("RequestedParameters", MonitoringParameters.class);
 
         return new MonitoredItemCreateRequest(_itemToMonitor, _monitoringMode, _requestedParameters);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(MonitoredItemCreateRequest::encode, MonitoredItemCreateRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(MonitoredItemCreateRequest::decode, MonitoredItemCreateRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

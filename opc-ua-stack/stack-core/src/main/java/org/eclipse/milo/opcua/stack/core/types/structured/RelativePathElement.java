@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -49,22 +48,36 @@ public class RelativePathElement implements UaStructure {
         this._targetName = _targetName;
     }
 
-    public NodeId getReferenceTypeId() { return _referenceTypeId; }
+    public NodeId getReferenceTypeId() {
+        return _referenceTypeId;
+    }
 
-    public Boolean getIsInverse() { return _isInverse; }
+    public Boolean getIsInverse() {
+        return _isInverse;
+    }
 
-    public Boolean getIncludeSubtypes() { return _includeSubtypes; }
+    public Boolean getIncludeSubtypes() {
+        return _includeSubtypes;
+    }
 
-    public QualifiedName getTargetName() { return _targetName; }
+    public QualifiedName getTargetName() {
+        return _targetName;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -90,11 +103,6 @@ public class RelativePathElement implements UaStructure {
         QualifiedName _targetName = decoder.decodeQualifiedName("TargetName");
 
         return new RelativePathElement(_referenceTypeId, _isInverse, _includeSubtypes, _targetName);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(RelativePathElement::encode, RelativePathElement.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(RelativePathElement::decode, RelativePathElement.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

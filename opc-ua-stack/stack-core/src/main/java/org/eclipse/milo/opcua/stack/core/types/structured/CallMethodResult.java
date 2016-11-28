@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -53,25 +52,39 @@ public class CallMethodResult implements UaStructure {
         this._outputArguments = _outputArguments;
     }
 
-    public StatusCode getStatusCode() { return _statusCode; }
+    public StatusCode getStatusCode() {
+        return _statusCode;
+    }
 
     @Nullable
-    public StatusCode[] getInputArgumentResults() { return _inputArgumentResults; }
+    public StatusCode[] getInputArgumentResults() {
+        return _inputArgumentResults;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getInputArgumentDiagnosticInfos() { return _inputArgumentDiagnosticInfos; }
+    public DiagnosticInfo[] getInputArgumentDiagnosticInfos() {
+        return _inputArgumentDiagnosticInfos;
+    }
 
     @Nullable
-    public Variant[] getOutputArguments() { return _outputArguments; }
+    public Variant[] getOutputArguments() {
+        return _outputArguments;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -97,11 +110,6 @@ public class CallMethodResult implements UaStructure {
         Variant[] _outputArguments = decoder.decodeArray("OutputArguments", decoder::decodeVariant, Variant.class);
 
         return new CallMethodResult(_statusCode, _inputArgumentResults, _inputArgumentDiagnosticInfos, _outputArguments);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CallMethodResult::encode, CallMethodResult.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CallMethodResult::decode, CallMethodResult.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

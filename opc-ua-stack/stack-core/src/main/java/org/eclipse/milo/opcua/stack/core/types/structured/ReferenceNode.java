@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -46,20 +45,32 @@ public class ReferenceNode implements UaStructure {
         this._targetId = _targetId;
     }
 
-    public NodeId getReferenceTypeId() { return _referenceTypeId; }
+    public NodeId getReferenceTypeId() {
+        return _referenceTypeId;
+    }
 
-    public Boolean getIsInverse() { return _isInverse; }
+    public Boolean getIsInverse() {
+        return _isInverse;
+    }
 
-    public ExpandedNodeId getTargetId() { return _targetId; }
+    public ExpandedNodeId getTargetId() {
+        return _targetId;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -82,11 +93,6 @@ public class ReferenceNode implements UaStructure {
         ExpandedNodeId _targetId = decoder.decodeExpandedNodeId("TargetId");
 
         return new ReferenceNode(_referenceTypeId, _isInverse, _targetId);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ReferenceNode::encode, ReferenceNode.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ReferenceNode::decode, ReferenceNode.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

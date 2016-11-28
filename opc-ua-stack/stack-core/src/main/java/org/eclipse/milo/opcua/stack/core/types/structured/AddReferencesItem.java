@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -56,26 +55,44 @@ public class AddReferencesItem implements UaStructure {
         this._targetNodeClass = _targetNodeClass;
     }
 
-    public NodeId getSourceNodeId() { return _sourceNodeId; }
+    public NodeId getSourceNodeId() {
+        return _sourceNodeId;
+    }
 
-    public NodeId getReferenceTypeId() { return _referenceTypeId; }
+    public NodeId getReferenceTypeId() {
+        return _referenceTypeId;
+    }
 
-    public Boolean getIsForward() { return _isForward; }
+    public Boolean getIsForward() {
+        return _isForward;
+    }
 
-    public String getTargetServerUri() { return _targetServerUri; }
+    public String getTargetServerUri() {
+        return _targetServerUri;
+    }
 
-    public ExpandedNodeId getTargetNodeId() { return _targetNodeId; }
+    public ExpandedNodeId getTargetNodeId() {
+        return _targetNodeId;
+    }
 
-    public NodeClass getTargetNodeClass() { return _targetNodeClass; }
+    public NodeClass getTargetNodeClass() {
+        return _targetNodeClass;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -107,11 +124,6 @@ public class AddReferencesItem implements UaStructure {
         NodeClass _targetNodeClass = decoder.decodeEnumeration("TargetNodeClass", NodeClass.class);
 
         return new AddReferencesItem(_sourceNodeId, _referenceTypeId, _isForward, _targetServerUri, _targetNodeId, _targetNodeClass);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(AddReferencesItem::encode, AddReferencesItem.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(AddReferencesItem::decode, AddReferencesItem.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

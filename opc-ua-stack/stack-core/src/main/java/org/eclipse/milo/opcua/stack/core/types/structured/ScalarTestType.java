@@ -16,7 +16,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import java.util.UUID;
 
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -299,11 +298,6 @@ public class ScalarTestType implements UaStructure {
         EnumeratedTestType _enumeratedValue = decoder.decodeEnumeration("EnumeratedValue", EnumeratedTestType.class);
 
         return new ScalarTestType(_boolean, _sByte, _byte, _int16, _uInt16, _int32, _uInt32, _int64, _uInt64, _float, _double, _string, _dateTime, _guid, _byteString, _xmlElement, _nodeId, _expandedNodeId, _statusCode, _diagnosticInfo, _qualifiedName, _localizedText, _extensionObject, _dataValue, _enumeratedValue);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ScalarTestType::encode, ScalarTestType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ScalarTestType::decode, ScalarTestType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

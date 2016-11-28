@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -44,19 +43,29 @@ public class WriteRequest implements UaRequestMessage {
         this._nodesToWrite = _nodesToWrite;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
     @Nullable
-    public WriteValue[] getNodesToWrite() { return _nodesToWrite; }
+    public WriteValue[] getNodesToWrite() {
+        return _nodesToWrite;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class WriteRequest implements UaRequestMessage {
         WriteValue[] _nodesToWrite = decoder.decodeArray("NodesToWrite", decoder::decodeSerializable, WriteValue.class);
 
         return new WriteRequest(_requestHeader, _nodesToWrite);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(WriteRequest::encode, WriteRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(WriteRequest::decode, WriteRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

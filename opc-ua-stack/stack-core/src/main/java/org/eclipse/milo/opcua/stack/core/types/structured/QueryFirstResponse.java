@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -58,29 +57,47 @@ public class QueryFirstResponse implements UaResponseMessage {
         this._filterResult = _filterResult;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
     @Nullable
-    public QueryDataSet[] getQueryDataSets() { return _queryDataSets; }
+    public QueryDataSet[] getQueryDataSets() {
+        return _queryDataSets;
+    }
 
-    public ByteString getContinuationPoint() { return _continuationPoint; }
+    public ByteString getContinuationPoint() {
+        return _continuationPoint;
+    }
 
     @Nullable
-    public ParsingResult[] getParsingResults() { return _parsingResults; }
+    public ParsingResult[] getParsingResults() {
+        return _parsingResults;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getDiagnosticInfos() { return _diagnosticInfos; }
+    public DiagnosticInfo[] getDiagnosticInfos() {
+        return _diagnosticInfos;
+    }
 
-    public ContentFilterResult getFilterResult() { return _filterResult; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public ContentFilterResult getFilterResult() {
+        return _filterResult;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -112,11 +129,6 @@ public class QueryFirstResponse implements UaResponseMessage {
         ContentFilterResult _filterResult = decoder.decodeSerializable("FilterResult", ContentFilterResult.class);
 
         return new QueryFirstResponse(_responseHeader, _queryDataSets, _continuationPoint, _parsingResults, _diagnosticInfos, _filterResult);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(QueryFirstResponse::encode, QueryFirstResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(QueryFirstResponse::decode, QueryFirstResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

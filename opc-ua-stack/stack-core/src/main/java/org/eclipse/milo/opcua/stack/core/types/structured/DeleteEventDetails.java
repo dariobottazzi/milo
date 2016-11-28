@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -44,16 +43,24 @@ public class DeleteEventDetails extends HistoryUpdateDetails {
     }
 
     @Nullable
-    public ByteString[] getEventIds() { return _eventIds; }
+    public ByteString[] getEventIds() {
+        return _eventIds;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +80,6 @@ public class DeleteEventDetails extends HistoryUpdateDetails {
         ByteString[] _eventIds = decoder.decodeArray("EventIds", decoder::decodeByteString, ByteString.class);
 
         return new DeleteEventDetails(_nodeId, _eventIds);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(DeleteEventDetails::encode, DeleteEventDetails.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(DeleteEventDetails::decode, DeleteEventDetails.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

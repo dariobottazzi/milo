@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -46,18 +45,28 @@ public class EventFilter extends MonitoringFilter {
     }
 
     @Nullable
-    public SimpleAttributeOperand[] getSelectClauses() { return _selectClauses; }
+    public SimpleAttributeOperand[] getSelectClauses() {
+        return _selectClauses;
+    }
 
-    public ContentFilter getWhereClause() { return _whereClause; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public ContentFilter getWhereClause() {
+        return _whereClause;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -77,11 +86,6 @@ public class EventFilter extends MonitoringFilter {
         ContentFilter _whereClause = decoder.decodeSerializable("WhereClause", ContentFilter.class);
 
         return new EventFilter(_selectClauses, _whereClause);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(EventFilter::encode, EventFilter.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(EventFilter::decode, EventFilter.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

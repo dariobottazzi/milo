@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -44,19 +43,29 @@ public class CallRequest implements UaRequestMessage {
         this._methodsToCall = _methodsToCall;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
     @Nullable
-    public CallMethodRequest[] getMethodsToCall() { return _methodsToCall; }
+    public CallMethodRequest[] getMethodsToCall() {
+        return _methodsToCall;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class CallRequest implements UaRequestMessage {
         CallMethodRequest[] _methodsToCall = decoder.decodeArray("MethodsToCall", decoder::decodeSerializable, CallMethodRequest.class);
 
         return new CallRequest(_requestHeader, _methodsToCall);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CallRequest::encode, CallRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CallRequest::decode, CallRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -65,32 +64,56 @@ public class CreateSessionRequest implements UaRequestMessage {
         this._maxResponseMessageSize = _maxResponseMessageSize;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public ApplicationDescription getClientDescription() { return _clientDescription; }
+    public ApplicationDescription getClientDescription() {
+        return _clientDescription;
+    }
 
-    public String getServerUri() { return _serverUri; }
+    public String getServerUri() {
+        return _serverUri;
+    }
 
-    public String getEndpointUrl() { return _endpointUrl; }
+    public String getEndpointUrl() {
+        return _endpointUrl;
+    }
 
-    public String getSessionName() { return _sessionName; }
+    public String getSessionName() {
+        return _sessionName;
+    }
 
-    public ByteString getClientNonce() { return _clientNonce; }
+    public ByteString getClientNonce() {
+        return _clientNonce;
+    }
 
-    public ByteString getClientCertificate() { return _clientCertificate; }
+    public ByteString getClientCertificate() {
+        return _clientCertificate;
+    }
 
-    public Double getRequestedSessionTimeout() { return _requestedSessionTimeout; }
+    public Double getRequestedSessionTimeout() {
+        return _requestedSessionTimeout;
+    }
 
-    public UInteger getMaxResponseMessageSize() { return _maxResponseMessageSize; }
+    public UInteger getMaxResponseMessageSize() {
+        return _maxResponseMessageSize;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -131,11 +154,6 @@ public class CreateSessionRequest implements UaRequestMessage {
         UInteger _maxResponseMessageSize = decoder.decodeUInt32("MaxResponseMessageSize");
 
         return new CreateSessionRequest(_requestHeader, _clientDescription, _serverUri, _endpointUrl, _sessionName, _clientNonce, _clientCertificate, _requestedSessionTimeout, _maxResponseMessageSize);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CreateSessionRequest::encode, CreateSessionRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CreateSessionRequest::decode, CreateSessionRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -44,18 +43,28 @@ public class BrowsePathTarget implements UaStructure {
         this._remainingPathIndex = _remainingPathIndex;
     }
 
-    public ExpandedNodeId getTargetId() { return _targetId; }
+    public ExpandedNodeId getTargetId() {
+        return _targetId;
+    }
 
-    public UInteger getRemainingPathIndex() { return _remainingPathIndex; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public UInteger getRemainingPathIndex() {
+        return _remainingPathIndex;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -75,11 +84,6 @@ public class BrowsePathTarget implements UaStructure {
         UInteger _remainingPathIndex = decoder.decodeUInt32("RemainingPathIndex");
 
         return new BrowsePathTarget(_targetId, _remainingPathIndex);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(BrowsePathTarget::encode, BrowsePathTarget.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(BrowsePathTarget::decode, BrowsePathTarget.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

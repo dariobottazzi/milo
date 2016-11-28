@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -39,16 +38,24 @@ public class CloseSecureChannelRequest implements UaRequestMessage {
         this._requestHeader = _requestHeader;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -65,11 +72,6 @@ public class CloseSecureChannelRequest implements UaRequestMessage {
         RequestHeader _requestHeader = decoder.decodeSerializable("RequestHeader", RequestHeader.class);
 
         return new CloseSecureChannelRequest(_requestHeader);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CloseSecureChannelRequest::encode, CloseSecureChannelRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CloseSecureChannelRequest::decode, CloseSecureChannelRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

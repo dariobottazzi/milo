@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -42,16 +41,24 @@ public class EndpointUrlListDataType implements UaStructure {
     }
 
     @Nullable
-    public String[] getEndpointUrlList() { return _endpointUrlList; }
+    public String[] getEndpointUrlList() {
+        return _endpointUrlList;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -68,11 +75,6 @@ public class EndpointUrlListDataType implements UaStructure {
         String[] _endpointUrlList = decoder.decodeArray("EndpointUrlList", decoder::decodeString, String.class);
 
         return new EndpointUrlListDataType(_endpointUrlList);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(EndpointUrlListDataType::encode, EndpointUrlListDataType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(EndpointUrlListDataType::decode, EndpointUrlListDataType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

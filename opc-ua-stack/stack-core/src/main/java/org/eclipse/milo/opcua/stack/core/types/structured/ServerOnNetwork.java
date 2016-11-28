@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -51,23 +50,37 @@ public class ServerOnNetwork implements UaStructure {
         this._serverCapabilities = _serverCapabilities;
     }
 
-    public UInteger getRecordId() { return _recordId; }
+    public UInteger getRecordId() {
+        return _recordId;
+    }
 
-    public String getServerName() { return _serverName; }
+    public String getServerName() {
+        return _serverName;
+    }
 
-    public String getDiscoveryUrl() { return _discoveryUrl; }
+    public String getDiscoveryUrl() {
+        return _discoveryUrl;
+    }
 
     @Nullable
-    public String[] getServerCapabilities() { return _serverCapabilities; }
+    public String[] getServerCapabilities() {
+        return _serverCapabilities;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -93,11 +106,6 @@ public class ServerOnNetwork implements UaStructure {
         String[] _serverCapabilities = decoder.decodeArray("ServerCapabilities", decoder::decodeString, String.class);
 
         return new ServerOnNetwork(_recordId, _serverName, _discoveryUrl, _serverCapabilities);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ServerOnNetwork::encode, ServerOnNetwork.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ServerOnNetwork::decode, ServerOnNetwork.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

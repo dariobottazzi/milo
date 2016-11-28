@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -44,18 +43,28 @@ public class IssuedIdentityToken extends UserIdentityToken {
         this._encryptionAlgorithm = _encryptionAlgorithm;
     }
 
-    public ByteString getTokenData() { return _tokenData; }
+    public ByteString getTokenData() {
+        return _tokenData;
+    }
 
-    public String getEncryptionAlgorithm() { return _encryptionAlgorithm; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public String getEncryptionAlgorithm() {
+        return _encryptionAlgorithm;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -78,11 +87,6 @@ public class IssuedIdentityToken extends UserIdentityToken {
         String _encryptionAlgorithm = decoder.decodeString("EncryptionAlgorithm");
 
         return new IssuedIdentityToken(_policyId, _tokenData, _encryptionAlgorithm);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(IssuedIdentityToken::encode, IssuedIdentityToken.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(IssuedIdentityToken::decode, IssuedIdentityToken.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -42,18 +41,28 @@ public class BrowsePath implements UaStructure {
         this._relativePath = _relativePath;
     }
 
-    public NodeId getStartingNode() { return _startingNode; }
+    public NodeId getStartingNode() {
+        return _startingNode;
+    }
 
-    public RelativePath getRelativePath() { return _relativePath; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public RelativePath getRelativePath() {
+        return _relativePath;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +82,6 @@ public class BrowsePath implements UaStructure {
         RelativePath _relativePath = decoder.decodeSerializable("RelativePath", RelativePath.class);
 
         return new BrowsePath(_startingNode, _relativePath);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(BrowsePath::encode, BrowsePath.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(BrowsePath::decode, BrowsePath.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

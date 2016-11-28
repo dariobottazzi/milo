@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -48,20 +47,32 @@ public class DataChangeFilter extends MonitoringFilter {
         this._deadbandValue = _deadbandValue;
     }
 
-    public DataChangeTrigger getTrigger() { return _trigger; }
+    public DataChangeTrigger getTrigger() {
+        return _trigger;
+    }
 
-    public UInteger getDeadbandType() { return _deadbandType; }
+    public UInteger getDeadbandType() {
+        return _deadbandType;
+    }
 
-    public Double getDeadbandValue() { return _deadbandValue; }
+    public Double getDeadbandValue() {
+        return _deadbandValue;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -84,11 +95,6 @@ public class DataChangeFilter extends MonitoringFilter {
         Double _deadbandValue = decoder.decodeDouble("DeadbandValue");
 
         return new DataChangeFilter(_trigger, _deadbandType, _deadbandValue);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(DataChangeFilter::encode, DataChangeFilter.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(DataChangeFilter::decode, DataChangeFilter.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

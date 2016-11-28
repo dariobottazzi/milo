@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -64,32 +63,54 @@ public class RegisteredServer implements UaStructure {
         this._isOnline = _isOnline;
     }
 
-    public String getServerUri() { return _serverUri; }
+    public String getServerUri() {
+        return _serverUri;
+    }
 
-    public String getProductUri() { return _productUri; }
-
-    @Nullable
-    public LocalizedText[] getServerNames() { return _serverNames; }
-
-    public ApplicationType getServerType() { return _serverType; }
-
-    public String getGatewayServerUri() { return _gatewayServerUri; }
+    public String getProductUri() {
+        return _productUri;
+    }
 
     @Nullable
-    public String[] getDiscoveryUrls() { return _discoveryUrls; }
+    public LocalizedText[] getServerNames() {
+        return _serverNames;
+    }
 
-    public String getSemaphoreFilePath() { return _semaphoreFilePath; }
+    public ApplicationType getServerType() {
+        return _serverType;
+    }
 
-    public Boolean getIsOnline() { return _isOnline; }
+    public String getGatewayServerUri() {
+        return _gatewayServerUri;
+    }
+
+    @Nullable
+    public String[] getDiscoveryUrls() {
+        return _discoveryUrls;
+    }
+
+    public String getSemaphoreFilePath() {
+        return _semaphoreFilePath;
+    }
+
+    public Boolean getIsOnline() {
+        return _isOnline;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -127,11 +148,6 @@ public class RegisteredServer implements UaStructure {
         Boolean _isOnline = decoder.decodeBoolean("IsOnline");
 
         return new RegisteredServer(_serverUri, _productUri, _serverNames, _serverType, _gatewayServerUri, _discoveryUrls, _semaphoreFilePath, _isOnline);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(RegisteredServer::encode, RegisteredServer.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(RegisteredServer::decode, RegisteredServer.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

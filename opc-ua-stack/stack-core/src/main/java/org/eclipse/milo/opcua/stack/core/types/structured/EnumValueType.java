@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -46,20 +45,32 @@ public class EnumValueType implements UaStructure {
         this._description = _description;
     }
 
-    public Long getValue() { return _value; }
+    public Long getValue() {
+        return _value;
+    }
 
-    public LocalizedText getDisplayName() { return _displayName; }
+    public LocalizedText getDisplayName() {
+        return _displayName;
+    }
 
-    public LocalizedText getDescription() { return _description; }
+    public LocalizedText getDescription() {
+        return _description;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -82,11 +93,6 @@ public class EnumValueType implements UaStructure {
         LocalizedText _description = decoder.decodeLocalizedText("Description");
 
         return new EnumValueType(_value, _displayName, _description);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(EnumValueType::encode, EnumValueType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(EnumValueType::decode, EnumValueType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

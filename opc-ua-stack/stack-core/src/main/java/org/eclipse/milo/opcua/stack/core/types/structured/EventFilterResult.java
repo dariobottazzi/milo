@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -51,21 +50,33 @@ public class EventFilterResult extends MonitoringFilterResult {
     }
 
     @Nullable
-    public StatusCode[] getSelectClauseResults() { return _selectClauseResults; }
+    public StatusCode[] getSelectClauseResults() {
+        return _selectClauseResults;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getSelectClauseDiagnosticInfos() { return _selectClauseDiagnosticInfos; }
+    public DiagnosticInfo[] getSelectClauseDiagnosticInfos() {
+        return _selectClauseDiagnosticInfos;
+    }
 
-    public ContentFilterResult getWhereClauseResult() { return _whereClauseResult; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public ContentFilterResult getWhereClauseResult() {
+        return _whereClauseResult;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -88,11 +99,6 @@ public class EventFilterResult extends MonitoringFilterResult {
         ContentFilterResult _whereClauseResult = decoder.decodeSerializable("WhereClauseResult", ContentFilterResult.class);
 
         return new EventFilterResult(_selectClauseResults, _selectClauseDiagnosticInfos, _whereClauseResult);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(EventFilterResult::encode, EventFilterResult.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(EventFilterResult::decode, EventFilterResult.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

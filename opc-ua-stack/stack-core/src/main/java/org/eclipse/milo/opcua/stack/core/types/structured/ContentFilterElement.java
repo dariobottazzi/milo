@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -46,19 +45,29 @@ public class ContentFilterElement implements UaStructure {
         this._filterOperands = _filterOperands;
     }
 
-    public FilterOperator getFilterOperator() { return _filterOperator; }
+    public FilterOperator getFilterOperator() {
+        return _filterOperator;
+    }
 
     @Nullable
-    public ExtensionObject[] getFilterOperands() { return _filterOperands; }
+    public ExtensionObject[] getFilterOperands() {
+        return _filterOperands;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -78,11 +87,6 @@ public class ContentFilterElement implements UaStructure {
         ExtensionObject[] _filterOperands = decoder.decodeArray("FilterOperands", decoder::decodeExtensionObject, ExtensionObject.class);
 
         return new ContentFilterElement(_filterOperator, _filterOperands);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ContentFilterElement::encode, ContentFilterElement.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ContentFilterElement::decode, ContentFilterElement.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

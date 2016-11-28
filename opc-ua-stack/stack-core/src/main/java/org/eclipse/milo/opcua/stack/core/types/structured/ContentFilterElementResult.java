@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -49,22 +48,34 @@ public class ContentFilterElementResult implements UaStructure {
         this._operandDiagnosticInfos = _operandDiagnosticInfos;
     }
 
-    public StatusCode getStatusCode() { return _statusCode; }
+    public StatusCode getStatusCode() {
+        return _statusCode;
+    }
 
     @Nullable
-    public StatusCode[] getOperandStatusCodes() { return _operandStatusCodes; }
+    public StatusCode[] getOperandStatusCodes() {
+        return _operandStatusCodes;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getOperandDiagnosticInfos() { return _operandDiagnosticInfos; }
+    public DiagnosticInfo[] getOperandDiagnosticInfos() {
+        return _operandDiagnosticInfos;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -87,11 +98,6 @@ public class ContentFilterElementResult implements UaStructure {
         DiagnosticInfo[] _operandDiagnosticInfos = decoder.decodeArray("OperandDiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
 
         return new ContentFilterElementResult(_statusCode, _operandStatusCodes, _operandDiagnosticInfos);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ContentFilterElementResult::encode, ContentFilterElementResult.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ContentFilterElementResult::decode, ContentFilterElementResult.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

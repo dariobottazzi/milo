@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -55,25 +54,41 @@ public class ReadProcessedDetails extends HistoryReadDetails {
         this._aggregateConfiguration = _aggregateConfiguration;
     }
 
-    public DateTime getStartTime() { return _startTime; }
+    public DateTime getStartTime() {
+        return _startTime;
+    }
 
-    public DateTime getEndTime() { return _endTime; }
+    public DateTime getEndTime() {
+        return _endTime;
+    }
 
-    public Double getProcessingInterval() { return _processingInterval; }
+    public Double getProcessingInterval() {
+        return _processingInterval;
+    }
 
     @Nullable
-    public NodeId[] getAggregateType() { return _aggregateType; }
+    public NodeId[] getAggregateType() {
+        return _aggregateType;
+    }
 
-    public AggregateConfiguration getAggregateConfiguration() { return _aggregateConfiguration; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public AggregateConfiguration getAggregateConfiguration() {
+        return _aggregateConfiguration;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -102,11 +117,6 @@ public class ReadProcessedDetails extends HistoryReadDetails {
         AggregateConfiguration _aggregateConfiguration = decoder.decodeSerializable("AggregateConfiguration", AggregateConfiguration.class);
 
         return new ReadProcessedDetails(_startTime, _endTime, _processingInterval, _aggregateType, _aggregateConfiguration);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ReadProcessedDetails::encode, ReadProcessedDetails.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ReadProcessedDetails::decode, ReadProcessedDetails.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

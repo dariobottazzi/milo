@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -56,22 +55,36 @@ public class ReferenceTypeNode extends TypeNode {
     }
 
     @Nullable
-    public ReferenceNode[] getReferences() { return _references; }
+    public ReferenceNode[] getReferences() {
+        return _references;
+    }
 
-    public Boolean getIsAbstract() { return _isAbstract; }
+    public Boolean getIsAbstract() {
+        return _isAbstract;
+    }
 
-    public Boolean getSymmetric() { return _symmetric; }
+    public Boolean getSymmetric() {
+        return _symmetric;
+    }
 
-    public LocalizedText getInverseName() { return _inverseName; }
+    public LocalizedText getInverseName() {
+        return _inverseName;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -118,11 +131,6 @@ public class ReferenceTypeNode extends TypeNode {
         LocalizedText _inverseName = decoder.decodeLocalizedText("InverseName");
 
         return new ReferenceTypeNode(_nodeId, _nodeClass, _browseName, _displayName, _description, _writeMask, _userWriteMask, _references, _isAbstract, _symmetric, _inverseName);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ReferenceTypeNode::encode, ReferenceTypeNode.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ReferenceTypeNode::decode, ReferenceTypeNode.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

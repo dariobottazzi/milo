@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -44,19 +43,29 @@ public class AddReferencesRequest implements UaRequestMessage {
         this._referencesToAdd = _referencesToAdd;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
     @Nullable
-    public AddReferencesItem[] getReferencesToAdd() { return _referencesToAdd; }
+    public AddReferencesItem[] getReferencesToAdd() {
+        return _referencesToAdd;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class AddReferencesRequest implements UaRequestMessage {
         AddReferencesItem[] _referencesToAdd = decoder.decodeArray("ReferencesToAdd", decoder::decodeSerializable, AddReferencesItem.class);
 
         return new AddReferencesRequest(_requestHeader, _referencesToAdd);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(AddReferencesRequest::encode, AddReferencesRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(AddReferencesRequest::decode, AddReferencesRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

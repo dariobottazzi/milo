@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -55,26 +54,44 @@ public class BuildInfo implements UaStructure {
         this._buildDate = _buildDate;
     }
 
-    public String getProductUri() { return _productUri; }
+    public String getProductUri() {
+        return _productUri;
+    }
 
-    public String getManufacturerName() { return _manufacturerName; }
+    public String getManufacturerName() {
+        return _manufacturerName;
+    }
 
-    public String getProductName() { return _productName; }
+    public String getProductName() {
+        return _productName;
+    }
 
-    public String getSoftwareVersion() { return _softwareVersion; }
+    public String getSoftwareVersion() {
+        return _softwareVersion;
+    }
 
-    public String getBuildNumber() { return _buildNumber; }
+    public String getBuildNumber() {
+        return _buildNumber;
+    }
 
-    public DateTime getBuildDate() { return _buildDate; }
+    public DateTime getBuildDate() {
+        return _buildDate;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -106,11 +123,6 @@ public class BuildInfo implements UaStructure {
         DateTime _buildDate = decoder.decodeDateTime("BuildDate");
 
         return new BuildInfo(_productUri, _manufacturerName, _productName, _softwareVersion, _buildNumber, _buildDate);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(BuildInfo::encode, BuildInfo.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(BuildInfo::decode, BuildInfo.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

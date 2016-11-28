@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -55,25 +54,41 @@ public class AxisInformation implements UaStructure {
         this._axisSteps = _axisSteps;
     }
 
-    public EUInformation getEngineeringUnits() { return _engineeringUnits; }
+    public EUInformation getEngineeringUnits() {
+        return _engineeringUnits;
+    }
 
-    public Range getEURange() { return _eURange; }
+    public Range getEURange() {
+        return _eURange;
+    }
 
-    public LocalizedText getTitle() { return _title; }
+    public LocalizedText getTitle() {
+        return _title;
+    }
 
-    public AxisScaleEnumeration getAxisScaleType() { return _axisScaleType; }
+    public AxisScaleEnumeration getAxisScaleType() {
+        return _axisScaleType;
+    }
 
     @Nullable
-    public Double[] getAxisSteps() { return _axisSteps; }
+    public Double[] getAxisSteps() {
+        return _axisSteps;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -102,11 +117,6 @@ public class AxisInformation implements UaStructure {
         Double[] _axisSteps = decoder.decodeArray("AxisSteps", decoder::decodeDouble, Double.class);
 
         return new AxisInformation(_engineeringUnits, _eURange, _title, _axisScaleType, _axisSteps);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(AxisInformation::encode, AxisInformation.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(AxisInformation::decode, AxisInformation.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

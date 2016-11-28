@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -61,29 +60,49 @@ public class ApplicationDescription implements UaStructure {
         this._discoveryUrls = _discoveryUrls;
     }
 
-    public String getApplicationUri() { return _applicationUri; }
+    public String getApplicationUri() {
+        return _applicationUri;
+    }
 
-    public String getProductUri() { return _productUri; }
+    public String getProductUri() {
+        return _productUri;
+    }
 
-    public LocalizedText getApplicationName() { return _applicationName; }
+    public LocalizedText getApplicationName() {
+        return _applicationName;
+    }
 
-    public ApplicationType getApplicationType() { return _applicationType; }
+    public ApplicationType getApplicationType() {
+        return _applicationType;
+    }
 
-    public String getGatewayServerUri() { return _gatewayServerUri; }
+    public String getGatewayServerUri() {
+        return _gatewayServerUri;
+    }
 
-    public String getDiscoveryProfileUri() { return _discoveryProfileUri; }
+    public String getDiscoveryProfileUri() {
+        return _discoveryProfileUri;
+    }
 
     @Nullable
-    public String[] getDiscoveryUrls() { return _discoveryUrls; }
+    public String[] getDiscoveryUrls() {
+        return _discoveryUrls;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -118,11 +137,6 @@ public class ApplicationDescription implements UaStructure {
         String[] _discoveryUrls = decoder.decodeArray("DiscoveryUrls", decoder::decodeString, String.class);
 
         return new ApplicationDescription(_applicationUri, _productUri, _applicationName, _applicationType, _gatewayServerUri, _discoveryProfileUri, _discoveryUrls);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ApplicationDescription::encode, ApplicationDescription.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ApplicationDescription::decode, ApplicationDescription.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

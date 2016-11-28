@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -44,19 +43,29 @@ public class DeleteReferencesRequest implements UaRequestMessage {
         this._referencesToDelete = _referencesToDelete;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
     @Nullable
-    public DeleteReferencesItem[] getReferencesToDelete() { return _referencesToDelete; }
+    public DeleteReferencesItem[] getReferencesToDelete() {
+        return _referencesToDelete;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class DeleteReferencesRequest implements UaRequestMessage {
         DeleteReferencesItem[] _referencesToDelete = decoder.decodeArray("ReferencesToDelete", decoder::decodeSerializable, DeleteReferencesItem.class);
 
         return new DeleteReferencesRequest(_requestHeader, _referencesToDelete);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(DeleteReferencesRequest::encode, DeleteReferencesRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(DeleteReferencesRequest::decode, DeleteReferencesRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -58,26 +57,44 @@ public class OpenSecureChannelRequest implements UaRequestMessage {
         this._requestedLifetime = _requestedLifetime;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public UInteger getClientProtocolVersion() { return _clientProtocolVersion; }
+    public UInteger getClientProtocolVersion() {
+        return _clientProtocolVersion;
+    }
 
-    public SecurityTokenRequestType getRequestType() { return _requestType; }
+    public SecurityTokenRequestType getRequestType() {
+        return _requestType;
+    }
 
-    public MessageSecurityMode getSecurityMode() { return _securityMode; }
+    public MessageSecurityMode getSecurityMode() {
+        return _securityMode;
+    }
 
-    public ByteString getClientNonce() { return _clientNonce; }
+    public ByteString getClientNonce() {
+        return _clientNonce;
+    }
 
-    public UInteger getRequestedLifetime() { return _requestedLifetime; }
+    public UInteger getRequestedLifetime() {
+        return _requestedLifetime;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -109,11 +126,6 @@ public class OpenSecureChannelRequest implements UaRequestMessage {
         UInteger _requestedLifetime = decoder.decodeUInt32("RequestedLifetime");
 
         return new OpenSecureChannelRequest(_requestHeader, _clientProtocolVersion, _requestType, _securityMode, _clientNonce, _requestedLifetime);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(OpenSecureChannelRequest::encode, OpenSecureChannelRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(OpenSecureChannelRequest::decode, OpenSecureChannelRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

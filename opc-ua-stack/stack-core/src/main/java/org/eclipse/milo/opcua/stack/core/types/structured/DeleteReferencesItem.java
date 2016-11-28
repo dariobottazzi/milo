@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -52,24 +51,40 @@ public class DeleteReferencesItem implements UaStructure {
         this._deleteBidirectional = _deleteBidirectional;
     }
 
-    public NodeId getSourceNodeId() { return _sourceNodeId; }
+    public NodeId getSourceNodeId() {
+        return _sourceNodeId;
+    }
 
-    public NodeId getReferenceTypeId() { return _referenceTypeId; }
+    public NodeId getReferenceTypeId() {
+        return _referenceTypeId;
+    }
 
-    public Boolean getIsForward() { return _isForward; }
+    public Boolean getIsForward() {
+        return _isForward;
+    }
 
-    public ExpandedNodeId getTargetNodeId() { return _targetNodeId; }
+    public ExpandedNodeId getTargetNodeId() {
+        return _targetNodeId;
+    }
 
-    public Boolean getDeleteBidirectional() { return _deleteBidirectional; }
+    public Boolean getDeleteBidirectional() {
+        return _deleteBidirectional;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -98,11 +113,6 @@ public class DeleteReferencesItem implements UaStructure {
         Boolean _deleteBidirectional = decoder.decodeBoolean("DeleteBidirectional");
 
         return new DeleteReferencesItem(_sourceNodeId, _referenceTypeId, _isForward, _targetNodeId, _deleteBidirectional);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(DeleteReferencesItem::encode, DeleteReferencesItem.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(DeleteReferencesItem::decode, DeleteReferencesItem.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

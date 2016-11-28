@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -42,18 +41,28 @@ public class XVType implements UaStructure {
         this._value = _value;
     }
 
-    public Double getX() { return _x; }
+    public Double getX() {
+        return _x;
+    }
 
-    public Float getValue() { return _value; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Float getValue() {
+        return _value;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +82,6 @@ public class XVType implements UaStructure {
         Float _value = decoder.decodeFloat("Value");
 
         return new XVType(_x, _value);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(XVType::encode, XVType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(XVType::decode, XVType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -42,16 +41,24 @@ public class ContentFilter implements UaStructure {
     }
 
     @Nullable
-    public ContentFilterElement[] getElements() { return _elements; }
+    public ContentFilterElement[] getElements() {
+        return _elements;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -68,11 +75,6 @@ public class ContentFilter implements UaStructure {
         ContentFilterElement[] _elements = decoder.decodeArray("Elements", decoder::decodeSerializable, ContentFilterElement.class);
 
         return new ContentFilter(_elements);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ContentFilter::encode, ContentFilter.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ContentFilter::decode, ContentFilter.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

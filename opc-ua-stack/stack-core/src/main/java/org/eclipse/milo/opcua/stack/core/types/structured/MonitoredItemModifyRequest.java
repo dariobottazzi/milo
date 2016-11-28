@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -43,18 +42,28 @@ public class MonitoredItemModifyRequest implements UaStructure {
         this._requestedParameters = _requestedParameters;
     }
 
-    public UInteger getMonitoredItemId() { return _monitoredItemId; }
+    public UInteger getMonitoredItemId() {
+        return _monitoredItemId;
+    }
 
-    public MonitoringParameters getRequestedParameters() { return _requestedParameters; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public MonitoringParameters getRequestedParameters() {
+        return _requestedParameters;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -74,11 +83,6 @@ public class MonitoredItemModifyRequest implements UaStructure {
         MonitoringParameters _requestedParameters = decoder.decodeSerializable("RequestedParameters", MonitoringParameters.class);
 
         return new MonitoredItemModifyRequest(_monitoredItemId, _requestedParameters);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(MonitoredItemModifyRequest::encode, MonitoredItemModifyRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(MonitoredItemModifyRequest::decode, MonitoredItemModifyRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

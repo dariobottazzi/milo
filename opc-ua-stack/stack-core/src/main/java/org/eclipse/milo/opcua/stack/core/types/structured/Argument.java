@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -55,25 +54,41 @@ public class Argument implements UaStructure {
         this._description = _description;
     }
 
-    public String getName() { return _name; }
+    public String getName() {
+        return _name;
+    }
 
-    public NodeId getDataType() { return _dataType; }
+    public NodeId getDataType() {
+        return _dataType;
+    }
 
-    public Integer getValueRank() { return _valueRank; }
+    public Integer getValueRank() {
+        return _valueRank;
+    }
 
     @Nullable
-    public UInteger[] getArrayDimensions() { return _arrayDimensions; }
+    public UInteger[] getArrayDimensions() {
+        return _arrayDimensions;
+    }
 
-    public LocalizedText getDescription() { return _description; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public LocalizedText getDescription() {
+        return _description;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -102,11 +117,6 @@ public class Argument implements UaStructure {
         LocalizedText _description = decoder.decodeLocalizedText("Description");
 
         return new Argument(_name, _dataType, _valueRank, _arrayDimensions, _description);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(Argument::encode, Argument.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(Argument::decode, Argument.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

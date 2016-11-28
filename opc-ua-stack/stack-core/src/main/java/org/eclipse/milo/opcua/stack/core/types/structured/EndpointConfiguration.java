@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -63,32 +62,56 @@ public class EndpointConfiguration implements UaStructure {
         this._securityTokenLifetime = _securityTokenLifetime;
     }
 
-    public Integer getOperationTimeout() { return _operationTimeout; }
+    public Integer getOperationTimeout() {
+        return _operationTimeout;
+    }
 
-    public Boolean getUseBinaryEncoding() { return _useBinaryEncoding; }
+    public Boolean getUseBinaryEncoding() {
+        return _useBinaryEncoding;
+    }
 
-    public Integer getMaxStringLength() { return _maxStringLength; }
+    public Integer getMaxStringLength() {
+        return _maxStringLength;
+    }
 
-    public Integer getMaxByteStringLength() { return _maxByteStringLength; }
+    public Integer getMaxByteStringLength() {
+        return _maxByteStringLength;
+    }
 
-    public Integer getMaxArrayLength() { return _maxArrayLength; }
+    public Integer getMaxArrayLength() {
+        return _maxArrayLength;
+    }
 
-    public Integer getMaxMessageSize() { return _maxMessageSize; }
+    public Integer getMaxMessageSize() {
+        return _maxMessageSize;
+    }
 
-    public Integer getMaxBufferSize() { return _maxBufferSize; }
+    public Integer getMaxBufferSize() {
+        return _maxBufferSize;
+    }
 
-    public Integer getChannelLifetime() { return _channelLifetime; }
+    public Integer getChannelLifetime() {
+        return _channelLifetime;
+    }
 
-    public Integer getSecurityTokenLifetime() { return _securityTokenLifetime; }
+    public Integer getSecurityTokenLifetime() {
+        return _securityTokenLifetime;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -129,11 +152,6 @@ public class EndpointConfiguration implements UaStructure {
         Integer _securityTokenLifetime = decoder.decodeInt32("SecurityTokenLifetime");
 
         return new EndpointConfiguration(_operationTimeout, _useBinaryEncoding, _maxStringLength, _maxByteStringLength, _maxArrayLength, _maxMessageSize, _maxBufferSize, _channelLifetime, _securityTokenLifetime);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(EndpointConfiguration::encode, EndpointConfiguration.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(EndpointConfiguration::decode, EndpointConfiguration.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

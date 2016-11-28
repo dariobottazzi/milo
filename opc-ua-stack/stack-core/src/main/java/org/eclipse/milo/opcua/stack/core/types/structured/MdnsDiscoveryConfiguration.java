@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -45,19 +44,29 @@ public class MdnsDiscoveryConfiguration extends DiscoveryConfiguration {
         this._serverCapabilities = _serverCapabilities;
     }
 
-    public String getMdnsServerName() { return _mdnsServerName; }
+    public String getMdnsServerName() {
+        return _mdnsServerName;
+    }
 
     @Nullable
-    public String[] getServerCapabilities() { return _serverCapabilities; }
+    public String[] getServerCapabilities() {
+        return _serverCapabilities;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -77,11 +86,6 @@ public class MdnsDiscoveryConfiguration extends DiscoveryConfiguration {
         String[] _serverCapabilities = decoder.decodeArray("ServerCapabilities", decoder::decodeString, String.class);
 
         return new MdnsDiscoveryConfiguration(_mdnsServerName, _serverCapabilities);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(MdnsDiscoveryConfiguration::encode, MdnsDiscoveryConfiguration.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(MdnsDiscoveryConfiguration::decode, MdnsDiscoveryConfiguration.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -47,19 +46,29 @@ public class DataChangeNotification extends NotificationData {
     }
 
     @Nullable
-    public MonitoredItemNotification[] getMonitoredItems() { return _monitoredItems; }
+    public MonitoredItemNotification[] getMonitoredItems() {
+        return _monitoredItems;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getDiagnosticInfos() { return _diagnosticInfos; }
+    public DiagnosticInfo[] getDiagnosticInfos() {
+        return _diagnosticInfos;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -79,11 +88,6 @@ public class DataChangeNotification extends NotificationData {
         DiagnosticInfo[] _diagnosticInfos = decoder.decodeArray("DiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
 
         return new DataChangeNotification(_monitoredItems, _diagnosticInfos);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(DataChangeNotification::encode, DataChangeNotification.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(DataChangeNotification::decode, DataChangeNotification.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

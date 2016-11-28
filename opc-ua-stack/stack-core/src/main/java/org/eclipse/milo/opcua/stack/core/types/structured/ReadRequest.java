@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -51,23 +50,37 @@ public class ReadRequest implements UaRequestMessage {
         this._nodesToRead = _nodesToRead;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public Double getMaxAge() { return _maxAge; }
+    public Double getMaxAge() {
+        return _maxAge;
+    }
 
-    public TimestampsToReturn getTimestampsToReturn() { return _timestampsToReturn; }
+    public TimestampsToReturn getTimestampsToReturn() {
+        return _timestampsToReturn;
+    }
 
     @Nullable
-    public ReadValueId[] getNodesToRead() { return _nodesToRead; }
+    public ReadValueId[] getNodesToRead() {
+        return _nodesToRead;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -93,11 +106,6 @@ public class ReadRequest implements UaRequestMessage {
         ReadValueId[] _nodesToRead = decoder.decodeArray("NodesToRead", decoder::decodeSerializable, ReadValueId.class);
 
         return new ReadRequest(_requestHeader, _maxAge, _timestampsToReturn, _nodesToRead);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ReadRequest::encode, ReadRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ReadRequest::decode, ReadRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

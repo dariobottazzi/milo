@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -53,23 +52,37 @@ public class SimpleAttributeOperand extends FilterOperand {
         this._indexRange = _indexRange;
     }
 
-    public NodeId getTypeDefinitionId() { return _typeDefinitionId; }
+    public NodeId getTypeDefinitionId() {
+        return _typeDefinitionId;
+    }
 
     @Nullable
-    public QualifiedName[] getBrowsePath() { return _browsePath; }
+    public QualifiedName[] getBrowsePath() {
+        return _browsePath;
+    }
 
-    public UInteger getAttributeId() { return _attributeId; }
+    public UInteger getAttributeId() {
+        return _attributeId;
+    }
 
-    public String getIndexRange() { return _indexRange; }
+    public String getIndexRange() {
+        return _indexRange;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -95,11 +108,6 @@ public class SimpleAttributeOperand extends FilterOperand {
         String _indexRange = decoder.decodeString("IndexRange");
 
         return new SimpleAttributeOperand(_typeDefinitionId, _browsePath, _attributeId, _indexRange);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(SimpleAttributeOperand::encode, SimpleAttributeOperand.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(SimpleAttributeOperand::decode, SimpleAttributeOperand.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

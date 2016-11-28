@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -42,18 +41,28 @@ public class DoubleComplexNumberType implements UaStructure {
         this._imaginary = _imaginary;
     }
 
-    public Double getReal() { return _real; }
+    public Double getReal() {
+        return _real;
+    }
 
-    public Double getImaginary() { return _imaginary; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Double getImaginary() {
+        return _imaginary;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +82,6 @@ public class DoubleComplexNumberType implements UaStructure {
         Double _imaginary = decoder.decodeDouble("Imaginary");
 
         return new DoubleComplexNumberType(_real, _imaginary);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(DoubleComplexNumberType::encode, DoubleComplexNumberType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(DoubleComplexNumberType::decode, DoubleComplexNumberType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -59,28 +58,48 @@ public class ModifySubscriptionRequest implements UaRequestMessage {
         this._priority = _priority;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public UInteger getSubscriptionId() { return _subscriptionId; }
+    public UInteger getSubscriptionId() {
+        return _subscriptionId;
+    }
 
-    public Double getRequestedPublishingInterval() { return _requestedPublishingInterval; }
+    public Double getRequestedPublishingInterval() {
+        return _requestedPublishingInterval;
+    }
 
-    public UInteger getRequestedLifetimeCount() { return _requestedLifetimeCount; }
+    public UInteger getRequestedLifetimeCount() {
+        return _requestedLifetimeCount;
+    }
 
-    public UInteger getRequestedMaxKeepAliveCount() { return _requestedMaxKeepAliveCount; }
+    public UInteger getRequestedMaxKeepAliveCount() {
+        return _requestedMaxKeepAliveCount;
+    }
 
-    public UInteger getMaxNotificationsPerPublish() { return _maxNotificationsPerPublish; }
+    public UInteger getMaxNotificationsPerPublish() {
+        return _maxNotificationsPerPublish;
+    }
 
-    public UByte getPriority() { return _priority; }
+    public UByte getPriority() {
+        return _priority;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -115,11 +134,6 @@ public class ModifySubscriptionRequest implements UaRequestMessage {
         UByte _priority = decoder.decodeByte("Priority");
 
         return new ModifySubscriptionRequest(_requestHeader, _subscriptionId, _requestedPublishingInterval, _requestedLifetimeCount, _requestedMaxKeepAliveCount, _maxNotificationsPerPublish, _priority);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ModifySubscriptionRequest::encode, ModifySubscriptionRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ModifySubscriptionRequest::decode, ModifySubscriptionRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -70,35 +69,61 @@ public class SoftwareCertificate implements UaStructure {
         this._supportedProfiles = _supportedProfiles;
     }
 
-    public String getProductName() { return _productName; }
+    public String getProductName() {
+        return _productName;
+    }
 
-    public String getProductUri() { return _productUri; }
+    public String getProductUri() {
+        return _productUri;
+    }
 
-    public String getVendorName() { return _vendorName; }
+    public String getVendorName() {
+        return _vendorName;
+    }
 
-    public ByteString getVendorProductCertificate() { return _vendorProductCertificate; }
+    public ByteString getVendorProductCertificate() {
+        return _vendorProductCertificate;
+    }
 
-    public String getSoftwareVersion() { return _softwareVersion; }
+    public String getSoftwareVersion() {
+        return _softwareVersion;
+    }
 
-    public String getBuildNumber() { return _buildNumber; }
+    public String getBuildNumber() {
+        return _buildNumber;
+    }
 
-    public DateTime getBuildDate() { return _buildDate; }
+    public DateTime getBuildDate() {
+        return _buildDate;
+    }
 
-    public String getIssuedBy() { return _issuedBy; }
+    public String getIssuedBy() {
+        return _issuedBy;
+    }
 
-    public DateTime getIssueDate() { return _issueDate; }
+    public DateTime getIssueDate() {
+        return _issueDate;
+    }
 
     @Nullable
-    public SupportedProfile[] getSupportedProfiles() { return _supportedProfiles; }
+    public SupportedProfile[] getSupportedProfiles() {
+        return _supportedProfiles;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -142,11 +167,6 @@ public class SoftwareCertificate implements UaStructure {
         SupportedProfile[] _supportedProfiles = decoder.decodeArray("SupportedProfiles", decoder::decodeSerializable, SupportedProfile.class);
 
         return new SoftwareCertificate(_productName, _productUri, _vendorName, _vendorProductCertificate, _softwareVersion, _buildNumber, _buildDate, _issuedBy, _issueDate, _supportedProfiles);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(SoftwareCertificate::encode, SoftwareCertificate.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(SoftwareCertificate::decode, SoftwareCertificate.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -57,27 +56,45 @@ public class QueryFirstRequest implements UaRequestMessage {
         this._maxReferencesToReturn = _maxReferencesToReturn;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public ViewDescription getView() { return _view; }
+    public ViewDescription getView() {
+        return _view;
+    }
 
     @Nullable
-    public NodeTypeDescription[] getNodeTypes() { return _nodeTypes; }
+    public NodeTypeDescription[] getNodeTypes() {
+        return _nodeTypes;
+    }
 
-    public ContentFilter getFilter() { return _filter; }
+    public ContentFilter getFilter() {
+        return _filter;
+    }
 
-    public UInteger getMaxDataSetsToReturn() { return _maxDataSetsToReturn; }
+    public UInteger getMaxDataSetsToReturn() {
+        return _maxDataSetsToReturn;
+    }
 
-    public UInteger getMaxReferencesToReturn() { return _maxReferencesToReturn; }
+    public UInteger getMaxReferencesToReturn() {
+        return _maxReferencesToReturn;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -109,11 +126,6 @@ public class QueryFirstRequest implements UaRequestMessage {
         UInteger _maxReferencesToReturn = decoder.decodeUInt32("MaxReferencesToReturn");
 
         return new QueryFirstRequest(_requestHeader, _view, _nodeTypes, _filter, _maxDataSetsToReturn, _maxReferencesToReturn);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(QueryFirstRequest::encode, QueryFirstRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(QueryFirstRequest::decode, QueryFirstRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

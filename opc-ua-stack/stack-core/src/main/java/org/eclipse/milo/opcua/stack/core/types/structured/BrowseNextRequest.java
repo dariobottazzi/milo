@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -48,21 +47,33 @@ public class BrowseNextRequest implements UaRequestMessage {
         this._continuationPoints = _continuationPoints;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public Boolean getReleaseContinuationPoints() { return _releaseContinuationPoints; }
+    public Boolean getReleaseContinuationPoints() {
+        return _releaseContinuationPoints;
+    }
 
     @Nullable
-    public ByteString[] getContinuationPoints() { return _continuationPoints; }
+    public ByteString[] getContinuationPoints() {
+        return _continuationPoints;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -85,11 +96,6 @@ public class BrowseNextRequest implements UaRequestMessage {
         ByteString[] _continuationPoints = decoder.decodeArray("ContinuationPoints", decoder::decodeByteString, ByteString.class);
 
         return new BrowseNextRequest(_requestHeader, _releaseContinuationPoints, _continuationPoints);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(BrowseNextRequest::encode, BrowseNextRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(BrowseNextRequest::decode, BrowseNextRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

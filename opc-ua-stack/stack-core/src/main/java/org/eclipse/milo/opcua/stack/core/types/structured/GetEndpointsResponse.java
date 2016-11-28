@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -44,19 +43,29 @@ public class GetEndpointsResponse implements UaResponseMessage {
         this._endpoints = _endpoints;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
     @Nullable
-    public EndpointDescription[] getEndpoints() { return _endpoints; }
+    public EndpointDescription[] getEndpoints() {
+        return _endpoints;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class GetEndpointsResponse implements UaResponseMessage {
         EndpointDescription[] _endpoints = decoder.decodeArray("Endpoints", decoder::decodeSerializable, EndpointDescription.class);
 
         return new GetEndpointsResponse(_responseHeader, _endpoints);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(GetEndpointsResponse::encode, GetEndpointsResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(GetEndpointsResponse::decode, GetEndpointsResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

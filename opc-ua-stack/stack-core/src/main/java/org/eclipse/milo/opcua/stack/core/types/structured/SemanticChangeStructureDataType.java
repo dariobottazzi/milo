@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -42,18 +41,28 @@ public class SemanticChangeStructureDataType implements UaStructure {
         this._affectedType = _affectedType;
     }
 
-    public NodeId getAffected() { return _affected; }
+    public NodeId getAffected() {
+        return _affected;
+    }
 
-    public NodeId getAffectedType() { return _affectedType; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getAffectedType() {
+        return _affectedType;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +82,6 @@ public class SemanticChangeStructureDataType implements UaStructure {
         NodeId _affectedType = decoder.decodeNodeId("AffectedType");
 
         return new SemanticChangeStructureDataType(_affected, _affectedType);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(SemanticChangeStructureDataType::encode, SemanticChangeStructureDataType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(SemanticChangeStructureDataType::decode, SemanticChangeStructureDataType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

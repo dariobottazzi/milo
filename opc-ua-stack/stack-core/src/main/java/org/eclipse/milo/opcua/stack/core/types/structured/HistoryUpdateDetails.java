@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -39,16 +38,24 @@ public class HistoryUpdateDetails implements UaStructure {
         this._nodeId = _nodeId;
     }
 
-    public NodeId getNodeId() { return _nodeId; }
+    public NodeId getNodeId() {
+        return _nodeId;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -65,11 +72,6 @@ public class HistoryUpdateDetails implements UaStructure {
         NodeId _nodeId = decoder.decodeNodeId("NodeId");
 
         return new HistoryUpdateDetails(_nodeId);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(HistoryUpdateDetails::encode, HistoryUpdateDetails.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(HistoryUpdateDetails::decode, HistoryUpdateDetails.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

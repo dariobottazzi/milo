@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -48,21 +47,33 @@ public class FindServersOnNetworkResponse implements UaResponseMessage {
         this._servers = _servers;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
-    public DateTime getLastCounterResetTime() { return _lastCounterResetTime; }
+    public DateTime getLastCounterResetTime() {
+        return _lastCounterResetTime;
+    }
 
     @Nullable
-    public ServerOnNetwork[] getServers() { return _servers; }
+    public ServerOnNetwork[] getServers() {
+        return _servers;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -85,11 +96,6 @@ public class FindServersOnNetworkResponse implements UaResponseMessage {
         ServerOnNetwork[] _servers = decoder.decodeArray("Servers", decoder::decodeSerializable, ServerOnNetwork.class);
 
         return new FindServersOnNetworkResponse(_responseHeader, _lastCounterResetTime, _servers);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(FindServersOnNetworkResponse::encode, FindServersOnNetworkResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(FindServersOnNetworkResponse::decode, FindServersOnNetworkResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

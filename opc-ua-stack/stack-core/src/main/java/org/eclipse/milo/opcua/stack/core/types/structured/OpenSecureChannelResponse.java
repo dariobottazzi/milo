@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -50,22 +49,36 @@ public class OpenSecureChannelResponse implements UaResponseMessage {
         this._serverNonce = _serverNonce;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
-    public UInteger getServerProtocolVersion() { return _serverProtocolVersion; }
+    public UInteger getServerProtocolVersion() {
+        return _serverProtocolVersion;
+    }
 
-    public ChannelSecurityToken getSecurityToken() { return _securityToken; }
+    public ChannelSecurityToken getSecurityToken() {
+        return _securityToken;
+    }
 
-    public ByteString getServerNonce() { return _serverNonce; }
+    public ByteString getServerNonce() {
+        return _serverNonce;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -91,11 +104,6 @@ public class OpenSecureChannelResponse implements UaResponseMessage {
         ByteString _serverNonce = decoder.decodeByteString("ServerNonce");
 
         return new OpenSecureChannelResponse(_responseHeader, _serverProtocolVersion, _securityToken, _serverNonce);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(OpenSecureChannelResponse::encode, OpenSecureChannelResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(OpenSecureChannelResponse::decode, OpenSecureChannelResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

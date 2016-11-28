@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -42,16 +41,24 @@ public class ObjectTypeAttributes extends NodeAttributes {
         this._isAbstract = _isAbstract;
     }
 
-    public Boolean getIsAbstract() { return _isAbstract; }
+    public Boolean getIsAbstract() {
+        return _isAbstract;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -83,11 +90,6 @@ public class ObjectTypeAttributes extends NodeAttributes {
         Boolean _isAbstract = decoder.decodeBoolean("IsAbstract");
 
         return new ObjectTypeAttributes(_specifiedAttributes, _displayName, _description, _writeMask, _userWriteMask, _isAbstract);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ObjectTypeAttributes::encode, ObjectTypeAttributes.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ObjectTypeAttributes::decode, ObjectTypeAttributes.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

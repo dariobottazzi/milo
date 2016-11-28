@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -47,19 +46,29 @@ public class HistoryModifiedData extends HistoryData {
     }
 
     @Nullable
-    public DataValue[] getDataValues() { return _dataValues; }
+    public DataValue[] getDataValues() {
+        return _dataValues;
+    }
 
     @Nullable
-    public ModificationInfo[] getModificationInfos() { return _modificationInfos; }
+    public ModificationInfo[] getModificationInfos() {
+        return _modificationInfos;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -79,11 +88,6 @@ public class HistoryModifiedData extends HistoryData {
         ModificationInfo[] _modificationInfos = decoder.decodeArray("ModificationInfos", decoder::decodeSerializable, ModificationInfo.class);
 
         return new HistoryModifiedData(_dataValues, _modificationInfos);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(HistoryModifiedData::encode, HistoryModifiedData.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(HistoryModifiedData::decode, HistoryModifiedData.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

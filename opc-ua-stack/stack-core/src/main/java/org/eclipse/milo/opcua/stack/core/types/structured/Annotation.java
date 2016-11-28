@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -46,20 +45,32 @@ public class Annotation implements UaStructure {
         this._annotationTime = _annotationTime;
     }
 
-    public String getMessage() { return _message; }
+    public String getMessage() {
+        return _message;
+    }
 
-    public String getUserName() { return _userName; }
+    public String getUserName() {
+        return _userName;
+    }
 
-    public DateTime getAnnotationTime() { return _annotationTime; }
+    public DateTime getAnnotationTime() {
+        return _annotationTime;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -82,11 +93,6 @@ public class Annotation implements UaStructure {
         DateTime _annotationTime = decoder.decodeDateTime("AnnotationTime");
 
         return new Annotation(_message, _userName, _annotationTime);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(Annotation::encode, Annotation.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(Annotation::decode, Annotation.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

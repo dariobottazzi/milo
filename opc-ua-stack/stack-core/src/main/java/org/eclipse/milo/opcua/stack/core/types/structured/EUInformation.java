@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -49,22 +48,36 @@ public class EUInformation implements UaStructure {
         this._description = _description;
     }
 
-    public String getNamespaceUri() { return _namespaceUri; }
+    public String getNamespaceUri() {
+        return _namespaceUri;
+    }
 
-    public Integer getUnitId() { return _unitId; }
+    public Integer getUnitId() {
+        return _unitId;
+    }
 
-    public LocalizedText getDisplayName() { return _displayName; }
+    public LocalizedText getDisplayName() {
+        return _displayName;
+    }
 
-    public LocalizedText getDescription() { return _description; }
+    public LocalizedText getDescription() {
+        return _description;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -90,11 +103,6 @@ public class EUInformation implements UaStructure {
         LocalizedText _description = decoder.decodeLocalizedText("Description");
 
         return new EUInformation(_namespaceUri, _unitId, _displayName, _description);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(EUInformation::encode, EUInformation.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(EUInformation::decode, EUInformation.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

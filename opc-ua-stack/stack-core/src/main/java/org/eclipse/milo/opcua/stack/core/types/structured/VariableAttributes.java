@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -67,31 +66,53 @@ public class VariableAttributes extends NodeAttributes {
         this._historizing = _historizing;
     }
 
-    public Variant getValue() { return _value; }
+    public Variant getValue() {
+        return _value;
+    }
 
-    public NodeId getDataType() { return _dataType; }
+    public NodeId getDataType() {
+        return _dataType;
+    }
 
-    public Integer getValueRank() { return _valueRank; }
+    public Integer getValueRank() {
+        return _valueRank;
+    }
 
     @Nullable
-    public UInteger[] getArrayDimensions() { return _arrayDimensions; }
+    public UInteger[] getArrayDimensions() {
+        return _arrayDimensions;
+    }
 
-    public UByte getAccessLevel() { return _accessLevel; }
+    public UByte getAccessLevel() {
+        return _accessLevel;
+    }
 
-    public UByte getUserAccessLevel() { return _userAccessLevel; }
+    public UByte getUserAccessLevel() {
+        return _userAccessLevel;
+    }
 
-    public Double getMinimumSamplingInterval() { return _minimumSamplingInterval; }
+    public Double getMinimumSamplingInterval() {
+        return _minimumSamplingInterval;
+    }
 
-    public Boolean getHistorizing() { return _historizing; }
+    public Boolean getHistorizing() {
+        return _historizing;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -144,11 +165,6 @@ public class VariableAttributes extends NodeAttributes {
         Boolean _historizing = decoder.decodeBoolean("Historizing");
 
         return new VariableAttributes(_specifiedAttributes, _displayName, _description, _writeMask, _userWriteMask, _value, _dataType, _valueRank, _arrayDimensions, _accessLevel, _userAccessLevel, _minimumSamplingInterval, _historizing);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(VariableAttributes::encode, VariableAttributes.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(VariableAttributes::decode, VariableAttributes.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

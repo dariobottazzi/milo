@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -50,21 +49,33 @@ public class NotificationMessage implements UaStructure {
         this._notificationData = _notificationData;
     }
 
-    public UInteger getSequenceNumber() { return _sequenceNumber; }
+    public UInteger getSequenceNumber() {
+        return _sequenceNumber;
+    }
 
-    public DateTime getPublishTime() { return _publishTime; }
+    public DateTime getPublishTime() {
+        return _publishTime;
+    }
 
     @Nullable
-    public ExtensionObject[] getNotificationData() { return _notificationData; }
+    public ExtensionObject[] getNotificationData() {
+        return _notificationData;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -87,11 +98,6 @@ public class NotificationMessage implements UaStructure {
         ExtensionObject[] _notificationData = decoder.decodeArray("NotificationData", decoder::decodeExtensionObject, ExtensionObject.class);
 
         return new NotificationMessage(_sequenceNumber, _publishTime, _notificationData);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(NotificationMessage::encode, NotificationMessage.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(NotificationMessage::decode, NotificationMessage.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

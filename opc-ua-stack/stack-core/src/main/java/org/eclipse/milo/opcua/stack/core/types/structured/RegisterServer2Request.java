@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -48,21 +47,33 @@ public class RegisterServer2Request implements UaRequestMessage {
         this._discoveryConfiguration = _discoveryConfiguration;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public RegisteredServer getServer() { return _server; }
+    public RegisteredServer getServer() {
+        return _server;
+    }
 
     @Nullable
-    public ExtensionObject[] getDiscoveryConfiguration() { return _discoveryConfiguration; }
+    public ExtensionObject[] getDiscoveryConfiguration() {
+        return _discoveryConfiguration;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -85,11 +96,6 @@ public class RegisterServer2Request implements UaRequestMessage {
         ExtensionObject[] _discoveryConfiguration = decoder.decodeArray("DiscoveryConfiguration", decoder::decodeExtensionObject, ExtensionObject.class);
 
         return new RegisterServer2Request(_requestHeader, _server, _discoveryConfiguration);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(RegisterServer2Request::encode, RegisterServer2Request.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(RegisterServer2Request::decode, RegisterServer2Request.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

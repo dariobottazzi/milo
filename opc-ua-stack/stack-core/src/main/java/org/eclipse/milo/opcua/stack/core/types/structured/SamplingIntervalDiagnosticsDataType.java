@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -49,22 +48,36 @@ public class SamplingIntervalDiagnosticsDataType implements UaStructure {
         this._disabledMonitoredItemCount = _disabledMonitoredItemCount;
     }
 
-    public Double getSamplingInterval() { return _samplingInterval; }
+    public Double getSamplingInterval() {
+        return _samplingInterval;
+    }
 
-    public UInteger getMonitoredItemCount() { return _monitoredItemCount; }
+    public UInteger getMonitoredItemCount() {
+        return _monitoredItemCount;
+    }
 
-    public UInteger getMaxMonitoredItemCount() { return _maxMonitoredItemCount; }
+    public UInteger getMaxMonitoredItemCount() {
+        return _maxMonitoredItemCount;
+    }
 
-    public UInteger getDisabledMonitoredItemCount() { return _disabledMonitoredItemCount; }
+    public UInteger getDisabledMonitoredItemCount() {
+        return _disabledMonitoredItemCount;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -90,11 +103,6 @@ public class SamplingIntervalDiagnosticsDataType implements UaStructure {
         UInteger _disabledMonitoredItemCount = decoder.decodeUInt32("DisabledMonitoredItemCount");
 
         return new SamplingIntervalDiagnosticsDataType(_samplingInterval, _monitoredItemCount, _maxMonitoredItemCount, _disabledMonitoredItemCount);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(SamplingIntervalDiagnosticsDataType::encode, SamplingIntervalDiagnosticsDataType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(SamplingIntervalDiagnosticsDataType::decode, SamplingIntervalDiagnosticsDataType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

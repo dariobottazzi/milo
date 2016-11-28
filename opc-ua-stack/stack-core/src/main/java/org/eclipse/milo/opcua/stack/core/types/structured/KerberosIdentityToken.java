@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -41,16 +40,24 @@ public class KerberosIdentityToken extends UserIdentityToken {
         this._ticketData = _ticketData;
     }
 
-    public ByteString getTicketData() { return _ticketData; }
+    public ByteString getTicketData() {
+        return _ticketData;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -70,11 +77,6 @@ public class KerberosIdentityToken extends UserIdentityToken {
         ByteString _ticketData = decoder.decodeByteString("TicketData");
 
         return new KerberosIdentityToken(_policyId, _ticketData);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(KerberosIdentityToken::encode, KerberosIdentityToken.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(KerberosIdentityToken::decode, KerberosIdentityToken.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

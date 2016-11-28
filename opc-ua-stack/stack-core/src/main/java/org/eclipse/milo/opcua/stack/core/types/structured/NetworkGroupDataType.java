@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -44,19 +43,29 @@ public class NetworkGroupDataType implements UaStructure {
         this._networkPaths = _networkPaths;
     }
 
-    public String getServerUri() { return _serverUri; }
+    public String getServerUri() {
+        return _serverUri;
+    }
 
     @Nullable
-    public EndpointUrlListDataType[] getNetworkPaths() { return _networkPaths; }
+    public EndpointUrlListDataType[] getNetworkPaths() {
+        return _networkPaths;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class NetworkGroupDataType implements UaStructure {
         EndpointUrlListDataType[] _networkPaths = decoder.decodeArray("NetworkPaths", decoder::decodeSerializable, EndpointUrlListDataType.class);
 
         return new NetworkGroupDataType(_serverUri, _networkPaths);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(NetworkGroupDataType::encode, NetworkGroupDataType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(NetworkGroupDataType::decode, NetworkGroupDataType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

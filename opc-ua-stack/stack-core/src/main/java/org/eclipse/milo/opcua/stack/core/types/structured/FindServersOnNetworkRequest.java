@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -51,23 +50,37 @@ public class FindServersOnNetworkRequest implements UaRequestMessage {
         this._serverCapabilityFilter = _serverCapabilityFilter;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public UInteger getStartingRecordId() { return _startingRecordId; }
+    public UInteger getStartingRecordId() {
+        return _startingRecordId;
+    }
 
-    public UInteger getMaxRecordsToReturn() { return _maxRecordsToReturn; }
+    public UInteger getMaxRecordsToReturn() {
+        return _maxRecordsToReturn;
+    }
 
     @Nullable
-    public String[] getServerCapabilityFilter() { return _serverCapabilityFilter; }
+    public String[] getServerCapabilityFilter() {
+        return _serverCapabilityFilter;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -93,11 +106,6 @@ public class FindServersOnNetworkRequest implements UaRequestMessage {
         String[] _serverCapabilityFilter = decoder.decodeArray("ServerCapabilityFilter", decoder::decodeString, String.class);
 
         return new FindServersOnNetworkRequest(_requestHeader, _startingRecordId, _maxRecordsToReturn, _serverCapabilityFilter);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(FindServersOnNetworkRequest::encode, FindServersOnNetworkRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(FindServersOnNetworkRequest::decode, FindServersOnNetworkRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

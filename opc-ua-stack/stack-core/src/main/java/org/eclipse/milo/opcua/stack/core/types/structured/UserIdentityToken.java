@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -39,16 +38,24 @@ public class UserIdentityToken implements UaStructure {
         this._policyId = _policyId;
     }
 
-    public String getPolicyId() { return _policyId; }
+    public String getPolicyId() {
+        return _policyId;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -65,11 +72,6 @@ public class UserIdentityToken implements UaStructure {
         String _policyId = decoder.decodeString("PolicyId");
 
         return new UserIdentityToken(_policyId);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(UserIdentityToken::encode, UserIdentityToken.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(UserIdentityToken::decode, UserIdentityToken.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

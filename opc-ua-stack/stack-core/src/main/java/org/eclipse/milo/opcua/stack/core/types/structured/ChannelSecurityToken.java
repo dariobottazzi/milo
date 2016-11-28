@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -50,22 +49,36 @@ public class ChannelSecurityToken implements UaStructure {
         this._revisedLifetime = _revisedLifetime;
     }
 
-    public UInteger getChannelId() { return _channelId; }
+    public UInteger getChannelId() {
+        return _channelId;
+    }
 
-    public UInteger getTokenId() { return _tokenId; }
+    public UInteger getTokenId() {
+        return _tokenId;
+    }
 
-    public DateTime getCreatedAt() { return _createdAt; }
+    public DateTime getCreatedAt() {
+        return _createdAt;
+    }
 
-    public UInteger getRevisedLifetime() { return _revisedLifetime; }
+    public UInteger getRevisedLifetime() {
+        return _revisedLifetime;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -91,11 +104,6 @@ public class ChannelSecurityToken implements UaStructure {
         UInteger _revisedLifetime = decoder.decodeUInt32("RevisedLifetime");
 
         return new ChannelSecurityToken(_channelId, _tokenId, _createdAt, _revisedLifetime);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ChannelSecurityToken::encode, ChannelSecurityToken.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ChannelSecurityToken::decode, ChannelSecurityToken.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

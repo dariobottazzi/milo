@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -59,25 +58,41 @@ public class VariableTypeNode extends TypeNode {
         this._isAbstract = _isAbstract;
     }
 
-    public Variant getValue() { return _value; }
+    public Variant getValue() {
+        return _value;
+    }
 
-    public NodeId getDataType() { return _dataType; }
+    public NodeId getDataType() {
+        return _dataType;
+    }
 
-    public Integer getValueRank() { return _valueRank; }
+    public Integer getValueRank() {
+        return _valueRank;
+    }
 
     @Nullable
-    public UInteger[] getArrayDimensions() { return _arrayDimensions; }
+    public UInteger[] getArrayDimensions() {
+        return _arrayDimensions;
+    }
 
-    public Boolean getIsAbstract() { return _isAbstract; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Boolean getIsAbstract() {
+        return _isAbstract;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -130,11 +145,6 @@ public class VariableTypeNode extends TypeNode {
         Boolean _isAbstract = decoder.decodeBoolean("IsAbstract");
 
         return new VariableTypeNode(_nodeId, _nodeClass, _browseName, _displayName, _description, _writeMask, _userWriteMask, _references, _value, _dataType, _valueRank, _arrayDimensions, _isAbstract);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(VariableTypeNode::encode, VariableTypeNode.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(VariableTypeNode::decode, VariableTypeNode.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

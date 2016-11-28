@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
@@ -44,19 +43,29 @@ public class RegisterNodesResponse implements UaResponseMessage {
         this._registeredNodeIds = _registeredNodeIds;
     }
 
-    public ResponseHeader getResponseHeader() { return _responseHeader; }
+    public ResponseHeader getResponseHeader() {
+        return _responseHeader;
+    }
 
     @Nullable
-    public NodeId[] getRegisteredNodeIds() { return _registeredNodeIds; }
+    public NodeId[] getRegisteredNodeIds() {
+        return _registeredNodeIds;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class RegisterNodesResponse implements UaResponseMessage {
         NodeId[] _registeredNodeIds = decoder.decodeArray("RegisteredNodeIds", decoder::decodeNodeId, NodeId.class);
 
         return new RegisterNodesResponse(_responseHeader, _registeredNodeIds);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(RegisterNodesResponse::encode, RegisterNodesResponse.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(RegisterNodesResponse::decode, RegisterNodesResponse.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -44,19 +43,29 @@ public class UnregisterNodesRequest implements UaRequestMessage {
         this._nodesToUnregister = _nodesToUnregister;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
     @Nullable
-    public NodeId[] getNodesToUnregister() { return _nodesToUnregister; }
+    public NodeId[] getNodesToUnregister() {
+        return _nodesToUnregister;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class UnregisterNodesRequest implements UaRequestMessage {
         NodeId[] _nodesToUnregister = decoder.decodeArray("NodesToUnregister", decoder::decodeNodeId, NodeId.class);
 
         return new UnregisterNodesRequest(_requestHeader, _nodesToUnregister);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(UnregisterNodesRequest::encode, UnregisterNodesRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(UnregisterNodesRequest::decode, UnregisterNodesRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

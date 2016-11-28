@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -41,16 +40,24 @@ public class ElementOperand extends FilterOperand {
         this._index = _index;
     }
 
-    public UInteger getIndex() { return _index; }
+    public UInteger getIndex() {
+        return _index;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -67,11 +74,6 @@ public class ElementOperand extends FilterOperand {
         UInteger _index = decoder.decodeUInt32("Index");
 
         return new ElementOperand(_index);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ElementOperand::encode, ElementOperand.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ElementOperand::decode, ElementOperand.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

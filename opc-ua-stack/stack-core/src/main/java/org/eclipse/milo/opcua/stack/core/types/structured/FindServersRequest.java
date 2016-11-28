@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -50,24 +49,38 @@ public class FindServersRequest implements UaRequestMessage {
         this._serverUris = _serverUris;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public String getEndpointUrl() { return _endpointUrl; }
+    public String getEndpointUrl() {
+        return _endpointUrl;
+    }
 
     @Nullable
-    public String[] getLocaleIds() { return _localeIds; }
+    public String[] getLocaleIds() {
+        return _localeIds;
+    }
 
     @Nullable
-    public String[] getServerUris() { return _serverUris; }
+    public String[] getServerUris() {
+        return _serverUris;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -93,11 +106,6 @@ public class FindServersRequest implements UaRequestMessage {
         String[] _serverUris = decoder.decodeArray("ServerUris", decoder::decodeString, String.class);
 
         return new FindServersRequest(_requestHeader, _endpointUrl, _localeIds, _serverUris);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(FindServersRequest::encode, FindServersRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(FindServersRequest::decode, FindServersRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

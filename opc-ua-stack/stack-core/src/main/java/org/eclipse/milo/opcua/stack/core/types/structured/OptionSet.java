@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -43,18 +42,28 @@ public class OptionSet implements UaStructure {
         this._validBits = _validBits;
     }
 
-    public ByteString getValue() { return _value; }
+    public ByteString getValue() {
+        return _value;
+    }
 
-    public ByteString getValidBits() { return _validBits; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public ByteString getValidBits() {
+        return _validBits;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -74,11 +83,6 @@ public class OptionSet implements UaStructure {
         ByteString _validBits = decoder.decodeByteString("ValidBits");
 
         return new OptionSet(_value, _validBits);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(OptionSet::encode, OptionSet.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(OptionSet::decode, OptionSet.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -48,21 +47,33 @@ public class NodeTypeDescription implements UaStructure {
         this._dataToReturn = _dataToReturn;
     }
 
-    public ExpandedNodeId getTypeDefinitionNode() { return _typeDefinitionNode; }
+    public ExpandedNodeId getTypeDefinitionNode() {
+        return _typeDefinitionNode;
+    }
 
-    public Boolean getIncludeSubTypes() { return _includeSubTypes; }
+    public Boolean getIncludeSubTypes() {
+        return _includeSubTypes;
+    }
 
     @Nullable
-    public QueryDataDescription[] getDataToReturn() { return _dataToReturn; }
+    public QueryDataDescription[] getDataToReturn() {
+        return _dataToReturn;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -85,11 +96,6 @@ public class NodeTypeDescription implements UaStructure {
         QueryDataDescription[] _dataToReturn = decoder.decodeArray("DataToReturn", decoder::decodeSerializable, QueryDataDescription.class);
 
         return new NodeTypeDescription(_typeDefinitionNode, _includeSubTypes, _dataToReturn);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(NodeTypeDescription::encode, NodeTypeDescription.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(NodeTypeDescription::decode, NodeTypeDescription.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

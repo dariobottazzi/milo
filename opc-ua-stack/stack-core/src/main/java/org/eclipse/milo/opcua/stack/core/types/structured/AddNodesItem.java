@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -61,28 +60,48 @@ public class AddNodesItem implements UaStructure {
         this._typeDefinition = _typeDefinition;
     }
 
-    public ExpandedNodeId getParentNodeId() { return _parentNodeId; }
+    public ExpandedNodeId getParentNodeId() {
+        return _parentNodeId;
+    }
 
-    public NodeId getReferenceTypeId() { return _referenceTypeId; }
+    public NodeId getReferenceTypeId() {
+        return _referenceTypeId;
+    }
 
-    public ExpandedNodeId getRequestedNewNodeId() { return _requestedNewNodeId; }
+    public ExpandedNodeId getRequestedNewNodeId() {
+        return _requestedNewNodeId;
+    }
 
-    public QualifiedName getBrowseName() { return _browseName; }
+    public QualifiedName getBrowseName() {
+        return _browseName;
+    }
 
-    public NodeClass getNodeClass() { return _nodeClass; }
+    public NodeClass getNodeClass() {
+        return _nodeClass;
+    }
 
-    public ExtensionObject getNodeAttributes() { return _nodeAttributes; }
+    public ExtensionObject getNodeAttributes() {
+        return _nodeAttributes;
+    }
 
-    public ExpandedNodeId getTypeDefinition() { return _typeDefinition; }
+    public ExpandedNodeId getTypeDefinition() {
+        return _typeDefinition;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -117,11 +136,6 @@ public class AddNodesItem implements UaStructure {
         ExpandedNodeId _typeDefinition = decoder.decodeExpandedNodeId("TypeDefinition");
 
         return new AddNodesItem(_parentNodeId, _referenceTypeId, _requestedNewNodeId, _browseName, _nodeClass, _nodeAttributes, _typeDefinition);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(AddNodesItem::encode, AddNodesItem.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(AddNodesItem::decode, AddNodesItem.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

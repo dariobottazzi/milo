@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -46,19 +45,29 @@ public class ContentFilterResult implements UaStructure {
     }
 
     @Nullable
-    public ContentFilterElementResult[] getElementResults() { return _elementResults; }
+    public ContentFilterElementResult[] getElementResults() {
+        return _elementResults;
+    }
 
     @Nullable
-    public DiagnosticInfo[] getElementDiagnosticInfos() { return _elementDiagnosticInfos; }
+    public DiagnosticInfo[] getElementDiagnosticInfos() {
+        return _elementDiagnosticInfos;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -78,11 +87,6 @@ public class ContentFilterResult implements UaStructure {
         DiagnosticInfo[] _elementDiagnosticInfos = decoder.decodeArray("ElementDiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
 
         return new ContentFilterResult(_elementResults, _elementDiagnosticInfos);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ContentFilterResult::encode, ContentFilterResult.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ContentFilterResult::decode, ContentFilterResult.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

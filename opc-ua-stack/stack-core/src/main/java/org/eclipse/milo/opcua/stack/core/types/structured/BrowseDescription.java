@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -56,26 +55,44 @@ public class BrowseDescription implements UaStructure {
         this._resultMask = _resultMask;
     }
 
-    public NodeId getNodeId() { return _nodeId; }
+    public NodeId getNodeId() {
+        return _nodeId;
+    }
 
-    public BrowseDirection getBrowseDirection() { return _browseDirection; }
+    public BrowseDirection getBrowseDirection() {
+        return _browseDirection;
+    }
 
-    public NodeId getReferenceTypeId() { return _referenceTypeId; }
+    public NodeId getReferenceTypeId() {
+        return _referenceTypeId;
+    }
 
-    public Boolean getIncludeSubtypes() { return _includeSubtypes; }
+    public Boolean getIncludeSubtypes() {
+        return _includeSubtypes;
+    }
 
-    public UInteger getNodeClassMask() { return _nodeClassMask; }
+    public UInteger getNodeClassMask() {
+        return _nodeClassMask;
+    }
 
-    public UInteger getResultMask() { return _resultMask; }
+    public UInteger getResultMask() {
+        return _resultMask;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -107,11 +124,6 @@ public class BrowseDescription implements UaStructure {
         UInteger _resultMask = decoder.decodeUInt32("ResultMask");
 
         return new BrowseDescription(_nodeId, _browseDirection, _referenceTypeId, _includeSubtypes, _nodeClassMask, _resultMask);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(BrowseDescription::encode, BrowseDescription.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(BrowseDescription::decode, BrowseDescription.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

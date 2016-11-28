@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -47,20 +46,32 @@ public class DeleteRawModifiedDetails extends HistoryUpdateDetails {
         this._endTime = _endTime;
     }
 
-    public Boolean getIsDeleteModified() { return _isDeleteModified; }
+    public Boolean getIsDeleteModified() {
+        return _isDeleteModified;
+    }
 
-    public DateTime getStartTime() { return _startTime; }
+    public DateTime getStartTime() {
+        return _startTime;
+    }
 
-    public DateTime getEndTime() { return _endTime; }
+    public DateTime getEndTime() {
+        return _endTime;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -86,11 +97,6 @@ public class DeleteRawModifiedDetails extends HistoryUpdateDetails {
         DateTime _endTime = decoder.decodeDateTime("EndTime");
 
         return new DeleteRawModifiedDetails(_nodeId, _isDeleteModified, _startTime, _endTime);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(DeleteRawModifiedDetails::encode, DeleteRawModifiedDetails.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(DeleteRawModifiedDetails::decode, DeleteRawModifiedDetails.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

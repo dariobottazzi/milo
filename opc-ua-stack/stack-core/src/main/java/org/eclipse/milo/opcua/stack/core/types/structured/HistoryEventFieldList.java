@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -43,16 +42,24 @@ public class HistoryEventFieldList implements UaStructure {
     }
 
     @Nullable
-    public Variant[] getEventFields() { return _eventFields; }
+    public Variant[] getEventFields() {
+        return _eventFields;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -69,11 +76,6 @@ public class HistoryEventFieldList implements UaStructure {
         Variant[] _eventFields = decoder.decodeArray("EventFields", decoder::decodeVariant, Variant.class);
 
         return new HistoryEventFieldList(_eventFields);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(HistoryEventFieldList::encode, HistoryEventFieldList.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(HistoryEventFieldList::decode, HistoryEventFieldList.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

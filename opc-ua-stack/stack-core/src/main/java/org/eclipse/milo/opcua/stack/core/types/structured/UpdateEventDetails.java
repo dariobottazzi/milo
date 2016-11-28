@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -49,21 +48,33 @@ public class UpdateEventDetails extends HistoryUpdateDetails {
         this._eventData = _eventData;
     }
 
-    public PerformUpdateType getPerformInsertReplace() { return _performInsertReplace; }
+    public PerformUpdateType getPerformInsertReplace() {
+        return _performInsertReplace;
+    }
 
-    public EventFilter getFilter() { return _filter; }
+    public EventFilter getFilter() {
+        return _filter;
+    }
 
     @Nullable
-    public HistoryEventFieldList[] getEventData() { return _eventData; }
+    public HistoryEventFieldList[] getEventData() {
+        return _eventData;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -89,11 +100,6 @@ public class UpdateEventDetails extends HistoryUpdateDetails {
         HistoryEventFieldList[] _eventData = decoder.decodeArray("EventData", decoder::decodeSerializable, HistoryEventFieldList.class);
 
         return new UpdateEventDetails(_nodeId, _performInsertReplace, _filter, _eventData);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(UpdateEventDetails::encode, UpdateEventDetails.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(UpdateEventDetails::decode, UpdateEventDetails.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

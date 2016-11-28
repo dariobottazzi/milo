@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -53,24 +52,40 @@ public class MonitoringParameters implements UaStructure {
         this._discardOldest = _discardOldest;
     }
 
-    public UInteger getClientHandle() { return _clientHandle; }
+    public UInteger getClientHandle() {
+        return _clientHandle;
+    }
 
-    public Double getSamplingInterval() { return _samplingInterval; }
+    public Double getSamplingInterval() {
+        return _samplingInterval;
+    }
 
-    public ExtensionObject getFilter() { return _filter; }
+    public ExtensionObject getFilter() {
+        return _filter;
+    }
 
-    public UInteger getQueueSize() { return _queueSize; }
+    public UInteger getQueueSize() {
+        return _queueSize;
+    }
 
-    public Boolean getDiscardOldest() { return _discardOldest; }
+    public Boolean getDiscardOldest() {
+        return _discardOldest;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -99,11 +114,6 @@ public class MonitoringParameters implements UaStructure {
         Boolean _discardOldest = decoder.decodeBoolean("DiscardOldest");
 
         return new MonitoringParameters(_clientHandle, _samplingInterval, _filter, _queueSize, _discardOldest);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(MonitoringParameters::encode, MonitoringParameters.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(MonitoringParameters::decode, MonitoringParameters.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -42,18 +41,28 @@ public class TimeZoneDataType implements UaStructure {
         this._daylightSavingInOffset = _daylightSavingInOffset;
     }
 
-    public Short getOffset() { return _offset; }
+    public Short getOffset() {
+        return _offset;
+    }
 
-    public Boolean getDaylightSavingInOffset() { return _daylightSavingInOffset; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Boolean getDaylightSavingInOffset() {
+        return _daylightSavingInOffset;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +82,6 @@ public class TimeZoneDataType implements UaStructure {
         Boolean _daylightSavingInOffset = decoder.decodeBoolean("DaylightSavingInOffset");
 
         return new TimeZoneDataType(_offset, _daylightSavingInOffset);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(TimeZoneDataType::encode, TimeZoneDataType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(TimeZoneDataType::decode, TimeZoneDataType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

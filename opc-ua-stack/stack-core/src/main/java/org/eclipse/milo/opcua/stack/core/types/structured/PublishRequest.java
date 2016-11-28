@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -44,19 +43,29 @@ public class PublishRequest implements UaRequestMessage {
         this._subscriptionAcknowledgements = _subscriptionAcknowledgements;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
     @Nullable
-    public SubscriptionAcknowledgement[] getSubscriptionAcknowledgements() { return _subscriptionAcknowledgements; }
+    public SubscriptionAcknowledgement[] getSubscriptionAcknowledgements() {
+        return _subscriptionAcknowledgements;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class PublishRequest implements UaRequestMessage {
         SubscriptionAcknowledgement[] _subscriptionAcknowledgements = decoder.decodeArray("SubscriptionAcknowledgements", decoder::decodeSerializable, SubscriptionAcknowledgement.class);
 
         return new PublishRequest(_requestHeader, _subscriptionAcknowledgements);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(PublishRequest::encode, PublishRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(PublishRequest::decode, PublishRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

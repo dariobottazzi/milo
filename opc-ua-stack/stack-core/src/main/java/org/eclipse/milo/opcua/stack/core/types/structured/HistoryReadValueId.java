@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -50,22 +49,36 @@ public class HistoryReadValueId implements UaStructure {
         this._continuationPoint = _continuationPoint;
     }
 
-    public NodeId getNodeId() { return _nodeId; }
+    public NodeId getNodeId() {
+        return _nodeId;
+    }
 
-    public String getIndexRange() { return _indexRange; }
+    public String getIndexRange() {
+        return _indexRange;
+    }
 
-    public QualifiedName getDataEncoding() { return _dataEncoding; }
+    public QualifiedName getDataEncoding() {
+        return _dataEncoding;
+    }
 
-    public ByteString getContinuationPoint() { return _continuationPoint; }
+    public ByteString getContinuationPoint() {
+        return _continuationPoint;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -91,11 +104,6 @@ public class HistoryReadValueId implements UaStructure {
         ByteString _continuationPoint = decoder.decodeByteString("ContinuationPoint");
 
         return new HistoryReadValueId(_nodeId, _indexRange, _dataEncoding, _continuationPoint);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(HistoryReadValueId::encode, HistoryReadValueId.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(HistoryReadValueId::decode, HistoryReadValueId.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

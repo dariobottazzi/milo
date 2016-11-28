@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -69,36 +68,62 @@ public class ProgramDiagnosticDataType implements UaStructure {
         this._lastMethodReturnStatus = _lastMethodReturnStatus;
     }
 
-    public NodeId getCreateSessionId() { return _createSessionId; }
+    public NodeId getCreateSessionId() {
+        return _createSessionId;
+    }
 
-    public String getCreateClientName() { return _createClientName; }
+    public String getCreateClientName() {
+        return _createClientName;
+    }
 
-    public DateTime getInvocationCreationTime() { return _invocationCreationTime; }
+    public DateTime getInvocationCreationTime() {
+        return _invocationCreationTime;
+    }
 
-    public DateTime getLastTransitionTime() { return _lastTransitionTime; }
+    public DateTime getLastTransitionTime() {
+        return _lastTransitionTime;
+    }
 
-    public String getLastMethodCall() { return _lastMethodCall; }
+    public String getLastMethodCall() {
+        return _lastMethodCall;
+    }
 
-    public NodeId getLastMethodSessionId() { return _lastMethodSessionId; }
+    public NodeId getLastMethodSessionId() {
+        return _lastMethodSessionId;
+    }
 
     @Nullable
-    public Argument[] getLastMethodInputArguments() { return _lastMethodInputArguments; }
+    public Argument[] getLastMethodInputArguments() {
+        return _lastMethodInputArguments;
+    }
 
     @Nullable
-    public Argument[] getLastMethodOutputArguments() { return _lastMethodOutputArguments; }
+    public Argument[] getLastMethodOutputArguments() {
+        return _lastMethodOutputArguments;
+    }
 
-    public DateTime getLastMethodCallTime() { return _lastMethodCallTime; }
+    public DateTime getLastMethodCallTime() {
+        return _lastMethodCallTime;
+    }
 
-    public StatusResult getLastMethodReturnStatus() { return _lastMethodReturnStatus; }
+    public StatusResult getLastMethodReturnStatus() {
+        return _lastMethodReturnStatus;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -142,11 +167,6 @@ public class ProgramDiagnosticDataType implements UaStructure {
         StatusResult _lastMethodReturnStatus = decoder.decodeSerializable("LastMethodReturnStatus", StatusResult.class);
 
         return new ProgramDiagnosticDataType(_createSessionId, _createClientName, _invocationCreationTime, _lastTransitionTime, _lastMethodCall, _lastMethodSessionId, _lastMethodInputArguments, _lastMethodOutputArguments, _lastMethodCallTime, _lastMethodReturnStatus);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(ProgramDiagnosticDataType::encode, ProgramDiagnosticDataType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(ProgramDiagnosticDataType::decode, ProgramDiagnosticDataType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

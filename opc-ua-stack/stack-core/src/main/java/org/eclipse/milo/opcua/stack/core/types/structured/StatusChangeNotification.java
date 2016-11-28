@@ -15,7 +15,6 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -45,18 +44,28 @@ public class StatusChangeNotification extends NotificationData {
         this._diagnosticInfo = _diagnosticInfo;
     }
 
-    public StatusCode getStatus() { return _status; }
+    public StatusCode getStatus() {
+        return _status;
+    }
 
-    public DiagnosticInfo getDiagnosticInfo() { return _diagnosticInfo; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public DiagnosticInfo getDiagnosticInfo() {
+        return _diagnosticInfo;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -76,11 +85,6 @@ public class StatusChangeNotification extends NotificationData {
         DiagnosticInfo _diagnosticInfo = decoder.decodeDiagnosticInfo("DiagnosticInfo");
 
         return new StatusChangeNotification(_status, _diagnosticInfo);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(StatusChangeNotification::encode, StatusChangeNotification.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(StatusChangeNotification::decode, StatusChangeNotification.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

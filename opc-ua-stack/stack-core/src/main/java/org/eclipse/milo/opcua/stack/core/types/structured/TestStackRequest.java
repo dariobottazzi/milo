@@ -14,7 +14,6 @@
 package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -95,11 +94,6 @@ public class TestStackRequest implements UaRequestMessage {
         Variant _input = decoder.decodeVariant("Input");
 
         return new TestStackRequest(_requestHeader, _testId, _iteration, _input);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(TestStackRequest::encode, TestStackRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(TestStackRequest::decode, TestStackRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

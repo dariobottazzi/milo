@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -51,23 +50,37 @@ public class BrowseRequest implements UaRequestMessage {
         this._nodesToBrowse = _nodesToBrowse;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
-    public ViewDescription getView() { return _view; }
+    public ViewDescription getView() {
+        return _view;
+    }
 
-    public UInteger getRequestedMaxReferencesPerNode() { return _requestedMaxReferencesPerNode; }
+    public UInteger getRequestedMaxReferencesPerNode() {
+        return _requestedMaxReferencesPerNode;
+    }
 
     @Nullable
-    public BrowseDescription[] getNodesToBrowse() { return _nodesToBrowse; }
+    public BrowseDescription[] getNodesToBrowse() {
+        return _nodesToBrowse;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -93,11 +106,6 @@ public class BrowseRequest implements UaRequestMessage {
         BrowseDescription[] _nodesToBrowse = decoder.decodeArray("NodesToBrowse", decoder::decodeSerializable, BrowseDescription.class);
 
         return new BrowseRequest(_requestHeader, _view, _requestedMaxReferencesPerNode, _nodesToBrowse);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(BrowseRequest::encode, BrowseRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(BrowseRequest::decode, BrowseRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

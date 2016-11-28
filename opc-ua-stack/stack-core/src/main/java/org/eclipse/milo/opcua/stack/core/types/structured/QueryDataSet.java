@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -49,21 +48,33 @@ public class QueryDataSet implements UaStructure {
         this._values = _values;
     }
 
-    public ExpandedNodeId getNodeId() { return _nodeId; }
+    public ExpandedNodeId getNodeId() {
+        return _nodeId;
+    }
 
-    public ExpandedNodeId getTypeDefinitionNode() { return _typeDefinitionNode; }
+    public ExpandedNodeId getTypeDefinitionNode() {
+        return _typeDefinitionNode;
+    }
 
     @Nullable
-    public Variant[] getValues() { return _values; }
+    public Variant[] getValues() {
+        return _values;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -86,11 +97,6 @@ public class QueryDataSet implements UaStructure {
         Variant[] _values = decoder.decodeArray("Values", decoder::decodeVariant, Variant.class);
 
         return new QueryDataSet(_nodeId, _typeDefinitionNode, _values);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(QueryDataSet::encode, QueryDataSet.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(QueryDataSet::decode, QueryDataSet.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

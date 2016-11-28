@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
@@ -44,16 +43,24 @@ public class DeleteAtTimeDetails extends HistoryUpdateDetails {
     }
 
     @Nullable
-    public DateTime[] getReqTimes() { return _reqTimes; }
+    public DateTime[] getReqTimes() {
+        return _reqTimes;
+    }
 
     @Override
-    public NodeId getTypeId() { return TypeId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
 
     @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -73,11 +80,6 @@ public class DeleteAtTimeDetails extends HistoryUpdateDetails {
         DateTime[] _reqTimes = decoder.decodeArray("ReqTimes", decoder::decodeDateTime, DateTime.class);
 
         return new DeleteAtTimeDetails(_nodeId, _reqTimes);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(DeleteAtTimeDetails::encode, DeleteAtTimeDetails.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(DeleteAtTimeDetails::decode, DeleteAtTimeDetails.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

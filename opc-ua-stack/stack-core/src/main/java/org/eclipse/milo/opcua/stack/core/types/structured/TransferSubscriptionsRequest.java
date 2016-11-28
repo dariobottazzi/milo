@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
@@ -48,21 +47,33 @@ public class TransferSubscriptionsRequest implements UaRequestMessage {
         this._sendInitialValues = _sendInitialValues;
     }
 
-    public RequestHeader getRequestHeader() { return _requestHeader; }
+    public RequestHeader getRequestHeader() {
+        return _requestHeader;
+    }
 
     @Nullable
-    public UInteger[] getSubscriptionIds() { return _subscriptionIds; }
+    public UInteger[] getSubscriptionIds() {
+        return _subscriptionIds;
+    }
 
-    public Boolean getSendInitialValues() { return _sendInitialValues; }
-
-    @Override
-    public NodeId getTypeId() { return TypeId; }
-
-    @Override
-    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
+    public Boolean getSendInitialValues() {
+        return _sendInitialValues;
+    }
 
     @Override
-    public NodeId getXmlEncodingId() { return XmlEncodingId; }
+    public NodeId getTypeId() {
+        return TypeId;
+    }
+
+    @Override
+    public NodeId getBinaryEncodingId() {
+        return BinaryEncodingId;
+    }
+
+    @Override
+    public NodeId getXmlEncodingId() {
+        return XmlEncodingId;
+    }
 
     @Override
     public String toString() {
@@ -85,11 +96,6 @@ public class TransferSubscriptionsRequest implements UaRequestMessage {
         Boolean _sendInitialValues = decoder.decodeBoolean("SendInitialValues");
 
         return new TransferSubscriptionsRequest(_requestHeader, _subscriptionIds, _sendInitialValues);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(TransferSubscriptionsRequest::encode, TransferSubscriptionsRequest.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(TransferSubscriptionsRequest::decode, TransferSubscriptionsRequest.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }

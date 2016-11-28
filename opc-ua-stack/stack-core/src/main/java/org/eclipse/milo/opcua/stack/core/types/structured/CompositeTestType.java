@@ -14,7 +14,6 @@
 package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
@@ -75,11 +74,6 @@ public class CompositeTestType implements UaStructure {
         ArrayTestType _field2 = decoder.decodeSerializable("Field2", ArrayTestType.class);
 
         return new CompositeTestType(_field1, _field2);
-    }
-
-    static {
-        OpcUaTypeDictionary.registerEncoder(CompositeTestType::encode, CompositeTestType.class, BinaryEncodingId, XmlEncodingId);
-        OpcUaTypeDictionary.registerDecoder(CompositeTestType::decode, CompositeTestType.class, BinaryEncodingId, XmlEncodingId);
     }
 
 }
