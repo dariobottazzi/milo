@@ -25,11 +25,11 @@ public interface TypeManager extends ConcurrentMap<String, TypeDictionary> {
      */
     TypeManager BUILTIN = new OpcUaTypeManager(new NamespaceTable(), OpcUaTypeDictionary.getInstance());
 
-    TypeDictionary getTypeDictionary(String namespaceUri);
-
     TypeDecoder<?> getDecoder(NodeId encodingId);
 
     TypeEncoder<?> getEncoder(NodeId encodingId);
+
+    TypeDictionary getTypeDictionary(String namespaceUri);
 
     default TypeDecoder<?> getDecoder(String namespaceUri, String typeName) {
         TypeDictionary dictionary = getTypeDictionary(namespaceUri);
