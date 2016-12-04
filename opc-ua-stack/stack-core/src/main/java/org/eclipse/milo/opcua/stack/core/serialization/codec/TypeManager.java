@@ -15,9 +15,12 @@ package org.eclipse.milo.opcua.stack.core.serialization.codec;
 
 import javax.annotation.Nullable;
 
+import org.eclipse.milo.opcua.stack.core.NamespaceTable;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
 public interface TypeManager {
+
+    TypeManager BUILTIN = new TypeManagerImpl(new NamespaceTable());
 
     @Nullable
     TypeDictionary getTypeDictionary(String namespaceUri);

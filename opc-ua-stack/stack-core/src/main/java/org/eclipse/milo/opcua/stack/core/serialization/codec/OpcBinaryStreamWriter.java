@@ -18,13 +18,25 @@ import java.util.function.Consumer;
 
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
+import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
+import org.eclipse.milo.opcua.stack.core.types.builtin.DiagnosticInfo;
+import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
+import org.eclipse.milo.opcua.stack.core.types.builtin.ExtensionObject;
+import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
+import org.eclipse.milo.opcua.stack.core.types.builtin.QualifiedName;
+import org.eclipse.milo.opcua.stack.core.types.builtin.StatusCode;
+import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
+import org.eclipse.milo.opcua.stack.core.types.builtin.XmlElement;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UByte;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.ULong;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UShort;
 
 public interface OpcBinaryStreamWriter {
+
+    <T> void writeArray(T[] values, Consumer<T> write) throws UaSerializationException;
 
     void writeBit(int value) throws UaSerializationException;
 
@@ -54,13 +66,13 @@ public interface OpcBinaryStreamWriter {
 
     void writeWideChar(Character value) throws UaSerializationException;
 
-    void writeString(String value) throws UaSerializationException;
+    void writeUtf8NullTerminatedString(String value) throws UaSerializationException;
 
-    void writeCharArray(Character[] value) throws UaSerializationException;
+    void writeUtf8CharArray(String value) throws UaSerializationException;
 
-    void writeWideString(String value) throws UaSerializationException;
+    void writeUtf16NullTerminatedString(String value) throws UaSerializationException;
 
-    void writeWideCharArray(String value) throws UaSerializationException;
+    void writeUtf16CharArray(String value) throws UaSerializationException;
 
     void writeDateTime(DateTime value) throws UaSerializationException;
 
@@ -68,6 +80,39 @@ public interface OpcBinaryStreamWriter {
 
     void writeGuid(UUID value) throws UaSerializationException;
 
-    <T> void writeArray(T[] values, Consumer<T> writer) throws UaSerializationException;
+    // region OPC Built-in Types
+
+    // TODO builtin String clashes with OPC Binary Schema String
+
+    void writeXmlElement(XmlElement value) throws UaSerializationException;
+
+    void writeDataValue(DataValue value) throws UaSerializationException;
+
+    void writeDiagnosticInfo(DiagnosticInfo value) throws UaSerializationException;
+
+    void writeExpandedNodeId(ExpandedNodeId value) throws UaSerializationException;
+
+    void writeExtensionObject(ExtensionObject value) throws UaSerializationException;
+
+    default void writeLocalizedText(LocalizedText value) throws UaSerializationException {
+        SerializationContext.INTERNAL.encode(
+            "http://opcfoundation.org/UA/",
+            "LocalizedText",
+            value,
+            this
+        );
+    }
+
+    void writeNodeId(NodeId value) throws UaSerializationException;
+
+    void writeQualifiedName(QualifiedName value) throws UaSerializationException;
+
+    void writeString(String value) throws UaSerializationException;
+
+    void writeStatusCode(StatusCode value) throws UaSerializationException;
+
+    void writeVariant(Variant value) throws UaSerializationException;
+
+    // endregion
 
 }

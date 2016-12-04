@@ -18,6 +18,8 @@ import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 
 public interface SerializationContext {
 
+    SerializationContext INTERNAL = () -> TypeManager.BUILTIN;
+
     TypeManager getTypeManager();
 
     default Object decode(

@@ -18,15 +18,31 @@ import java.util.function.Supplier;
 
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
+import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
+import org.eclipse.milo.opcua.stack.core.types.builtin.DiagnosticInfo;
+import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
+import org.eclipse.milo.opcua.stack.core.types.builtin.ExtensionObject;
+import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
+import org.eclipse.milo.opcua.stack.core.types.builtin.QualifiedName;
+import org.eclipse.milo.opcua.stack.core.types.builtin.StatusCode;
+import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
+import org.eclipse.milo.opcua.stack.core.types.builtin.XmlElement;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UByte;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.ULong;
-import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UNumber;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UShort;
 
 public interface OpcBinaryStreamReader {
+
+    // region Arrays
+
+    <T> T[] readArray(Supplier<T> read, Class<T> clazz) throws UaSerializationException;
+
+    // endregion
+
+    // region OPC Binary Schema
 
     int readBit() throws UaSerializationException;
 
@@ -56,13 +72,13 @@ public interface OpcBinaryStreamReader {
 
     Character readWideChar() throws UaSerializationException;
 
-    String readString() throws UaSerializationException;
+    String readUtf8NullTerminatedString() throws UaSerializationException;
 
-    Character[] readCharArray() throws UaSerializationException;
+    String readUtf8CharArray() throws UaSerializationException;
 
-    String readWideString() throws UaSerializationException;
+    String readUtf16NullTerminatedString() throws UaSerializationException;
 
-    String readWideCharArray() throws UaSerializationException;
+    String readUtf16CharArray() throws UaSerializationException;
 
     DateTime readDateTime() throws UaSerializationException;
 
@@ -70,20 +86,52 @@ public interface OpcBinaryStreamReader {
 
     UUID readGuid() throws UaSerializationException;
 
+    // endregion
+
+    // region OPC Built-in Types
+
+    XmlElement readXmlElement() throws UaSerializationException;
+
+    DataValue readDataValue() throws UaSerializationException;
+
+    DiagnosticInfo readDiagnosticInfo() throws UaSerializationException;
+
+    ExpandedNodeId readExpandedNodeId() throws UaSerializationException;
+
+    ExtensionObject readExtensionObject() throws UaSerializationException;
+
+    default LocalizedText readLocalizedText() throws UaSerializationException {
+        return (LocalizedText) SerializationContext.INTERNAL.decode(
+            "http://opcfoundation.org/UA/",
+            "LocalizedText",
+            this
+        );
+    }
+
+    NodeId readNodeId() throws UaSerializationException;
+
+    QualifiedName readQualifiedName() throws UaSerializationException;
+
+    StatusCode readStatusCode() throws UaSerializationException;
+
+    String readString() throws UaSerializationException;
+
+    Variant readVariant() throws UaSerializationException;
+
+    // endregion
+
+//    UNumber readEnumeratedType(int lengthInBits) throws UaSerializationException;
+//
+//    UNumber readEnumeratedType(String namespaceUri, String typeName) throws UaSerializationException;
+//
+//    ByteString readOpaqueType(int lengthInBits) throws UaSerializationException;
+//
+//    Object readOpaqueType(String namespaceUri, String typeName) throws UaSerializationException;
+//
+//    Object readStructuredType(NodeId encodingId) throws UaSerializationException;
+//
+//    Object readStructuredType(String namespaceUri, String typeName) throws UaSerializationException;
+//
     // TODO do these belong here? SerializationContext in codec encode/decode?
-
-    UNumber readEnumeratedType(int lengthInBits) throws UaSerializationException;
-
-    UNumber readEnumeratedType(String namespaceUri, String typeName) throws UaSerializationException;
-
-    ByteString readOpaqueType(int lengthInBits) throws UaSerializationException;
-
-    Object readOpaqueType(String namespaceUri, String typeName) throws UaSerializationException;
-
-    Object readStructuredType(NodeId encodingId) throws UaSerializationException;
-
-    Object readStructuredType(String namespaceUri, String typeName) throws UaSerializationException;
-
-    <T> T[] readArray(Supplier<T> supplier, Class<T> clazz) throws UaSerializationException;
 
 }
