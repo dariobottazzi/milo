@@ -6,6 +6,7 @@ import com.google.common.reflect.ClassPath;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotNull;
 
 public class OpcUaTypeDictionaryInitializerTest {
 
@@ -28,8 +29,8 @@ public class OpcUaTypeDictionaryInitializerTest {
         for (ClassPath.ClassInfo classInfo : Sets.union(structures, enumerations)) {
             Class<?> clazz = classInfo.load();
 
-            OpcUaTypeDictionary.getInstance().getEncoder(clazz);
-            OpcUaTypeDictionary.getInstance().getDecoder(clazz);
+            assertNotNull(OpcUaTypeDictionary.getInstance().getBinaryCodec(clazz.getSimpleName()));
+            assertNotNull(OpcUaTypeDictionary.getInstance().getXmlCodec(clazz.getSimpleName()));
         }
     }
 

@@ -14,19 +14,13 @@
 package org.eclipse.milo.opcua.stack.core.channel;
 
 import java.util.concurrent.ExecutorService;
-import java.util.function.BiConsumer;
 
-import org.eclipse.milo.opcua.stack.core.serialization.binary.BinaryDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.binary.BinaryEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.util.ExecutionQueue;
 
 public class SerializationQueue {
-
-    private final BinaryEncoder binaryEncoder;
-    private final BinaryDecoder binaryDecoder;
 
     private final OpcBinaryStreamReader reader;
     private final OpcBinaryStreamWriter writer;
@@ -46,9 +40,6 @@ public class SerializationQueue {
 
         this.parameters = parameters;
 
-        binaryEncoder = new BinaryEncoder(maxArrayLength, maxStringLength);
-        binaryDecoder = new BinaryDecoder(maxArrayLength, maxStringLength);
-
         reader = new OpcBinaryStreamReader(maxArrayLength, maxStringLength);
         writer = null; // TODO
 
@@ -57,14 +48,6 @@ public class SerializationQueue {
 
         encodingQueue = new ExecutionQueue(executor);
         decodingQueue = new ExecutionQueue(executor);
-    }
-
-    public void encode(BiConsumer<BinaryEncoder, ChunkEncoder> consumer) {
-        encodingQueue.submit(() -> consumer.accept(binaryEncoder, chunkEncoder));
-    }
-
-    public void decode(BiConsumer<BinaryDecoder, ChunkDecoder> consumer) {
-        decodingQueue.submit(() -> consumer.accept(binaryDecoder, chunkDecoder));
     }
 
     public void encode(Encoder encoder) {

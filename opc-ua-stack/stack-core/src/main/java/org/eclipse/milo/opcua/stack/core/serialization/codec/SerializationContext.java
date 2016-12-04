@@ -88,6 +88,24 @@ public interface SerializationContext {
     }
 
     default void encode(
+        NodeId encodingId,
+        Object encodable,
+        OpcBinaryStreamWriter writer) throws UaSerializationException {
+
+        @SuppressWarnings("unchecked")
+        OpcBinaryTypeCodec<Object> codec =
+            (OpcBinaryTypeCodec<Object>) getTypeManager().getBinaryCodec(encodingId);
+
+        if (codec == null) {
+            throw new UaSerializationException(
+                StatusCodes.Bad_EncodingError,
+                String.format("no OpcBinaryTypeCodec registered for encodingId=%s", encodingId));
+        }
+
+        codec.encode(this, encodable, writer);
+    }
+
+    default void encode(
         String namespaceUri,
         String typeName,
         Object encodable,

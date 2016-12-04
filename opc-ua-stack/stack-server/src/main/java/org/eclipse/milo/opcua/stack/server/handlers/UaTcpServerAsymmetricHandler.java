@@ -385,12 +385,15 @@ public class UaTcpServerAsymmetricHandler extends ByteToMessageDecoder implement
         long requestId,
         OpenSecureChannelResponse response) {
 
-        serializationQueue.encode((binaryEncoder, chunkEncoder) -> {
+        serializationQueue.encode((context, writer, chunkEncoder) -> {
             ByteBuf messageBuffer = BufferUtil.buffer();
 
             try {
-                binaryEncoder.setBuffer(messageBuffer);
-                binaryEncoder.encodeMessage(null, response);
+                writer.setBuffer(messageBuffer);
+
+                NodeId encodingId = response.getBinaryEncodingId();
+                writer.writeNodeId(encodingId);
+                context.encode(encodingId, response, writer);
 
                 List<ByteBuf> chunks = chunkEncoder.encodeAsymmetric(
                     secureChannel,

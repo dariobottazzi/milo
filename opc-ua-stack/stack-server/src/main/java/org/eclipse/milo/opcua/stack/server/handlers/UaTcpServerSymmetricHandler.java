@@ -88,12 +88,15 @@ public class UaTcpServerSymmetricHandler extends ByteToMessageCodec<ServiceRespo
 
     @Override
     protected void encode(ChannelHandlerContext ctx, ServiceResponse message, ByteBuf out) throws Exception {
-        serializationQueue.encode((binaryEncoder, chunkEncoder) -> {
+        serializationQueue.encode((context, writer, chunkEncoder) -> {
             ByteBuf messageBuffer = BufferUtil.buffer();
 
             try {
-                binaryEncoder.setBuffer(messageBuffer);
-                binaryEncoder.encodeMessage(null, message.getResponse());
+                writer.setBuffer(messageBuffer);
+
+                NodeId encodingId = message.getResponse().getBinaryEncodingId();
+                writer.writeNodeId(encodingId);
+                context.encode(encodingId, message.getResponse(), writer);
 
                 final List<ByteBuf> chunks = chunkEncoder.encodeSymmetric(
                     secureChannel,

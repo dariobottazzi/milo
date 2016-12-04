@@ -279,13 +279,16 @@ public class UaTcpClientMessageHandler extends ByteToMessageCodec<UaRequestFutur
 
         CompletableFuture<Tuple2<Long, List<ByteBuf>>> future = new CompletableFuture<>();
 
-        serializationQueue.encode((binaryEncoder, chunkEncoder) -> {
+        serializationQueue.encode((context, writer, chunkEncoder) -> {
             ByteBuf messageBuffer = null;
 
             try {
                 messageBuffer = BufferUtil.buffer();
-                binaryEncoder.setBuffer(messageBuffer);
-                binaryEncoder.encodeMessage(null, request);
+                writer.setBuffer(messageBuffer);
+
+                NodeId encodingId = request.getBinaryEncodingId();
+                writer.writeNodeId(encodingId);
+                context.encode(encodingId, request, writer);
 
                 List<ByteBuf> chunks;
 
