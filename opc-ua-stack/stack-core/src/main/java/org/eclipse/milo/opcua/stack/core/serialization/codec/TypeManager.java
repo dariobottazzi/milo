@@ -16,11 +16,14 @@ package org.eclipse.milo.opcua.stack.core.serialization.codec;
 import javax.annotation.Nullable;
 
 import org.eclipse.milo.opcua.stack.core.NamespaceTable;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
 public interface TypeManager {
 
-    TypeManager BUILTIN = new TypeManagerImpl(new NamespaceTable());
+    TypeManager BUILTIN = new TypeManagerImpl(new NamespaceTable(), OpcUaTypeDictionary.getInstance());
+
+    void registerTypeDictionary(String namespaceUri, TypeDictionary typeDictionary);
 
     @Nullable
     TypeDictionary getTypeDictionary(String namespaceUri);

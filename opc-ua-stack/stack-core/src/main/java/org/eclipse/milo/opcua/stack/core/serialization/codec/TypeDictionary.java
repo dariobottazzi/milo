@@ -17,7 +17,32 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
 public interface TypeDictionary {
 
+    /**
+     * @return the namespace URI this {@link TypeDictionary} belongs to.
+     */
     String getNamespaceUri();
+
+    /**
+     * Link the codec for an encoding id or type name.
+     * <p>
+     * If a {@link OpcBinaryTypeCodec} is registered for either the encodingId or the typeName then it will be
+     * registered to both after this call.
+     *
+     * @param encodingId the binary encoding id.
+     * @param typeName   the type name.
+     */
+    void linkBinaryCodec(NodeId encodingId, String typeName);
+
+    /**
+     * Link the codec for an encoding id or type name.
+     * <p>
+     * If a {@link OpcXmlTypeCodec} is registered for either the encodingId or the typeName then it will be
+     * registered to both after this call.
+     *
+     * @param encodingId the XML encoding id.
+     * @param typeName   the type name.
+     */
+    void linkXmlCodec(NodeId encodingId, String typeName);
 
     void registerBinaryCodec(OpcBinaryTypeCodec<?> codec, String typeName);
 

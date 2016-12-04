@@ -28,7 +28,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.channel.ChannelConfig;
-import org.eclipse.milo.opcua.stack.core.serialization.TypeManager;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
 import org.eclipse.milo.opcua.stack.core.serialization.UaSerializable;
@@ -60,24 +59,14 @@ public class XmlEncoder implements UaEncoder {
 
     private volatile XMLStreamWriter streamWriter;
 
-    private final TypeManager typeManager;
     private final int maxArrayLength;
     private final int maxStringLength;
 
     public XmlEncoder() {
-        this(TypeManager.BUILTIN, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
-    }
-
-    public XmlEncoder(TypeManager typeManager) {
-        this(typeManager, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+        this(ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
     }
 
     public XmlEncoder(int maxArrayLength, int maxStringLength) {
-        this(TypeManager.BUILTIN, maxArrayLength, maxStringLength);
-    }
-
-    public XmlEncoder(TypeManager typeManager, int maxArrayLength, int maxStringLength) {
-        this.typeManager = typeManager;
         this.maxArrayLength = maxArrayLength;
         this.maxStringLength = maxStringLength;
     }

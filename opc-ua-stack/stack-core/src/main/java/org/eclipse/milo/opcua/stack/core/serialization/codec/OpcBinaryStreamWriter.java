@@ -94,14 +94,7 @@ public interface OpcBinaryStreamWriter {
 
     void writeExtensionObject(ExtensionObject value) throws UaSerializationException;
 
-    default void writeLocalizedText(LocalizedText value) throws UaSerializationException {
-        SerializationContext.INTERNAL.encode(
-            "http://opcfoundation.org/UA/",
-            "LocalizedText",
-            value,
-            this
-        );
-    }
+    void writeLocalizedText(LocalizedText value) throws UaSerializationException;
 
     void writeNodeId(NodeId value) throws UaSerializationException;
 

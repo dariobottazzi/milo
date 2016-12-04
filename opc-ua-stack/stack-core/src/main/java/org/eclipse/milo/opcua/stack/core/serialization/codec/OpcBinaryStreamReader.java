@@ -19,11 +19,13 @@ import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.UUID;
 import java.util.function.Supplier;
+import javax.annotation.Nullable;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufProcessor;
 import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.channel.ChannelConfig;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
@@ -43,7 +45,6 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UShort;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned;
 import org.eclipse.milo.opcua.stack.core.util.ArrayUtil;
 import org.eclipse.milo.opcua.stack.core.util.TypeUtil;
-import org.jetbrains.annotations.Nullable;
 
 import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.ubyte;
 import static org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
@@ -57,11 +58,24 @@ public class OpcBinaryStreamReader {
 
     private volatile ByteBuf buffer;
 
-    private int currentByte = 0;
-    private int bitsRemaining = 0;
+    private volatile int currentByte = 0;
+    private volatile int bitsRemaining = 0;
 
     private final int maxArrayLength;
     private final int maxStringLength;
+
+    public OpcBinaryStreamReader() {
+        this(ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+    }
+
+    public OpcBinaryStreamReader(ByteBuf buffer) {
+        this(buffer, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+    }
+
+    public OpcBinaryStreamReader(int maxArrayLength, int maxStringLength) {
+        this.maxArrayLength = maxArrayLength;
+        this.maxStringLength = maxStringLength;
+    }
 
     public OpcBinaryStreamReader(ByteBuf buffer, int maxArrayLength, int maxStringLength) {
         this.buffer = buffer;

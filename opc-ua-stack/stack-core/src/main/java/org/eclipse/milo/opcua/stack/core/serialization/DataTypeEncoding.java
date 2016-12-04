@@ -14,6 +14,7 @@
 package org.eclipse.milo.opcua.stack.core.serialization;
 
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.TypeManager;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.XmlElement;
@@ -24,16 +25,8 @@ public interface DataTypeEncoding {
 
     ByteString encodeToByteString(
         Object object,
-        NodeId encodingTypeId) throws UaSerializationException;
-
-    ByteString encodeToByteString(
-        Object object,
         NodeId encodingTypeId,
         TypeManager typeManager) throws UaSerializationException;
-
-    XmlElement encodeToXmlElement(
-        Object object,
-        NodeId encodingTypeId) throws UaSerializationException;
 
     XmlElement encodeToXmlElement(
         Object object,
@@ -42,20 +35,40 @@ public interface DataTypeEncoding {
 
     Object decodeFromByteString(
         ByteString encoded,
-        NodeId encodingTypeId) throws UaSerializationException;
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException;
 
-    Object decodeFromByteString(
+    Object decodeFromXmlElement(
+        XmlElement encoded,
+        NodeId encodingTypeId,
+        TypeManager typeManager) throws UaSerializationException;
+
+    default ByteString encodeToByteString(
+        Object object,
+        NodeId encodingTypeId) throws UaSerializationException {
+
+        return encodeToByteString(object, encodingTypeId, TypeManager.BUILTIN);
+    }
+
+    default XmlElement encodeToXmlElement(
+        Object object,
+        NodeId encodingTypeId) throws UaSerializationException {
+
+        return encodeToXmlElement(object, encodingTypeId, TypeManager.BUILTIN);
+    }
+
+    default Object decodeFromByteString(
         ByteString encoded,
-        NodeId encodingTypeId,
-        TypeManager typeManager) throws UaSerializationException;
+        NodeId encodingTypeId) throws UaSerializationException {
 
-    Object decodeFromXmlElement(
-        XmlElement encoded,
-        NodeId encodingTypeId) throws UaSerializationException;
+        return decodeFromByteString(encoded, encodingTypeId, TypeManager.BUILTIN);
+    }
 
-    Object decodeFromXmlElement(
+    default Object decodeFromXmlElement(
         XmlElement encoded,
-        NodeId encodingTypeId,
-        TypeManager typeManager) throws UaSerializationException;
+        NodeId encodingTypeId) throws UaSerializationException {
+
+        return decodeFromXmlElement(encoded, encodingTypeId, TypeManager.BUILTIN);
+    }
 
 }

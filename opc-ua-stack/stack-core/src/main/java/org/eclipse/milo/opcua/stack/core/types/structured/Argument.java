@@ -17,9 +17,17 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -117,6 +125,51 @@ public class Argument implements UaStructure {
         LocalizedText _description = decoder.decodeLocalizedText("Description");
 
         return new Argument(_name, _dataType, _valueRank, _arrayDimensions, _description);
+    }
+
+    public static class BinaryCodec implements OpcBinaryTypeCodec<Argument> {
+        @Override
+        public Argument decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            String name = reader.readString();
+            NodeId dataType = reader.readNodeId();
+            Integer valueRank = reader.readInt32();
+            UInteger[] arrayDimensions = reader.readArray(reader::readUInt32, UInteger.class);
+            LocalizedText description = reader.readLocalizedText();
+
+            return new Argument(name, dataType, valueRank, arrayDimensions, description);
+        }
+
+        @Override
+        public void encode(SerializationContext context, Argument argument, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeString(argument._name);
+            writer.writeNodeId(argument._dataType);
+            writer.writeInt32(argument._valueRank);
+            writer.writeArray(argument._arrayDimensions, writer::writeUInt32);
+            writer.writeLocalizedText(argument._description);
+        }
+    }
+
+    public static class XmlCodec implements OpcXmlTypeCodec<Argument> {
+        @Override
+        public Argument decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+//            String name = reader.readString("Name");
+//            NodeId dataType = reader.readNodeId("DataType");
+//            Integer valueRank = reader.readInt32("ValueRank");
+//            UInteger[] arrayDimensions = reader.readArray("ArrayDimensions", reader::readUInt32, UInteger.class);
+//            LocalizedText description = reader.readLocalizedText("Description");
+//
+//            return new Argument(name, dataType, valueRank, arrayDimensions, description);
+            return null;
+        }
+
+        @Override
+        public void encode(SerializationContext context, Argument argument, OpcXmlStreamWriter writer) throws UaSerializationException {
+//            writer.writeString("Name", argument._name);
+//            writer.writeNodeId("DataType", argument._dataType);
+//            writer.writeInt32("ValueRank", argument._valueRank);
+//            writer.writeArray("ArrayDimensions", argument._arrayDimensions, writer::writeUInt32);
+//            writer.writeLocalizedText("Description", argument._description);
+        }
     }
 
 }

@@ -15,12 +15,39 @@ package org.eclipse.milo.opcua.stack.core.serialization.codec;
 
 import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
 public interface SerializationContext {
 
     SerializationContext INTERNAL = () -> TypeManager.BUILTIN;
 
     TypeManager getTypeManager();
+
+    default Object decode(NodeId encodingId, OpcBinaryStreamReader reader) throws UaSerializationException {
+        OpcBinaryTypeCodec<?> codec = getTypeManager().getBinaryCodec(encodingId);
+
+        if (codec == null) {
+            throw new UaSerializationException(
+                StatusCodes.Bad_DecodingError,
+                String.format("no OpcBinaryTypeCodec registered for encodingId=%s", encodingId)
+            );
+        }
+
+        return codec.decode(this, reader);
+    }
+
+    default Object decode(NodeId encodingId, OpcXmlStreamReader reader) throws UaSerializationException {
+        OpcXmlTypeCodec<?> codec = getTypeManager().getXmlCodec(encodingId);
+
+        if (codec == null) {
+            throw new UaSerializationException(
+                StatusCodes.Bad_DecodingError,
+                String.format("no OpcXmlTypeCodec registered for encodingId=%s", encodingId)
+            );
+        }
+
+        return codec.decode(this, reader);
+    }
 
     default Object decode(
         String namespaceUri,

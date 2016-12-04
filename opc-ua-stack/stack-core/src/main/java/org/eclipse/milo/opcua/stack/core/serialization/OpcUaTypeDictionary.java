@@ -13,54 +13,56 @@
 
 package org.eclipse.milo.opcua.stack.core.serialization;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.google.common.collect.Maps;
-import org.eclipse.milo.opcua.stack.core.StatusCodes;
-import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.TypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.TypeDictionaryImpl;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
 public class OpcUaTypeDictionary {
 
+    public static final String NAMESPACE_URI = "http://opcfoundation.org/UA/";
+
     /**
-     * Get the singleton instance of the OpcUaTypeDictionary: {@link OpcUaTypeDictionary.Instance}.
+     * Get the singleton instance of the OPC UA namespace type dictionary
      *
-     * @return the singleton instance of the OpcUaTypeDictionary: {@link OpcUaTypeDictionary.Instance}.
+     * @return the singleton instance of the OPC UA namespace type dictionary.
      */
-    public static Instance getInstance() {
+    public static TypeDictionary getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
     private static class InstanceHolder {
-        private static final Instance INSTANCE = getOrInitialize();
+        private static final TypeDictionary INSTANCE = getOrInitialize();
     }
 
-    private static final Map<NodeId, TypeEncoder<?>> ENCODERS_BY_ID = Maps.newConcurrentMap();
-    private static final Map<String, TypeEncoder<?>> ENCODERS_BY_NAME = Maps.newConcurrentMap();
-    private static final Map<Class<?>, TypeEncoder<?>> ENCODERS_BY_CLASS = Maps.newConcurrentMap();
+    private static final ConcurrentMap<NodeId, OpcBinaryTypeCodec<?>> BINARY_CODECS_BY_ID = Maps.newConcurrentMap();
+    private static final ConcurrentMap<String, OpcBinaryTypeCodec<?>> BINARY_CODECS_BY_NAME = Maps.newConcurrentMap();
 
-    private static final Map<NodeId, TypeDecoder<?>> DECODERS_BY_ID = Maps.newConcurrentMap();
-    private static final Map<String, TypeDecoder<?>> DECODERS_BY_NAME = Maps.newConcurrentMap();
-    private static final Map<Class<?>, TypeDecoder<?>> DECODERS_BY_CLASS = Maps.newConcurrentMap();
+    private static final ConcurrentMap<NodeId, OpcXmlTypeCodec<?>> XML_CODECS_BY_ID = Maps.newConcurrentMap();
+    private static final ConcurrentMap<String, OpcXmlTypeCodec<?>> XML_CODECS_BY_NAME = Maps.newConcurrentMap();
 
-    private static final AtomicReference<Instance> INSTANCE_REF = new AtomicReference<>();
+    private static final AtomicReference<TypeDictionary> INSTANCE_REF = new AtomicReference<>();
 
-    private static synchronized Instance getOrInitialize() {
-        Instance instance = INSTANCE_REF.get();
+    private static synchronized TypeDictionary getOrInitialize() {
+        TypeDictionary instance = INSTANCE_REF.get();
 
         if (instance == null) {
             OpcUaTypeDictionaryInitializer.initialize();
 
-            instance = new Instance(
-                ENCODERS_BY_ID,
-                ENCODERS_BY_NAME,
-                ENCODERS_BY_CLASS,
-                DECODERS_BY_ID,
-                DECODERS_BY_NAME,
-                DECODERS_BY_CLASS
+            instance = new TypeDictionaryImpl(
+                NAMESPACE_URI,
+                BINARY_CODECS_BY_ID,
+                BINARY_CODECS_BY_NAME,
+                XML_CODECS_BY_ID,
+                XML_CODECS_BY_NAME
             );
+
+            // TODO register codecs for built-in types
 
             INSTANCE_REF.set(instance);
 
@@ -70,161 +72,29 @@ public class OpcUaTypeDictionary {
         }
     }
 
-    static synchronized <T> void register(
-        TypeEncoder<T> encoder,
-        TypeDecoder<T> decoder,
-        Class<T> clazz,
-        NodeId... ids) {
+    public static synchronized <T> void register(
+        String typeName,
+        NodeId binaryEncodingId,
+        OpcBinaryTypeCodec<T> binaryTypeCodec,
+        NodeId xmlEncodingId,
+        OpcXmlTypeCodec<T> xmlTypeCodec) {
 
-        registerEncoder(encoder, clazz, ids);
-        registerDecoder(decoder, clazz, ids);
+        registerBinaryCodec(binaryTypeCodec, binaryEncodingId, typeName);
+        registerXmlCodec(xmlTypeCodec, xmlEncodingId, typeName);
     }
 
-    public static synchronized <T> void registerEncoder(TypeEncoder<T> delegate, Class<T> clazz, NodeId... ids) {
-        ENCODERS_BY_CLASS.put(clazz, delegate);
-        ENCODERS_BY_NAME.put(clazz.getSimpleName(), delegate);
+    public static synchronized <T> void registerBinaryCodec(
+        OpcBinaryTypeCodec<T> codec, NodeId encodingId, String typeName) {
 
-        if (ids != null) {
-            Arrays.stream(ids).forEach(id -> ENCODERS_BY_ID.put(id, delegate));
-        }
+        BINARY_CODECS_BY_ID.put(encodingId, codec);
+        BINARY_CODECS_BY_NAME.put(typeName, codec);
     }
 
-    public static synchronized <T> void registerDecoder(TypeDecoder<T> delegate, Class<T> clazz, NodeId... ids) {
-        DECODERS_BY_CLASS.put(clazz, delegate);
-        DECODERS_BY_NAME.put(clazz.getSimpleName(), delegate);
+    public static synchronized <T> void registerXmlCodec(
+        OpcXmlTypeCodec<T> codec, NodeId encodingId, String typeName) {
 
-        if (ids != null) {
-            Arrays.stream(ids).forEach(id -> DECODERS_BY_ID.put(id, delegate));
-        }
-    }
-
-    public static class Instance implements TypeDictionary {
-
-        static final String OPC_UA_TYPES_NAMESPACE = "http://opcfoundation.org/UA/";
-
-        private final Map<NodeId, TypeEncoder<?>> encodersById;
-        private final Map<String, TypeEncoder<?>> encodersByName;
-        private final Map<Class<?>, TypeEncoder<?>> encodersByClass;
-
-        private final Map<NodeId, TypeDecoder<?>> decodersById;
-        private final Map<String, TypeDecoder<?>> decodersByName;
-        private final Map<Class<?>, TypeDecoder<?>> decodersByClass;
-
-        private Instance(
-            Map<NodeId, TypeEncoder<?>> encodersById,
-            Map<String, TypeEncoder<?>> encodersByName,
-            Map<Class<?>, TypeEncoder<?>> encodersByClass,
-            Map<NodeId, TypeDecoder<?>> decodersById,
-            Map<String, TypeDecoder<?>> decodersByName,
-            Map<Class<?>, TypeDecoder<?>> decodersByClass) {
-
-            this.encodersByClass = encodersByClass;
-            this.encodersById = encodersById;
-            this.encodersByName = encodersByName;
-            this.decodersByClass = decodersByClass;
-            this.decodersById = decodersById;
-            this.decodersByName = decodersByName;
-        }
-
-        @Override
-        public String getNamespaceUri() {
-            return OPC_UA_TYPES_NAMESPACE;
-        }
-
-        @SuppressWarnings("unchecked")
-        public <T> TypeEncoder<T> getEncoder(Object t) throws UaSerializationException {
-            try {
-                return (TypeEncoder<T>) encodersByClass.get(t.getClass());
-            } catch (NullPointerException e) {
-                throw new UaSerializationException(StatusCodes.Bad_EncodingError,
-                    "no encoder registered for class=" + t);
-            }
-        }
-
-        @Override
-        public TypeEncoder<?> getEncoder(String typeName) throws UaSerializationException {
-            TypeEncoder<?> typeEncoder = encodersByName.get(typeName);
-
-            if (typeEncoder != null) {
-                return typeEncoder;
-            } else {
-                throw new UaSerializationException(StatusCodes.Bad_EncodingError,
-                    "no encoder registered for name=" + typeName);
-            }
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public TypeEncoder<?> getEncoder(NodeId encodingId) throws UaSerializationException {
-            TypeEncoder<?> typeEncoder = encodersById.get(encodingId);
-
-            if (typeEncoder != null) {
-                return typeEncoder;
-            } else {
-                throw new UaSerializationException(StatusCodes.Bad_EncodingError,
-                    "no encoder registered for encodingId=" + encodingId);
-            }
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T> TypeEncoder<T> getEncoder(Class<T> clazz) throws UaSerializationException {
-            TypeEncoder<?> typeEncoder = encodersByClass.get(clazz);
-
-            if (typeEncoder != null) {
-                try {
-                    return (TypeEncoder<T>) typeEncoder;
-                } catch (Exception e) {
-                    throw new UaSerializationException(StatusCodes.Bad_EncodingError, e);
-                }
-            } else {
-                throw new UaSerializationException(StatusCodes.Bad_EncodingError,
-                    "no encoder registered for class=" + clazz);
-            }
-        }
-
-        @Override
-        public TypeDecoder<?> getDecoder(String typeName) throws UaSerializationException {
-            TypeDecoder<?> typeDecoder = decodersByName.get(typeName);
-
-            if (typeDecoder != null) {
-                return typeDecoder;
-            } else {
-                throw new UaSerializationException(StatusCodes.Bad_DecodingError,
-                    "no decoder registered for typeName=" + typeName);
-            }
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public TypeDecoder<?> getDecoder(NodeId encodingId) {
-            TypeDecoder<?> typeDecoder = decodersById.get(encodingId);
-
-            if (typeDecoder != null) {
-                return typeDecoder;
-            } else {
-                throw new UaSerializationException(StatusCodes.Bad_DecodingError,
-                    "no decoder registered for encodingId=" + encodingId);
-            }
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T> TypeDecoder<T> getDecoder(Class<T> clazz) throws UaSerializationException {
-            TypeDecoder<?> typeDecoder = decodersByClass.get(clazz);
-
-            if (typeDecoder != null) {
-                try {
-                    return (TypeDecoder<T>) typeDecoder;
-                } catch (Exception e) {
-                    throw new UaSerializationException(StatusCodes.Bad_DecodingError, e);
-                }
-            } else {
-                throw new UaSerializationException(StatusCodes.Bad_DecodingError,
-                    "no decoder registered for class=" + clazz);
-            }
-        }
-
+        XML_CODECS_BY_ID.put(encodingId, codec);
+        XML_CODECS_BY_NAME.put(typeName, codec);
     }
 
 }

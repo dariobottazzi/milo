@@ -28,7 +28,6 @@ import org.eclipse.milo.opcua.stack.core.channel.ChannelConfig;
 import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.TypeDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.TypeDictionary;
-import org.eclipse.milo.opcua.stack.core.serialization.TypeManager;
 import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
 import org.eclipse.milo.opcua.stack.core.serialization.UaSerializable;
@@ -59,24 +58,14 @@ public class BinaryDecoder implements UaDecoder {
 
     private volatile ByteBuf buffer;
 
-    private final TypeManager typeManager;
     private final int maxArrayLength;
     private final int maxStringLength;
 
     public BinaryDecoder() {
-        this(TypeManager.BUILTIN, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
-    }
-
-    public BinaryDecoder(TypeManager typeManager) {
-        this(typeManager, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+        this(ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
     }
 
     public BinaryDecoder(int maxArrayLength, int maxStringLength) {
-        this(TypeManager.BUILTIN, maxArrayLength, maxStringLength);
-    }
-
-    public BinaryDecoder(TypeManager typeManager, int maxArrayLength, int maxStringLength) {
-        this.typeManager = typeManager;
         this.maxArrayLength = maxArrayLength;
         this.maxStringLength = maxStringLength;
     }

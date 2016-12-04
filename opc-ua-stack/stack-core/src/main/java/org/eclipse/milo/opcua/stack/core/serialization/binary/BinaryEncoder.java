@@ -25,9 +25,6 @@ import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.channel.ChannelConfig;
 import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
-import org.eclipse.milo.opcua.stack.core.serialization.TypeDictionary;
-import org.eclipse.milo.opcua.stack.core.serialization.TypeEncoder;
-import org.eclipse.milo.opcua.stack.core.serialization.TypeManager;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
 import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
 import org.eclipse.milo.opcua.stack.core.serialization.UaSerializable;
@@ -56,28 +53,19 @@ import org.slf4j.LoggerFactory;
 
 public class BinaryEncoder implements UaEncoder {
 
-    private static final OpcUaTypeDictionary.Instance TYPE_DICTIONARY = OpcUaTypeDictionary.getInstance();
+    private static final OpcUaTypeDictionary TYPE_DICTIONARY = OpcUaTypeDictionary.getInstance();
 
     private volatile ByteBuf buffer;
 
-    private final TypeManager typeManager;
     private final int maxArrayLength;
     private final int maxStringLength;
 
-    public BinaryEncoder() {
-        this(TypeManager.BUILTIN, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
-    }
 
-    public BinaryEncoder(TypeManager typeManager) {
-        this(typeManager, ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
+    public BinaryEncoder() {
+        this(ChannelConfig.DEFAULT_MAX_ARRAY_LENGTH, ChannelConfig.DEFAULT_MAX_STRING_LENGTH);
     }
 
     public BinaryEncoder(int maxArrayLength, int maxStringLength) {
-        this(TypeManager.BUILTIN, maxArrayLength, maxStringLength);
-    }
-
-    public BinaryEncoder(TypeManager typeManager, int maxArrayLength, int maxStringLength) {
-        this.typeManager = typeManager;
         this.maxArrayLength = maxArrayLength;
         this.maxStringLength = maxStringLength;
     }

@@ -17,8 +17,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.DataTypeEncoding;
-import org.eclipse.milo.opcua.stack.core.serialization.TypeManager;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.TypeManager;
 
 public final class ExtensionObject {
 

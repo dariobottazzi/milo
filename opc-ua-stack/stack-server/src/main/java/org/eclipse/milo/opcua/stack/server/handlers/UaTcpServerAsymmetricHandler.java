@@ -44,6 +44,7 @@ import org.eclipse.milo.opcua.stack.core.security.SecurityAlgorithm;
 import org.eclipse.milo.opcua.stack.core.security.SecurityPolicy;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.StatusCode;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.SecurityTokenRequestType;
 import org.eclipse.milo.opcua.stack.core.types.structured.ChannelSecurityToken;
@@ -251,15 +252,17 @@ public class UaTcpServerAsymmetricHandler extends ByteToMessageDecoder implement
                 chunkBuffers = new ArrayList<>(maxChunkCount);
                 headerRef.set(null);
 
-                serializationQueue.decode((binaryDecoder, chunkDecoder) -> {
+                serializationQueue.decode((context, reader, chunkDecoder) -> {
                     ByteBuf messageBuffer = null;
 
                     try {
                         messageBuffer = chunkDecoder.decodeAsymmetric(secureChannel, buffersToDecode);
 
-                        OpenSecureChannelRequest request = binaryDecoder
-                            .setBuffer(messageBuffer)
-                            .decodeMessage(null);
+                        reader.setBuffer(messageBuffer);
+
+                        NodeId encodingId = reader.readNodeId();
+                        OpenSecureChannelRequest request =
+                            (OpenSecureChannelRequest) context.decode(encodingId, reader);
 
                         logger.debug("Received OpenSecureChannelRequest ({}, id={}).",
                             request.getRequestType(), secureChannelId);

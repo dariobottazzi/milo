@@ -16,12 +16,11 @@ package org.eclipse.milo.opcua.stack.core.serialization.codec;
 import java.util.concurrent.ConcurrentMap;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ForwardingConcurrentMap;
 import com.google.common.collect.Maps;
 import org.eclipse.milo.opcua.stack.core.NamespaceTable;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
-public class TypeManagerImpl extends ForwardingConcurrentMap<String, TypeDictionary> implements TypeManager {
+public class TypeManagerImpl implements TypeManager {
 
     private final ConcurrentMap<String, TypeDictionary> typeDictionaries = Maps.newConcurrentMap();
 
@@ -31,9 +30,17 @@ public class TypeManagerImpl extends ForwardingConcurrentMap<String, TypeDiction
         this.namespaceTable = namespaceTable;
     }
 
+    public TypeManagerImpl(NamespaceTable namespaceTable, TypeDictionary... typeDictionaries) {
+        this.namespaceTable = namespaceTable;
+
+        for (TypeDictionary d : typeDictionaries) {
+            registerTypeDictionary(d.getNamespaceUri(), d);
+        }
+    }
+
     @Override
-    protected ConcurrentMap<String, TypeDictionary> delegate() {
-        return typeDictionaries;
+    public void registerTypeDictionary(String namespaceUri, TypeDictionary typeDictionary) {
+        typeDictionaries.put(namespaceUri, typeDictionary);
     }
 
     @Nullable
