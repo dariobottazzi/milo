@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -51,40 +57,24 @@ public class DeleteReferencesItem implements UaStructure {
         this._deleteBidirectional = _deleteBidirectional;
     }
 
-    public NodeId getSourceNodeId() {
-        return _sourceNodeId;
-    }
+    public NodeId getSourceNodeId() { return _sourceNodeId; }
 
-    public NodeId getReferenceTypeId() {
-        return _referenceTypeId;
-    }
+    public NodeId getReferenceTypeId() { return _referenceTypeId; }
 
-    public Boolean getIsForward() {
-        return _isForward;
-    }
+    public Boolean getIsForward() { return _isForward; }
 
-    public ExpandedNodeId getTargetNodeId() {
-        return _targetNodeId;
-    }
+    public ExpandedNodeId getTargetNodeId() { return _targetNodeId; }
 
-    public Boolean getDeleteBidirectional() {
-        return _deleteBidirectional;
-    }
+    public Boolean getDeleteBidirectional() { return _deleteBidirectional; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -97,22 +87,48 @@ public class DeleteReferencesItem implements UaStructure {
             .toString();
     }
 
-    public static void encode(DeleteReferencesItem deleteReferencesItem, UaEncoder encoder) {
-        encoder.encodeNodeId("SourceNodeId", deleteReferencesItem._sourceNodeId);
-        encoder.encodeNodeId("ReferenceTypeId", deleteReferencesItem._referenceTypeId);
-        encoder.encodeBoolean("IsForward", deleteReferencesItem._isForward);
-        encoder.encodeExpandedNodeId("TargetNodeId", deleteReferencesItem._targetNodeId);
-        encoder.encodeBoolean("DeleteBidirectional", deleteReferencesItem._deleteBidirectional);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<DeleteReferencesItem> {
+        @Override
+        public DeleteReferencesItem decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            NodeId _sourceNodeId = reader.readNodeId();
+            NodeId _referenceTypeId = reader.readNodeId();
+            Boolean _isForward = reader.readBoolean();
+            ExpandedNodeId _targetNodeId = reader.readExpandedNodeId();
+            Boolean _deleteBidirectional = reader.readBoolean();
+
+            return new DeleteReferencesItem(_sourceNodeId, _referenceTypeId, _isForward, _targetNodeId, _deleteBidirectional);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteReferencesItem encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId(encodable._sourceNodeId);
+            writer.writeNodeId(encodable._referenceTypeId);
+            writer.writeBoolean(encodable._isForward);
+            writer.writeExpandedNodeId(encodable._targetNodeId);
+            writer.writeBoolean(encodable._deleteBidirectional);
+        }
     }
 
-    public static DeleteReferencesItem decode(UaDecoder decoder) {
-        NodeId _sourceNodeId = decoder.decodeNodeId("SourceNodeId");
-        NodeId _referenceTypeId = decoder.decodeNodeId("ReferenceTypeId");
-        Boolean _isForward = decoder.decodeBoolean("IsForward");
-        ExpandedNodeId _targetNodeId = decoder.decodeExpandedNodeId("TargetNodeId");
-        Boolean _deleteBidirectional = decoder.decodeBoolean("DeleteBidirectional");
+    public static class XmlCodec implements OpcXmlTypeCodec<DeleteReferencesItem> {
+        @Override
+        public DeleteReferencesItem decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            NodeId _sourceNodeId = reader.readNodeId("SourceNodeId");
+            NodeId _referenceTypeId = reader.readNodeId("ReferenceTypeId");
+            Boolean _isForward = reader.readBoolean("IsForward");
+            ExpandedNodeId _targetNodeId = reader.readExpandedNodeId("TargetNodeId");
+            Boolean _deleteBidirectional = reader.readBoolean("DeleteBidirectional");
 
-        return new DeleteReferencesItem(_sourceNodeId, _referenceTypeId, _isForward, _targetNodeId, _deleteBidirectional);
+            return new DeleteReferencesItem(_sourceNodeId, _referenceTypeId, _isForward, _targetNodeId, _deleteBidirectional);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteReferencesItem encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId("SourceNodeId", encodable._sourceNodeId);
+            writer.writeNodeId("ReferenceTypeId", encodable._referenceTypeId);
+            writer.writeBoolean("IsForward", encodable._isForward);
+            writer.writeExpandedNodeId("TargetNodeId", encodable._targetNodeId);
+            writer.writeBoolean("DeleteBidirectional", encodable._deleteBidirectional);
+        }
     }
 
 }

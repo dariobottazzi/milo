@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -46,32 +52,20 @@ public class ModificationInfo implements UaStructure {
         this._userName = _userName;
     }
 
-    public DateTime getModificationTime() {
-        return _modificationTime;
-    }
+    public DateTime getModificationTime() { return _modificationTime; }
 
-    public HistoryUpdateType getUpdateType() {
-        return _updateType;
-    }
+    public HistoryUpdateType getUpdateType() { return _updateType; }
 
-    public String getUserName() {
-        return _userName;
-    }
+    public String getUserName() { return _userName; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -82,18 +76,40 @@ public class ModificationInfo implements UaStructure {
             .toString();
     }
 
-    public static void encode(ModificationInfo modificationInfo, UaEncoder encoder) {
-        encoder.encodeDateTime("ModificationTime", modificationInfo._modificationTime);
-        encoder.encodeEnumeration("UpdateType", modificationInfo._updateType);
-        encoder.encodeString("UserName", modificationInfo._userName);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<ModificationInfo> {
+        @Override
+        public ModificationInfo decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            DateTime _modificationTime = reader.readDateTime();
+            HistoryUpdateType _updateType = HistoryUpdateType.from(reader.readInt32());
+            String _userName = reader.readString();
+
+            return new ModificationInfo(_modificationTime, _updateType, _userName);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ModificationInfo encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeDateTime(encodable._modificationTime);
+            writer.writeInt32(encodable._updateType != null ? encodable._updateType.getValue() : 0);
+            writer.writeString(encodable._userName);
+        }
     }
 
-    public static ModificationInfo decode(UaDecoder decoder) {
-        DateTime _modificationTime = decoder.decodeDateTime("ModificationTime");
-        HistoryUpdateType _updateType = decoder.decodeEnumeration("UpdateType", HistoryUpdateType.class);
-        String _userName = decoder.decodeString("UserName");
+    public static class XmlCodec implements OpcXmlTypeCodec<ModificationInfo> {
+        @Override
+        public ModificationInfo decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            DateTime _modificationTime = reader.readDateTime("ModificationTime");
+            HistoryUpdateType _updateType = HistoryUpdateType.from(reader.readInt32("UpdateType"));
+            String _userName = reader.readString("UserName");
 
-        return new ModificationInfo(_modificationTime, _updateType, _userName);
+            return new ModificationInfo(_modificationTime, _updateType, _userName);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ModificationInfo encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeDateTime("ModificationTime", encodable._modificationTime);
+            writer.writeInt32("UpdateType", encodable._updateType != null ? encodable._updateType.getValue() : 0);
+            writer.writeString("UserName", encodable._userName);
+        }
     }
 
 }

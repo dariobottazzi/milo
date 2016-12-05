@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -49,36 +55,22 @@ public class ChannelSecurityToken implements UaStructure {
         this._revisedLifetime = _revisedLifetime;
     }
 
-    public UInteger getChannelId() {
-        return _channelId;
-    }
+    public UInteger getChannelId() { return _channelId; }
 
-    public UInteger getTokenId() {
-        return _tokenId;
-    }
+    public UInteger getTokenId() { return _tokenId; }
 
-    public DateTime getCreatedAt() {
-        return _createdAt;
-    }
+    public DateTime getCreatedAt() { return _createdAt; }
 
-    public UInteger getRevisedLifetime() {
-        return _revisedLifetime;
-    }
+    public UInteger getRevisedLifetime() { return _revisedLifetime; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -90,20 +82,44 @@ public class ChannelSecurityToken implements UaStructure {
             .toString();
     }
 
-    public static void encode(ChannelSecurityToken channelSecurityToken, UaEncoder encoder) {
-        encoder.encodeUInt32("ChannelId", channelSecurityToken._channelId);
-        encoder.encodeUInt32("TokenId", channelSecurityToken._tokenId);
-        encoder.encodeDateTime("CreatedAt", channelSecurityToken._createdAt);
-        encoder.encodeUInt32("RevisedLifetime", channelSecurityToken._revisedLifetime);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<ChannelSecurityToken> {
+        @Override
+        public ChannelSecurityToken decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            UInteger _channelId = reader.readUInt32();
+            UInteger _tokenId = reader.readUInt32();
+            DateTime _createdAt = reader.readDateTime();
+            UInteger _revisedLifetime = reader.readUInt32();
+
+            return new ChannelSecurityToken(_channelId, _tokenId, _createdAt, _revisedLifetime);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ChannelSecurityToken encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeUInt32(encodable._channelId);
+            writer.writeUInt32(encodable._tokenId);
+            writer.writeDateTime(encodable._createdAt);
+            writer.writeUInt32(encodable._revisedLifetime);
+        }
     }
 
-    public static ChannelSecurityToken decode(UaDecoder decoder) {
-        UInteger _channelId = decoder.decodeUInt32("ChannelId");
-        UInteger _tokenId = decoder.decodeUInt32("TokenId");
-        DateTime _createdAt = decoder.decodeDateTime("CreatedAt");
-        UInteger _revisedLifetime = decoder.decodeUInt32("RevisedLifetime");
+    public static class XmlCodec implements OpcXmlTypeCodec<ChannelSecurityToken> {
+        @Override
+        public ChannelSecurityToken decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            UInteger _channelId = reader.readUInt32("ChannelId");
+            UInteger _tokenId = reader.readUInt32("TokenId");
+            DateTime _createdAt = reader.readDateTime("CreatedAt");
+            UInteger _revisedLifetime = reader.readUInt32("RevisedLifetime");
 
-        return new ChannelSecurityToken(_channelId, _tokenId, _createdAt, _revisedLifetime);
+            return new ChannelSecurityToken(_channelId, _tokenId, _createdAt, _revisedLifetime);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ChannelSecurityToken encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeUInt32("ChannelId", encodable._channelId);
+            writer.writeUInt32("TokenId", encodable._tokenId);
+            writer.writeDateTime("CreatedAt", encodable._createdAt);
+            writer.writeUInt32("RevisedLifetime", encodable._revisedLifetime);
+        }
     }
 
 }

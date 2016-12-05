@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
@@ -60,48 +66,28 @@ public class ReferenceDescription implements UaStructure {
         this._typeDefinition = _typeDefinition;
     }
 
-    public NodeId getReferenceTypeId() {
-        return _referenceTypeId;
-    }
+    public NodeId getReferenceTypeId() { return _referenceTypeId; }
 
-    public Boolean getIsForward() {
-        return _isForward;
-    }
+    public Boolean getIsForward() { return _isForward; }
 
-    public ExpandedNodeId getNodeId() {
-        return _nodeId;
-    }
+    public ExpandedNodeId getNodeId() { return _nodeId; }
 
-    public QualifiedName getBrowseName() {
-        return _browseName;
-    }
+    public QualifiedName getBrowseName() { return _browseName; }
 
-    public LocalizedText getDisplayName() {
-        return _displayName;
-    }
+    public LocalizedText getDisplayName() { return _displayName; }
 
-    public NodeClass getNodeClass() {
-        return _nodeClass;
-    }
+    public NodeClass getNodeClass() { return _nodeClass; }
 
-    public ExpandedNodeId getTypeDefinition() {
-        return _typeDefinition;
-    }
+    public ExpandedNodeId getTypeDefinition() { return _typeDefinition; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -116,26 +102,56 @@ public class ReferenceDescription implements UaStructure {
             .toString();
     }
 
-    public static void encode(ReferenceDescription referenceDescription, UaEncoder encoder) {
-        encoder.encodeNodeId("ReferenceTypeId", referenceDescription._referenceTypeId);
-        encoder.encodeBoolean("IsForward", referenceDescription._isForward);
-        encoder.encodeExpandedNodeId("NodeId", referenceDescription._nodeId);
-        encoder.encodeQualifiedName("BrowseName", referenceDescription._browseName);
-        encoder.encodeLocalizedText("DisplayName", referenceDescription._displayName);
-        encoder.encodeEnumeration("NodeClass", referenceDescription._nodeClass);
-        encoder.encodeExpandedNodeId("TypeDefinition", referenceDescription._typeDefinition);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<ReferenceDescription> {
+        @Override
+        public ReferenceDescription decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            NodeId _referenceTypeId = reader.readNodeId();
+            Boolean _isForward = reader.readBoolean();
+            ExpandedNodeId _nodeId = reader.readExpandedNodeId();
+            QualifiedName _browseName = reader.readQualifiedName();
+            LocalizedText _displayName = reader.readLocalizedText();
+            NodeClass _nodeClass = NodeClass.from(reader.readInt32());
+            ExpandedNodeId _typeDefinition = reader.readExpandedNodeId();
+
+            return new ReferenceDescription(_referenceTypeId, _isForward, _nodeId, _browseName, _displayName, _nodeClass, _typeDefinition);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ReferenceDescription encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId(encodable._referenceTypeId);
+            writer.writeBoolean(encodable._isForward);
+            writer.writeExpandedNodeId(encodable._nodeId);
+            writer.writeQualifiedName(encodable._browseName);
+            writer.writeLocalizedText(encodable._displayName);
+            writer.writeInt32(encodable._nodeClass != null ? encodable._nodeClass.getValue() : 0);
+            writer.writeExpandedNodeId(encodable._typeDefinition);
+        }
     }
 
-    public static ReferenceDescription decode(UaDecoder decoder) {
-        NodeId _referenceTypeId = decoder.decodeNodeId("ReferenceTypeId");
-        Boolean _isForward = decoder.decodeBoolean("IsForward");
-        ExpandedNodeId _nodeId = decoder.decodeExpandedNodeId("NodeId");
-        QualifiedName _browseName = decoder.decodeQualifiedName("BrowseName");
-        LocalizedText _displayName = decoder.decodeLocalizedText("DisplayName");
-        NodeClass _nodeClass = decoder.decodeEnumeration("NodeClass", NodeClass.class);
-        ExpandedNodeId _typeDefinition = decoder.decodeExpandedNodeId("TypeDefinition");
+    public static class XmlCodec implements OpcXmlTypeCodec<ReferenceDescription> {
+        @Override
+        public ReferenceDescription decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            NodeId _referenceTypeId = reader.readNodeId("ReferenceTypeId");
+            Boolean _isForward = reader.readBoolean("IsForward");
+            ExpandedNodeId _nodeId = reader.readExpandedNodeId("NodeId");
+            QualifiedName _browseName = reader.readQualifiedName("BrowseName");
+            LocalizedText _displayName = reader.readLocalizedText("DisplayName");
+            NodeClass _nodeClass = NodeClass.from(reader.readInt32("NodeClass"));
+            ExpandedNodeId _typeDefinition = reader.readExpandedNodeId("TypeDefinition");
 
-        return new ReferenceDescription(_referenceTypeId, _isForward, _nodeId, _browseName, _displayName, _nodeClass, _typeDefinition);
+            return new ReferenceDescription(_referenceTypeId, _isForward, _nodeId, _browseName, _displayName, _nodeClass, _typeDefinition);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ReferenceDescription encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId("ReferenceTypeId", encodable._referenceTypeId);
+            writer.writeBoolean("IsForward", encodable._isForward);
+            writer.writeExpandedNodeId("NodeId", encodable._nodeId);
+            writer.writeQualifiedName("BrowseName", encodable._browseName);
+            writer.writeLocalizedText("DisplayName", encodable._displayName);
+            writer.writeInt32("NodeClass", encodable._nodeClass != null ? encodable._nodeClass.getValue() : 0);
+            writer.writeExpandedNodeId("TypeDefinition", encodable._typeDefinition);
+        }
     }
 
 }

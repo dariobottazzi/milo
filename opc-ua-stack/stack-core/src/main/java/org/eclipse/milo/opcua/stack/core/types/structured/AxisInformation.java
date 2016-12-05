@@ -17,9 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -54,41 +61,25 @@ public class AxisInformation implements UaStructure {
         this._axisSteps = _axisSteps;
     }
 
-    public EUInformation getEngineeringUnits() {
-        return _engineeringUnits;
-    }
+    public EUInformation getEngineeringUnits() { return _engineeringUnits; }
 
-    public Range getEURange() {
-        return _eURange;
-    }
+    public Range getEURange() { return _eURange; }
 
-    public LocalizedText getTitle() {
-        return _title;
-    }
+    public LocalizedText getTitle() { return _title; }
 
-    public AxisScaleEnumeration getAxisScaleType() {
-        return _axisScaleType;
-    }
+    public AxisScaleEnumeration getAxisScaleType() { return _axisScaleType; }
 
     @Nullable
-    public Double[] getAxisSteps() {
-        return _axisSteps;
-    }
+    public Double[] getAxisSteps() { return _axisSteps; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -101,22 +92,48 @@ public class AxisInformation implements UaStructure {
             .toString();
     }
 
-    public static void encode(AxisInformation axisInformation, UaEncoder encoder) {
-        encoder.encodeSerializable("EngineeringUnits", axisInformation._engineeringUnits != null ? axisInformation._engineeringUnits : new EUInformation());
-        encoder.encodeSerializable("EURange", axisInformation._eURange != null ? axisInformation._eURange : new Range());
-        encoder.encodeLocalizedText("Title", axisInformation._title);
-        encoder.encodeEnumeration("AxisScaleType", axisInformation._axisScaleType);
-        encoder.encodeArray("AxisSteps", axisInformation._axisSteps, encoder::encodeDouble);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<AxisInformation> {
+        @Override
+        public AxisInformation decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            EUInformation _engineeringUnits = (EUInformation) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "EUInformation", reader);
+            Range _eURange = (Range) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "Range", reader);
+            LocalizedText _title = reader.readLocalizedText();
+            AxisScaleEnumeration _axisScaleType = AxisScaleEnumeration.from(reader.readInt32());
+            Double[] _axisSteps = reader.readArray(reader::readDouble, Double.class);
+
+            return new AxisInformation(_engineeringUnits, _eURange, _title, _axisScaleType, _axisSteps);
+        }
+
+        @Override
+        public void encode(SerializationContext context, AxisInformation encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "EUInformation", encodable._engineeringUnits, writer);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "Range", encodable._eURange, writer);
+            writer.writeLocalizedText(encodable._title);
+            writer.writeInt32(encodable._axisScaleType != null ? encodable._axisScaleType.getValue() : 0);
+            writer.writeArray(encodable._axisSteps, writer::writeDouble);
+        }
     }
 
-    public static AxisInformation decode(UaDecoder decoder) {
-        EUInformation _engineeringUnits = decoder.decodeSerializable("EngineeringUnits", EUInformation.class);
-        Range _eURange = decoder.decodeSerializable("EURange", Range.class);
-        LocalizedText _title = decoder.decodeLocalizedText("Title");
-        AxisScaleEnumeration _axisScaleType = decoder.decodeEnumeration("AxisScaleType", AxisScaleEnumeration.class);
-        Double[] _axisSteps = decoder.decodeArray("AxisSteps", decoder::decodeDouble, Double.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<AxisInformation> {
+        @Override
+        public AxisInformation decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            EUInformation _engineeringUnits = (EUInformation) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "EUInformation", reader);
+            Range _eURange = (Range) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "Range", reader);
+            LocalizedText _title = reader.readLocalizedText("Title");
+            AxisScaleEnumeration _axisScaleType = AxisScaleEnumeration.from(reader.readInt32("AxisScaleType"));
+            Double[] _axisSteps = reader.readArray("AxisSteps", reader::readDouble, Double.class);
 
-        return new AxisInformation(_engineeringUnits, _eURange, _title, _axisScaleType, _axisSteps);
+            return new AxisInformation(_engineeringUnits, _eURange, _title, _axisScaleType, _axisSteps);
+        }
+
+        @Override
+        public void encode(SerializationContext context, AxisInformation encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "EUInformation", encodable._engineeringUnits, writer);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "Range", encodable._eURange, writer);
+            writer.writeLocalizedText("Title", encodable._title);
+            writer.writeInt32("AxisScaleType", encodable._axisScaleType != null ? encodable._axisScaleType.getValue() : 0);
+            writer.writeArray("AxisSteps", encodable._axisSteps, writer::writeDouble);
+        }
     }
 
 }

@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
@@ -41,28 +47,18 @@ public class DeleteNodesItem implements UaStructure {
         this._deleteTargetReferences = _deleteTargetReferences;
     }
 
-    public NodeId getNodeId() {
-        return _nodeId;
-    }
+    public NodeId getNodeId() { return _nodeId; }
 
-    public Boolean getDeleteTargetReferences() {
-        return _deleteTargetReferences;
-    }
+    public Boolean getDeleteTargetReferences() { return _deleteTargetReferences; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -72,16 +68,36 @@ public class DeleteNodesItem implements UaStructure {
             .toString();
     }
 
-    public static void encode(DeleteNodesItem deleteNodesItem, UaEncoder encoder) {
-        encoder.encodeNodeId("NodeId", deleteNodesItem._nodeId);
-        encoder.encodeBoolean("DeleteTargetReferences", deleteNodesItem._deleteTargetReferences);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<DeleteNodesItem> {
+        @Override
+        public DeleteNodesItem decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            NodeId _nodeId = reader.readNodeId();
+            Boolean _deleteTargetReferences = reader.readBoolean();
+
+            return new DeleteNodesItem(_nodeId, _deleteTargetReferences);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteNodesItem encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId(encodable._nodeId);
+            writer.writeBoolean(encodable._deleteTargetReferences);
+        }
     }
 
-    public static DeleteNodesItem decode(UaDecoder decoder) {
-        NodeId _nodeId = decoder.decodeNodeId("NodeId");
-        Boolean _deleteTargetReferences = decoder.decodeBoolean("DeleteTargetReferences");
+    public static class XmlCodec implements OpcXmlTypeCodec<DeleteNodesItem> {
+        @Override
+        public DeleteNodesItem decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            NodeId _nodeId = reader.readNodeId("NodeId");
+            Boolean _deleteTargetReferences = reader.readBoolean("DeleteTargetReferences");
 
-        return new DeleteNodesItem(_nodeId, _deleteTargetReferences);
+            return new DeleteNodesItem(_nodeId, _deleteTargetReferences);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteNodesItem encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId("NodeId", encodable._nodeId);
+            writer.writeBoolean("DeleteTargetReferences", encodable._deleteTargetReferences);
+        }
     }
 
 }

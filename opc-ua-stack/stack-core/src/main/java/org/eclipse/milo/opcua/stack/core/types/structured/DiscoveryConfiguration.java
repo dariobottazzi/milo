@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
@@ -33,19 +39,13 @@ public class DiscoveryConfiguration implements UaStructure {
     }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -53,12 +53,28 @@ public class DiscoveryConfiguration implements UaStructure {
             .toString();
     }
 
-    public static void encode(DiscoveryConfiguration discoveryConfiguration, UaEncoder encoder) {
+    public static class BinaryCodec implements OpcBinaryTypeCodec<DiscoveryConfiguration> {
+        @Override
+        public DiscoveryConfiguration decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+
+            return new DiscoveryConfiguration();
+        }
+
+        @Override
+        public void encode(SerializationContext context, DiscoveryConfiguration encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+        }
     }
 
-    public static DiscoveryConfiguration decode(UaDecoder decoder) {
+    public static class XmlCodec implements OpcXmlTypeCodec<DiscoveryConfiguration> {
+        @Override
+        public DiscoveryConfiguration decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
 
-        return new DiscoveryConfiguration();
+            return new DiscoveryConfiguration();
+        }
+
+        @Override
+        public void encode(SerializationContext context, DiscoveryConfiguration encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+        }
     }
 
 }

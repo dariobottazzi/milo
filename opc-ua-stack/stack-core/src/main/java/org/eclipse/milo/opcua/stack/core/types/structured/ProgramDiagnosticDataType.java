@@ -17,9 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -68,62 +75,36 @@ public class ProgramDiagnosticDataType implements UaStructure {
         this._lastMethodReturnStatus = _lastMethodReturnStatus;
     }
 
-    public NodeId getCreateSessionId() {
-        return _createSessionId;
-    }
+    public NodeId getCreateSessionId() { return _createSessionId; }
 
-    public String getCreateClientName() {
-        return _createClientName;
-    }
+    public String getCreateClientName() { return _createClientName; }
 
-    public DateTime getInvocationCreationTime() {
-        return _invocationCreationTime;
-    }
+    public DateTime getInvocationCreationTime() { return _invocationCreationTime; }
 
-    public DateTime getLastTransitionTime() {
-        return _lastTransitionTime;
-    }
+    public DateTime getLastTransitionTime() { return _lastTransitionTime; }
 
-    public String getLastMethodCall() {
-        return _lastMethodCall;
-    }
+    public String getLastMethodCall() { return _lastMethodCall; }
 
-    public NodeId getLastMethodSessionId() {
-        return _lastMethodSessionId;
-    }
+    public NodeId getLastMethodSessionId() { return _lastMethodSessionId; }
 
     @Nullable
-    public Argument[] getLastMethodInputArguments() {
-        return _lastMethodInputArguments;
-    }
+    public Argument[] getLastMethodInputArguments() { return _lastMethodInputArguments; }
 
     @Nullable
-    public Argument[] getLastMethodOutputArguments() {
-        return _lastMethodOutputArguments;
-    }
+    public Argument[] getLastMethodOutputArguments() { return _lastMethodOutputArguments; }
 
-    public DateTime getLastMethodCallTime() {
-        return _lastMethodCallTime;
-    }
+    public DateTime getLastMethodCallTime() { return _lastMethodCallTime; }
 
-    public StatusResult getLastMethodReturnStatus() {
-        return _lastMethodReturnStatus;
-    }
+    public StatusResult getLastMethodReturnStatus() { return _lastMethodReturnStatus; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -141,32 +122,104 @@ public class ProgramDiagnosticDataType implements UaStructure {
             .toString();
     }
 
-    public static void encode(ProgramDiagnosticDataType programDiagnosticDataType, UaEncoder encoder) {
-        encoder.encodeNodeId("CreateSessionId", programDiagnosticDataType._createSessionId);
-        encoder.encodeString("CreateClientName", programDiagnosticDataType._createClientName);
-        encoder.encodeDateTime("InvocationCreationTime", programDiagnosticDataType._invocationCreationTime);
-        encoder.encodeDateTime("LastTransitionTime", programDiagnosticDataType._lastTransitionTime);
-        encoder.encodeString("LastMethodCall", programDiagnosticDataType._lastMethodCall);
-        encoder.encodeNodeId("LastMethodSessionId", programDiagnosticDataType._lastMethodSessionId);
-        encoder.encodeArray("LastMethodInputArguments", programDiagnosticDataType._lastMethodInputArguments, encoder::encodeSerializable);
-        encoder.encodeArray("LastMethodOutputArguments", programDiagnosticDataType._lastMethodOutputArguments, encoder::encodeSerializable);
-        encoder.encodeDateTime("LastMethodCallTime", programDiagnosticDataType._lastMethodCallTime);
-        encoder.encodeSerializable("LastMethodReturnStatus", programDiagnosticDataType._lastMethodReturnStatus != null ? programDiagnosticDataType._lastMethodReturnStatus : new StatusResult());
+    public static class BinaryCodec implements OpcBinaryTypeCodec<ProgramDiagnosticDataType> {
+        @Override
+        public ProgramDiagnosticDataType decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            NodeId _createSessionId = reader.readNodeId();
+            String _createClientName = reader.readString();
+            DateTime _invocationCreationTime = reader.readDateTime();
+            DateTime _lastTransitionTime = reader.readDateTime();
+            String _lastMethodCall = reader.readString();
+            NodeId _lastMethodSessionId = reader.readNodeId();
+            Argument[] _lastMethodInputArguments =
+                reader.readArray(
+                    () -> (Argument) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "Argument", reader),
+                    Argument.class
+                );
+            Argument[] _lastMethodOutputArguments =
+                reader.readArray(
+                    () -> (Argument) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "Argument", reader),
+                    Argument.class
+                );
+            DateTime _lastMethodCallTime = reader.readDateTime();
+            StatusResult _lastMethodReturnStatus = (StatusResult) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "StatusResult", reader);
+
+            return new ProgramDiagnosticDataType(_createSessionId, _createClientName, _invocationCreationTime, _lastTransitionTime, _lastMethodCall, _lastMethodSessionId, _lastMethodInputArguments, _lastMethodOutputArguments, _lastMethodCallTime, _lastMethodReturnStatus);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ProgramDiagnosticDataType encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId(encodable._createSessionId);
+            writer.writeString(encodable._createClientName);
+            writer.writeDateTime(encodable._invocationCreationTime);
+            writer.writeDateTime(encodable._lastTransitionTime);
+            writer.writeString(encodable._lastMethodCall);
+            writer.writeNodeId(encodable._lastMethodSessionId);
+            writer.writeArray(
+                encodable._lastMethodInputArguments,
+                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "Argument", e, writer)
+            );
+            writer.writeArray(
+                encodable._lastMethodOutputArguments,
+                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "Argument", e, writer)
+            );
+            writer.writeDateTime(encodable._lastMethodCallTime);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "StatusResult", encodable._lastMethodReturnStatus, writer);
+        }
     }
 
-    public static ProgramDiagnosticDataType decode(UaDecoder decoder) {
-        NodeId _createSessionId = decoder.decodeNodeId("CreateSessionId");
-        String _createClientName = decoder.decodeString("CreateClientName");
-        DateTime _invocationCreationTime = decoder.decodeDateTime("InvocationCreationTime");
-        DateTime _lastTransitionTime = decoder.decodeDateTime("LastTransitionTime");
-        String _lastMethodCall = decoder.decodeString("LastMethodCall");
-        NodeId _lastMethodSessionId = decoder.decodeNodeId("LastMethodSessionId");
-        Argument[] _lastMethodInputArguments = decoder.decodeArray("LastMethodInputArguments", decoder::decodeSerializable, Argument.class);
-        Argument[] _lastMethodOutputArguments = decoder.decodeArray("LastMethodOutputArguments", decoder::decodeSerializable, Argument.class);
-        DateTime _lastMethodCallTime = decoder.decodeDateTime("LastMethodCallTime");
-        StatusResult _lastMethodReturnStatus = decoder.decodeSerializable("LastMethodReturnStatus", StatusResult.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<ProgramDiagnosticDataType> {
+        @Override
+        public ProgramDiagnosticDataType decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            NodeId _createSessionId = reader.readNodeId("CreateSessionId");
+            String _createClientName = reader.readString("CreateClientName");
+            DateTime _invocationCreationTime = reader.readDateTime("InvocationCreationTime");
+            DateTime _lastTransitionTime = reader.readDateTime("LastTransitionTime");
+            String _lastMethodCall = reader.readString("LastMethodCall");
+            NodeId _lastMethodSessionId = reader.readNodeId("LastMethodSessionId");
+            Argument[] _lastMethodInputArguments =
+                reader.readArray(
+                    "LastMethodInputArguments",
+                    f -> (Argument) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "Argument", reader),
+                    Argument.class
+                );
+            Argument[] _lastMethodOutputArguments =
+                reader.readArray(
+                    "LastMethodOutputArguments",
+                    f -> (Argument) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "Argument", reader),
+                    Argument.class
+                );
+            DateTime _lastMethodCallTime = reader.readDateTime("LastMethodCallTime");
+            StatusResult _lastMethodReturnStatus = (StatusResult) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "StatusResult", reader);
 
-        return new ProgramDiagnosticDataType(_createSessionId, _createClientName, _invocationCreationTime, _lastTransitionTime, _lastMethodCall, _lastMethodSessionId, _lastMethodInputArguments, _lastMethodOutputArguments, _lastMethodCallTime, _lastMethodReturnStatus);
+            return new ProgramDiagnosticDataType(_createSessionId, _createClientName, _invocationCreationTime, _lastTransitionTime, _lastMethodCall, _lastMethodSessionId, _lastMethodInputArguments, _lastMethodOutputArguments, _lastMethodCallTime, _lastMethodReturnStatus);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ProgramDiagnosticDataType encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId("CreateSessionId", encodable._createSessionId);
+            writer.writeString("CreateClientName", encodable._createClientName);
+            writer.writeDateTime("InvocationCreationTime", encodable._invocationCreationTime);
+            writer.writeDateTime("LastTransitionTime", encodable._lastTransitionTime);
+            writer.writeString("LastMethodCall", encodable._lastMethodCall);
+            writer.writeNodeId("LastMethodSessionId", encodable._lastMethodSessionId);
+            writer.writeArray(
+                "LastMethodInputArguments",
+                encodable._lastMethodInputArguments,
+                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "Argument", e, writer)
+            );
+            writer.writeArray(
+                "LastMethodOutputArguments",
+                encodable._lastMethodOutputArguments,
+                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "Argument", e, writer)
+            );
+            writer.writeDateTime("LastMethodCallTime", encodable._lastMethodCallTime);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "StatusResult", encodable._lastMethodReturnStatus, writer);
+        }
     }
 
 }

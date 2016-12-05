@@ -15,9 +15,16 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
@@ -45,32 +52,20 @@ public class RepublishRequest implements UaRequestMessage {
         this._retransmitSequenceNumber = _retransmitSequenceNumber;
     }
 
-    public RequestHeader getRequestHeader() {
-        return _requestHeader;
-    }
+    public RequestHeader getRequestHeader() { return _requestHeader; }
 
-    public UInteger getSubscriptionId() {
-        return _subscriptionId;
-    }
+    public UInteger getSubscriptionId() { return _subscriptionId; }
 
-    public UInteger getRetransmitSequenceNumber() {
-        return _retransmitSequenceNumber;
-    }
+    public UInteger getRetransmitSequenceNumber() { return _retransmitSequenceNumber; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -81,18 +76,40 @@ public class RepublishRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static void encode(RepublishRequest republishRequest, UaEncoder encoder) {
-        encoder.encodeSerializable("RequestHeader", republishRequest._requestHeader != null ? republishRequest._requestHeader : new RequestHeader());
-        encoder.encodeUInt32("SubscriptionId", republishRequest._subscriptionId);
-        encoder.encodeUInt32("RetransmitSequenceNumber", republishRequest._retransmitSequenceNumber);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<RepublishRequest> {
+        @Override
+        public RepublishRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            UInteger _subscriptionId = reader.readUInt32();
+            UInteger _retransmitSequenceNumber = reader.readUInt32();
+
+            return new RepublishRequest(_requestHeader, _subscriptionId, _retransmitSequenceNumber);
+        }
+
+        @Override
+        public void encode(SerializationContext context, RepublishRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeUInt32(encodable._subscriptionId);
+            writer.writeUInt32(encodable._retransmitSequenceNumber);
+        }
     }
 
-    public static RepublishRequest decode(UaDecoder decoder) {
-        RequestHeader _requestHeader = decoder.decodeSerializable("RequestHeader", RequestHeader.class);
-        UInteger _subscriptionId = decoder.decodeUInt32("SubscriptionId");
-        UInteger _retransmitSequenceNumber = decoder.decodeUInt32("RetransmitSequenceNumber");
+    public static class XmlCodec implements OpcXmlTypeCodec<RepublishRequest> {
+        @Override
+        public RepublishRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            UInteger _subscriptionId = reader.readUInt32("SubscriptionId");
+            UInteger _retransmitSequenceNumber = reader.readUInt32("RetransmitSequenceNumber");
 
-        return new RepublishRequest(_requestHeader, _subscriptionId, _retransmitSequenceNumber);
+            return new RepublishRequest(_requestHeader, _subscriptionId, _retransmitSequenceNumber);
+        }
+
+        @Override
+        public void encode(SerializationContext context, RepublishRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeUInt32("SubscriptionId", encodable._subscriptionId);
+            writer.writeUInt32("RetransmitSequenceNumber", encodable._retransmitSequenceNumber);
+        }
     }
 
 }

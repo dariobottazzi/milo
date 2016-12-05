@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
@@ -38,24 +44,16 @@ public class HistoryUpdateDetails implements UaStructure {
         this._nodeId = _nodeId;
     }
 
-    public NodeId getNodeId() {
-        return _nodeId;
-    }
+    public NodeId getNodeId() { return _nodeId; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -64,14 +62,32 @@ public class HistoryUpdateDetails implements UaStructure {
             .toString();
     }
 
-    public static void encode(HistoryUpdateDetails historyUpdateDetails, UaEncoder encoder) {
-        encoder.encodeNodeId("NodeId", historyUpdateDetails._nodeId);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<HistoryUpdateDetails> {
+        @Override
+        public HistoryUpdateDetails decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            NodeId _nodeId = reader.readNodeId();
+
+            return new HistoryUpdateDetails(_nodeId);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryUpdateDetails encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId(encodable._nodeId);
+        }
     }
 
-    public static HistoryUpdateDetails decode(UaDecoder decoder) {
-        NodeId _nodeId = decoder.decodeNodeId("NodeId");
+    public static class XmlCodec implements OpcXmlTypeCodec<HistoryUpdateDetails> {
+        @Override
+        public HistoryUpdateDetails decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            NodeId _nodeId = reader.readNodeId("NodeId");
 
-        return new HistoryUpdateDetails(_nodeId);
+            return new HistoryUpdateDetails(_nodeId);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryUpdateDetails encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId("NodeId", encodable._nodeId);
+        }
     }
 
 }

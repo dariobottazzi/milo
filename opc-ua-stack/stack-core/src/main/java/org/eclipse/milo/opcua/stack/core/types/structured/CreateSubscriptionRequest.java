@@ -15,9 +15,16 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UByte;
@@ -58,48 +65,28 @@ public class CreateSubscriptionRequest implements UaRequestMessage {
         this._priority = _priority;
     }
 
-    public RequestHeader getRequestHeader() {
-        return _requestHeader;
-    }
+    public RequestHeader getRequestHeader() { return _requestHeader; }
 
-    public Double getRequestedPublishingInterval() {
-        return _requestedPublishingInterval;
-    }
+    public Double getRequestedPublishingInterval() { return _requestedPublishingInterval; }
 
-    public UInteger getRequestedLifetimeCount() {
-        return _requestedLifetimeCount;
-    }
+    public UInteger getRequestedLifetimeCount() { return _requestedLifetimeCount; }
 
-    public UInteger getRequestedMaxKeepAliveCount() {
-        return _requestedMaxKeepAliveCount;
-    }
+    public UInteger getRequestedMaxKeepAliveCount() { return _requestedMaxKeepAliveCount; }
 
-    public UInteger getMaxNotificationsPerPublish() {
-        return _maxNotificationsPerPublish;
-    }
+    public UInteger getMaxNotificationsPerPublish() { return _maxNotificationsPerPublish; }
 
-    public Boolean getPublishingEnabled() {
-        return _publishingEnabled;
-    }
+    public Boolean getPublishingEnabled() { return _publishingEnabled; }
 
-    public UByte getPriority() {
-        return _priority;
-    }
+    public UByte getPriority() { return _priority; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -114,26 +101,56 @@ public class CreateSubscriptionRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static void encode(CreateSubscriptionRequest createSubscriptionRequest, UaEncoder encoder) {
-        encoder.encodeSerializable("RequestHeader", createSubscriptionRequest._requestHeader != null ? createSubscriptionRequest._requestHeader : new RequestHeader());
-        encoder.encodeDouble("RequestedPublishingInterval", createSubscriptionRequest._requestedPublishingInterval);
-        encoder.encodeUInt32("RequestedLifetimeCount", createSubscriptionRequest._requestedLifetimeCount);
-        encoder.encodeUInt32("RequestedMaxKeepAliveCount", createSubscriptionRequest._requestedMaxKeepAliveCount);
-        encoder.encodeUInt32("MaxNotificationsPerPublish", createSubscriptionRequest._maxNotificationsPerPublish);
-        encoder.encodeBoolean("PublishingEnabled", createSubscriptionRequest._publishingEnabled);
-        encoder.encodeByte("Priority", createSubscriptionRequest._priority);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<CreateSubscriptionRequest> {
+        @Override
+        public CreateSubscriptionRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            Double _requestedPublishingInterval = reader.readDouble();
+            UInteger _requestedLifetimeCount = reader.readUInt32();
+            UInteger _requestedMaxKeepAliveCount = reader.readUInt32();
+            UInteger _maxNotificationsPerPublish = reader.readUInt32();
+            Boolean _publishingEnabled = reader.readBoolean();
+            UByte _priority = reader.readByte();
+
+            return new CreateSubscriptionRequest(_requestHeader, _requestedPublishingInterval, _requestedLifetimeCount, _requestedMaxKeepAliveCount, _maxNotificationsPerPublish, _publishingEnabled, _priority);
+        }
+
+        @Override
+        public void encode(SerializationContext context, CreateSubscriptionRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeDouble(encodable._requestedPublishingInterval);
+            writer.writeUInt32(encodable._requestedLifetimeCount);
+            writer.writeUInt32(encodable._requestedMaxKeepAliveCount);
+            writer.writeUInt32(encodable._maxNotificationsPerPublish);
+            writer.writeBoolean(encodable._publishingEnabled);
+            writer.writeByte(encodable._priority);
+        }
     }
 
-    public static CreateSubscriptionRequest decode(UaDecoder decoder) {
-        RequestHeader _requestHeader = decoder.decodeSerializable("RequestHeader", RequestHeader.class);
-        Double _requestedPublishingInterval = decoder.decodeDouble("RequestedPublishingInterval");
-        UInteger _requestedLifetimeCount = decoder.decodeUInt32("RequestedLifetimeCount");
-        UInteger _requestedMaxKeepAliveCount = decoder.decodeUInt32("RequestedMaxKeepAliveCount");
-        UInteger _maxNotificationsPerPublish = decoder.decodeUInt32("MaxNotificationsPerPublish");
-        Boolean _publishingEnabled = decoder.decodeBoolean("PublishingEnabled");
-        UByte _priority = decoder.decodeByte("Priority");
+    public static class XmlCodec implements OpcXmlTypeCodec<CreateSubscriptionRequest> {
+        @Override
+        public CreateSubscriptionRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            Double _requestedPublishingInterval = reader.readDouble("RequestedPublishingInterval");
+            UInteger _requestedLifetimeCount = reader.readUInt32("RequestedLifetimeCount");
+            UInteger _requestedMaxKeepAliveCount = reader.readUInt32("RequestedMaxKeepAliveCount");
+            UInteger _maxNotificationsPerPublish = reader.readUInt32("MaxNotificationsPerPublish");
+            Boolean _publishingEnabled = reader.readBoolean("PublishingEnabled");
+            UByte _priority = reader.readByte("Priority");
 
-        return new CreateSubscriptionRequest(_requestHeader, _requestedPublishingInterval, _requestedLifetimeCount, _requestedMaxKeepAliveCount, _maxNotificationsPerPublish, _publishingEnabled, _priority);
+            return new CreateSubscriptionRequest(_requestHeader, _requestedPublishingInterval, _requestedLifetimeCount, _requestedMaxKeepAliveCount, _maxNotificationsPerPublish, _publishingEnabled, _priority);
+        }
+
+        @Override
+        public void encode(SerializationContext context, CreateSubscriptionRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeDouble("RequestedPublishingInterval", encodable._requestedPublishingInterval);
+            writer.writeUInt32("RequestedLifetimeCount", encodable._requestedLifetimeCount);
+            writer.writeUInt32("RequestedMaxKeepAliveCount", encodable._requestedMaxKeepAliveCount);
+            writer.writeUInt32("MaxNotificationsPerPublish", encodable._maxNotificationsPerPublish);
+            writer.writeBoolean("PublishingEnabled", encodable._publishingEnabled);
+            writer.writeByte("Priority", encodable._priority);
+        }
     }
 
 }

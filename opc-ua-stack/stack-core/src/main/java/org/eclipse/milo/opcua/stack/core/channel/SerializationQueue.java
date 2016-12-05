@@ -41,7 +41,7 @@ public class SerializationQueue {
         this.parameters = parameters;
 
         reader = new OpcBinaryStreamReader(maxArrayLength, maxStringLength);
-        writer = null; // TODO
+        writer = new OpcBinaryStreamWriter(maxArrayLength, maxStringLength);
 
         chunkEncoder = new ChunkEncoder(parameters);
         chunkDecoder = new ChunkDecoder(parameters);

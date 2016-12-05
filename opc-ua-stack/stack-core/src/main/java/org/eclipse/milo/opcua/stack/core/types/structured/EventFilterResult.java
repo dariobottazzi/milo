@@ -17,8 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DiagnosticInfo;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -50,33 +57,21 @@ public class EventFilterResult extends MonitoringFilterResult {
     }
 
     @Nullable
-    public StatusCode[] getSelectClauseResults() {
-        return _selectClauseResults;
-    }
+    public StatusCode[] getSelectClauseResults() { return _selectClauseResults; }
 
     @Nullable
-    public DiagnosticInfo[] getSelectClauseDiagnosticInfos() {
-        return _selectClauseDiagnosticInfos;
-    }
+    public DiagnosticInfo[] getSelectClauseDiagnosticInfos() { return _selectClauseDiagnosticInfos; }
 
-    public ContentFilterResult getWhereClauseResult() {
-        return _whereClauseResult;
-    }
+    public ContentFilterResult getWhereClauseResult() { return _whereClauseResult; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -87,18 +82,40 @@ public class EventFilterResult extends MonitoringFilterResult {
             .toString();
     }
 
-    public static void encode(EventFilterResult eventFilterResult, UaEncoder encoder) {
-        encoder.encodeArray("SelectClauseResults", eventFilterResult._selectClauseResults, encoder::encodeStatusCode);
-        encoder.encodeArray("SelectClauseDiagnosticInfos", eventFilterResult._selectClauseDiagnosticInfos, encoder::encodeDiagnosticInfo);
-        encoder.encodeSerializable("WhereClauseResult", eventFilterResult._whereClauseResult != null ? eventFilterResult._whereClauseResult : new ContentFilterResult());
+    public static class BinaryCodec implements OpcBinaryTypeCodec<EventFilterResult> {
+        @Override
+        public EventFilterResult decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            StatusCode[] _selectClauseResults = reader.readArray(reader::readStatusCode, StatusCode.class);
+            DiagnosticInfo[] _selectClauseDiagnosticInfos = reader.readArray(reader::readDiagnosticInfo, DiagnosticInfo.class);
+            ContentFilterResult _whereClauseResult = (ContentFilterResult) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterResult", reader);
+
+            return new EventFilterResult(_selectClauseResults, _selectClauseDiagnosticInfos, _whereClauseResult);
+        }
+
+        @Override
+        public void encode(SerializationContext context, EventFilterResult encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeArray(encodable._selectClauseResults, writer::writeStatusCode);
+            writer.writeArray(encodable._selectClauseDiagnosticInfos, writer::writeDiagnosticInfo);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterResult", encodable._whereClauseResult, writer);
+        }
     }
 
-    public static EventFilterResult decode(UaDecoder decoder) {
-        StatusCode[] _selectClauseResults = decoder.decodeArray("SelectClauseResults", decoder::decodeStatusCode, StatusCode.class);
-        DiagnosticInfo[] _selectClauseDiagnosticInfos = decoder.decodeArray("SelectClauseDiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
-        ContentFilterResult _whereClauseResult = decoder.decodeSerializable("WhereClauseResult", ContentFilterResult.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<EventFilterResult> {
+        @Override
+        public EventFilterResult decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            StatusCode[] _selectClauseResults = reader.readArray("SelectClauseResults", reader::readStatusCode, StatusCode.class);
+            DiagnosticInfo[] _selectClauseDiagnosticInfos = reader.readArray("SelectClauseDiagnosticInfos", reader::readDiagnosticInfo, DiagnosticInfo.class);
+            ContentFilterResult _whereClauseResult = (ContentFilterResult) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterResult", reader);
 
-        return new EventFilterResult(_selectClauseResults, _selectClauseDiagnosticInfos, _whereClauseResult);
+            return new EventFilterResult(_selectClauseResults, _selectClauseDiagnosticInfos, _whereClauseResult);
+        }
+
+        @Override
+        public void encode(SerializationContext context, EventFilterResult encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeArray("SelectClauseResults", encodable._selectClauseResults, writer::writeStatusCode);
+            writer.writeArray("SelectClauseDiagnosticInfos", encodable._selectClauseDiagnosticInfos, writer::writeDiagnosticInfo);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterResult", encodable._whereClauseResult, writer);
+        }
     }
 
 }

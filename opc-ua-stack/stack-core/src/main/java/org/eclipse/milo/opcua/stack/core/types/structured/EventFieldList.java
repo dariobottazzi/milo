@@ -17,9 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
@@ -45,29 +51,19 @@ public class EventFieldList implements UaStructure {
         this._eventFields = _eventFields;
     }
 
-    public UInteger getClientHandle() {
-        return _clientHandle;
-    }
+    public UInteger getClientHandle() { return _clientHandle; }
 
     @Nullable
-    public Variant[] getEventFields() {
-        return _eventFields;
-    }
+    public Variant[] getEventFields() { return _eventFields; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -77,16 +73,36 @@ public class EventFieldList implements UaStructure {
             .toString();
     }
 
-    public static void encode(EventFieldList eventFieldList, UaEncoder encoder) {
-        encoder.encodeUInt32("ClientHandle", eventFieldList._clientHandle);
-        encoder.encodeArray("EventFields", eventFieldList._eventFields, encoder::encodeVariant);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<EventFieldList> {
+        @Override
+        public EventFieldList decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            UInteger _clientHandle = reader.readUInt32();
+            Variant[] _eventFields = reader.readArray(reader::readVariant, Variant.class);
+
+            return new EventFieldList(_clientHandle, _eventFields);
+        }
+
+        @Override
+        public void encode(SerializationContext context, EventFieldList encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeUInt32(encodable._clientHandle);
+            writer.writeArray(encodable._eventFields, writer::writeVariant);
+        }
     }
 
-    public static EventFieldList decode(UaDecoder decoder) {
-        UInteger _clientHandle = decoder.decodeUInt32("ClientHandle");
-        Variant[] _eventFields = decoder.decodeArray("EventFields", decoder::decodeVariant, Variant.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<EventFieldList> {
+        @Override
+        public EventFieldList decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            UInteger _clientHandle = reader.readUInt32("ClientHandle");
+            Variant[] _eventFields = reader.readArray("EventFields", reader::readVariant, Variant.class);
 
-        return new EventFieldList(_clientHandle, _eventFields);
+            return new EventFieldList(_clientHandle, _eventFields);
+        }
+
+        @Override
+        public void encode(SerializationContext context, EventFieldList encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeUInt32("ClientHandle", encodable._clientHandle);
+            writer.writeArray("EventFields", encodable._eventFields, writer::writeVariant);
+        }
     }
 
 }

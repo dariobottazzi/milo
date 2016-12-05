@@ -17,8 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
@@ -42,24 +49,16 @@ public class EventNotificationList extends NotificationData {
     }
 
     @Nullable
-    public EventFieldList[] getEvents() {
-        return _events;
-    }
+    public EventFieldList[] getEvents() { return _events; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -68,14 +67,50 @@ public class EventNotificationList extends NotificationData {
             .toString();
     }
 
-    public static void encode(EventNotificationList eventNotificationList, UaEncoder encoder) {
-        encoder.encodeArray("Events", eventNotificationList._events, encoder::encodeSerializable);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<EventNotificationList> {
+        @Override
+        public EventNotificationList decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            EventFieldList[] _events =
+                reader.readArray(
+                    () -> (EventFieldList) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "EventFieldList", reader),
+                    EventFieldList.class
+                );
+
+            return new EventNotificationList(_events);
+        }
+
+        @Override
+        public void encode(SerializationContext context, EventNotificationList encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeArray(
+                encodable._events,
+                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "EventFieldList", e, writer)
+            );
+        }
     }
 
-    public static EventNotificationList decode(UaDecoder decoder) {
-        EventFieldList[] _events = decoder.decodeArray("Events", decoder::decodeSerializable, EventFieldList.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<EventNotificationList> {
+        @Override
+        public EventNotificationList decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            EventFieldList[] _events =
+                reader.readArray(
+                    "Events",
+                    f -> (EventFieldList) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "EventFieldList", reader),
+                    EventFieldList.class
+                );
 
-        return new EventNotificationList(_events);
+            return new EventNotificationList(_events);
+        }
+
+        @Override
+        public void encode(SerializationContext context, EventNotificationList encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeArray(
+                "Events",
+                encodable._events,
+                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "EventFieldList", e, writer)
+            );
+        }
     }
 
 }

@@ -17,9 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExtensionObject;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -44,29 +51,19 @@ public class HistoryUpdateRequest implements UaRequestMessage {
         this._historyUpdateDetails = _historyUpdateDetails;
     }
 
-    public RequestHeader getRequestHeader() {
-        return _requestHeader;
-    }
+    public RequestHeader getRequestHeader() { return _requestHeader; }
 
     @Nullable
-    public ExtensionObject[] getHistoryUpdateDetails() {
-        return _historyUpdateDetails;
-    }
+    public ExtensionObject[] getHistoryUpdateDetails() { return _historyUpdateDetails; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -76,16 +73,36 @@ public class HistoryUpdateRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static void encode(HistoryUpdateRequest historyUpdateRequest, UaEncoder encoder) {
-        encoder.encodeSerializable("RequestHeader", historyUpdateRequest._requestHeader != null ? historyUpdateRequest._requestHeader : new RequestHeader());
-        encoder.encodeArray("HistoryUpdateDetails", historyUpdateRequest._historyUpdateDetails, encoder::encodeExtensionObject);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<HistoryUpdateRequest> {
+        @Override
+        public HistoryUpdateRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            ExtensionObject[] _historyUpdateDetails = reader.readArray(reader::readExtensionObject, ExtensionObject.class);
+
+            return new HistoryUpdateRequest(_requestHeader, _historyUpdateDetails);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryUpdateRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeArray(encodable._historyUpdateDetails, writer::writeExtensionObject);
+        }
     }
 
-    public static HistoryUpdateRequest decode(UaDecoder decoder) {
-        RequestHeader _requestHeader = decoder.decodeSerializable("RequestHeader", RequestHeader.class);
-        ExtensionObject[] _historyUpdateDetails = decoder.decodeArray("HistoryUpdateDetails", decoder::decodeExtensionObject, ExtensionObject.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<HistoryUpdateRequest> {
+        @Override
+        public HistoryUpdateRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            ExtensionObject[] _historyUpdateDetails = reader.readArray("HistoryUpdateDetails", reader::readExtensionObject, ExtensionObject.class);
 
-        return new HistoryUpdateRequest(_requestHeader, _historyUpdateDetails);
+            return new HistoryUpdateRequest(_requestHeader, _historyUpdateDetails);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryUpdateRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeArray("HistoryUpdateDetails", encodable._historyUpdateDetails, writer::writeExtensionObject);
+        }
     }
 
 }

@@ -49,7 +49,7 @@ public class OpcUaDataTypeEncoding implements DataTypeEncoding {
 
             ByteBuf buffer = allocator.buffer().order(ByteOrder.LITTLE_ENDIAN);
 
-            OpcBinaryStreamWriter writer = null; // TODO
+            OpcBinaryStreamWriter writer = new OpcBinaryStreamWriter(buffer);
 
             codec.encode(() -> typeManager, object, writer);
 

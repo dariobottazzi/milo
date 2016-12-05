@@ -15,9 +15,16 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
@@ -41,28 +48,18 @@ public class RegisterServerRequest implements UaRequestMessage {
         this._server = _server;
     }
 
-    public RequestHeader getRequestHeader() {
-        return _requestHeader;
-    }
+    public RequestHeader getRequestHeader() { return _requestHeader; }
 
-    public RegisteredServer getServer() {
-        return _server;
-    }
+    public RegisteredServer getServer() { return _server; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -72,16 +69,36 @@ public class RegisterServerRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static void encode(RegisterServerRequest registerServerRequest, UaEncoder encoder) {
-        encoder.encodeSerializable("RequestHeader", registerServerRequest._requestHeader != null ? registerServerRequest._requestHeader : new RequestHeader());
-        encoder.encodeSerializable("Server", registerServerRequest._server != null ? registerServerRequest._server : new RegisteredServer());
+    public static class BinaryCodec implements OpcBinaryTypeCodec<RegisterServerRequest> {
+        @Override
+        public RegisterServerRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RegisteredServer _server = (RegisteredServer) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RegisteredServer", reader);
+
+            return new RegisterServerRequest(_requestHeader, _server);
+        }
+
+        @Override
+        public void encode(SerializationContext context, RegisterServerRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RegisteredServer", encodable._server, writer);
+        }
     }
 
-    public static RegisterServerRequest decode(UaDecoder decoder) {
-        RequestHeader _requestHeader = decoder.decodeSerializable("RequestHeader", RequestHeader.class);
-        RegisteredServer _server = decoder.decodeSerializable("Server", RegisteredServer.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<RegisterServerRequest> {
+        @Override
+        public RegisterServerRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RegisteredServer _server = (RegisteredServer) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RegisteredServer", reader);
 
-        return new RegisterServerRequest(_requestHeader, _server);
+            return new RegisterServerRequest(_requestHeader, _server);
+        }
+
+        @Override
+        public void encode(SerializationContext context, RegisterServerRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RegisteredServer", encodable._server, writer);
+        }
     }
 
 }

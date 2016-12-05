@@ -17,9 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DiagnosticInfo;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -48,34 +55,22 @@ public class RegisterServer2Response implements UaResponseMessage {
         this._diagnosticInfos = _diagnosticInfos;
     }
 
-    public ResponseHeader getResponseHeader() {
-        return _responseHeader;
-    }
+    public ResponseHeader getResponseHeader() { return _responseHeader; }
 
     @Nullable
-    public StatusCode[] getConfigurationResults() {
-        return _configurationResults;
-    }
+    public StatusCode[] getConfigurationResults() { return _configurationResults; }
 
     @Nullable
-    public DiagnosticInfo[] getDiagnosticInfos() {
-        return _diagnosticInfos;
-    }
+    public DiagnosticInfo[] getDiagnosticInfos() { return _diagnosticInfos; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -86,18 +81,40 @@ public class RegisterServer2Response implements UaResponseMessage {
             .toString();
     }
 
-    public static void encode(RegisterServer2Response registerServer2Response, UaEncoder encoder) {
-        encoder.encodeSerializable("ResponseHeader", registerServer2Response._responseHeader != null ? registerServer2Response._responseHeader : new ResponseHeader());
-        encoder.encodeArray("ConfigurationResults", registerServer2Response._configurationResults, encoder::encodeStatusCode);
-        encoder.encodeArray("DiagnosticInfos", registerServer2Response._diagnosticInfos, encoder::encodeDiagnosticInfo);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<RegisterServer2Response> {
+        @Override
+        public RegisterServer2Response decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
+            StatusCode[] _configurationResults = reader.readArray(reader::readStatusCode, StatusCode.class);
+            DiagnosticInfo[] _diagnosticInfos = reader.readArray(reader::readDiagnosticInfo, DiagnosticInfo.class);
+
+            return new RegisterServer2Response(_responseHeader, _configurationResults, _diagnosticInfos);
+        }
+
+        @Override
+        public void encode(SerializationContext context, RegisterServer2Response encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
+            writer.writeArray(encodable._configurationResults, writer::writeStatusCode);
+            writer.writeArray(encodable._diagnosticInfos, writer::writeDiagnosticInfo);
+        }
     }
 
-    public static RegisterServer2Response decode(UaDecoder decoder) {
-        ResponseHeader _responseHeader = decoder.decodeSerializable("ResponseHeader", ResponseHeader.class);
-        StatusCode[] _configurationResults = decoder.decodeArray("ConfigurationResults", decoder::decodeStatusCode, StatusCode.class);
-        DiagnosticInfo[] _diagnosticInfos = decoder.decodeArray("DiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<RegisterServer2Response> {
+        @Override
+        public RegisterServer2Response decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
+            StatusCode[] _configurationResults = reader.readArray("ConfigurationResults", reader::readStatusCode, StatusCode.class);
+            DiagnosticInfo[] _diagnosticInfos = reader.readArray("DiagnosticInfos", reader::readDiagnosticInfo, DiagnosticInfo.class);
 
-        return new RegisterServer2Response(_responseHeader, _configurationResults, _diagnosticInfos);
+            return new RegisterServer2Response(_responseHeader, _configurationResults, _diagnosticInfos);
+        }
+
+        @Override
+        public void encode(SerializationContext context, RegisterServer2Response encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
+            writer.writeArray("ConfigurationResults", encodable._configurationResults, writer::writeStatusCode);
+            writer.writeArray("DiagnosticInfos", encodable._diagnosticInfos, writer::writeDiagnosticInfo);
+        }
     }
 
 }

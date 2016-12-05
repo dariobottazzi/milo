@@ -17,9 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
@@ -42,24 +48,16 @@ public class HistoryEventFieldList implements UaStructure {
     }
 
     @Nullable
-    public Variant[] getEventFields() {
-        return _eventFields;
-    }
+    public Variant[] getEventFields() { return _eventFields; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -68,14 +66,32 @@ public class HistoryEventFieldList implements UaStructure {
             .toString();
     }
 
-    public static void encode(HistoryEventFieldList historyEventFieldList, UaEncoder encoder) {
-        encoder.encodeArray("EventFields", historyEventFieldList._eventFields, encoder::encodeVariant);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<HistoryEventFieldList> {
+        @Override
+        public HistoryEventFieldList decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            Variant[] _eventFields = reader.readArray(reader::readVariant, Variant.class);
+
+            return new HistoryEventFieldList(_eventFields);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryEventFieldList encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeArray(encodable._eventFields, writer::writeVariant);
+        }
     }
 
-    public static HistoryEventFieldList decode(UaDecoder decoder) {
-        Variant[] _eventFields = decoder.decodeArray("EventFields", decoder::decodeVariant, Variant.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<HistoryEventFieldList> {
+        @Override
+        public HistoryEventFieldList decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            Variant[] _eventFields = reader.readArray("EventFields", reader::readVariant, Variant.class);
 
-        return new HistoryEventFieldList(_eventFields);
+            return new HistoryEventFieldList(_eventFields);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryEventFieldList encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeArray("EventFields", encodable._eventFields, writer::writeVariant);
+        }
     }
 
 }

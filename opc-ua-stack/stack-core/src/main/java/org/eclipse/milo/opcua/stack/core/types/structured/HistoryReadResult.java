@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExtensionObject;
@@ -47,32 +53,20 @@ public class HistoryReadResult implements UaStructure {
         this._historyData = _historyData;
     }
 
-    public StatusCode getStatusCode() {
-        return _statusCode;
-    }
+    public StatusCode getStatusCode() { return _statusCode; }
 
-    public ByteString getContinuationPoint() {
-        return _continuationPoint;
-    }
+    public ByteString getContinuationPoint() { return _continuationPoint; }
 
-    public ExtensionObject getHistoryData() {
-        return _historyData;
-    }
+    public ExtensionObject getHistoryData() { return _historyData; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -83,18 +77,40 @@ public class HistoryReadResult implements UaStructure {
             .toString();
     }
 
-    public static void encode(HistoryReadResult historyReadResult, UaEncoder encoder) {
-        encoder.encodeStatusCode("StatusCode", historyReadResult._statusCode);
-        encoder.encodeByteString("ContinuationPoint", historyReadResult._continuationPoint);
-        encoder.encodeExtensionObject("HistoryData", historyReadResult._historyData);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<HistoryReadResult> {
+        @Override
+        public HistoryReadResult decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            StatusCode _statusCode = reader.readStatusCode();
+            ByteString _continuationPoint = reader.readByteString();
+            ExtensionObject _historyData = reader.readExtensionObject();
+
+            return new HistoryReadResult(_statusCode, _continuationPoint, _historyData);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryReadResult encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeStatusCode(encodable._statusCode);
+            writer.writeByteString(encodable._continuationPoint);
+            writer.writeExtensionObject(encodable._historyData);
+        }
     }
 
-    public static HistoryReadResult decode(UaDecoder decoder) {
-        StatusCode _statusCode = decoder.decodeStatusCode("StatusCode");
-        ByteString _continuationPoint = decoder.decodeByteString("ContinuationPoint");
-        ExtensionObject _historyData = decoder.decodeExtensionObject("HistoryData");
+    public static class XmlCodec implements OpcXmlTypeCodec<HistoryReadResult> {
+        @Override
+        public HistoryReadResult decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            StatusCode _statusCode = reader.readStatusCode("StatusCode");
+            ByteString _continuationPoint = reader.readByteString("ContinuationPoint");
+            ExtensionObject _historyData = reader.readExtensionObject("HistoryData");
 
-        return new HistoryReadResult(_statusCode, _continuationPoint, _historyData);
+            return new HistoryReadResult(_statusCode, _continuationPoint, _historyData);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryReadResult encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeStatusCode("StatusCode", encodable._statusCode);
+            writer.writeByteString("ContinuationPoint", encodable._continuationPoint);
+            writer.writeExtensionObject("HistoryData", encodable._historyData);
+        }
     }
 
 }

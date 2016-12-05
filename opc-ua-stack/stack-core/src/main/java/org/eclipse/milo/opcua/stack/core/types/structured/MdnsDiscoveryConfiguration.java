@@ -17,8 +17,14 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
@@ -44,29 +50,19 @@ public class MdnsDiscoveryConfiguration extends DiscoveryConfiguration {
         this._serverCapabilities = _serverCapabilities;
     }
 
-    public String getMdnsServerName() {
-        return _mdnsServerName;
-    }
+    public String getMdnsServerName() { return _mdnsServerName; }
 
     @Nullable
-    public String[] getServerCapabilities() {
-        return _serverCapabilities;
-    }
+    public String[] getServerCapabilities() { return _serverCapabilities; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -76,16 +72,36 @@ public class MdnsDiscoveryConfiguration extends DiscoveryConfiguration {
             .toString();
     }
 
-    public static void encode(MdnsDiscoveryConfiguration mdnsDiscoveryConfiguration, UaEncoder encoder) {
-        encoder.encodeString("MdnsServerName", mdnsDiscoveryConfiguration._mdnsServerName);
-        encoder.encodeArray("ServerCapabilities", mdnsDiscoveryConfiguration._serverCapabilities, encoder::encodeString);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<MdnsDiscoveryConfiguration> {
+        @Override
+        public MdnsDiscoveryConfiguration decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            String _mdnsServerName = reader.readString();
+            String[] _serverCapabilities = reader.readArray(reader::readString, String.class);
+
+            return new MdnsDiscoveryConfiguration(_mdnsServerName, _serverCapabilities);
+        }
+
+        @Override
+        public void encode(SerializationContext context, MdnsDiscoveryConfiguration encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeString(encodable._mdnsServerName);
+            writer.writeArray(encodable._serverCapabilities, writer::writeString);
+        }
     }
 
-    public static MdnsDiscoveryConfiguration decode(UaDecoder decoder) {
-        String _mdnsServerName = decoder.decodeString("MdnsServerName");
-        String[] _serverCapabilities = decoder.decodeArray("ServerCapabilities", decoder::decodeString, String.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<MdnsDiscoveryConfiguration> {
+        @Override
+        public MdnsDiscoveryConfiguration decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            String _mdnsServerName = reader.readString("MdnsServerName");
+            String[] _serverCapabilities = reader.readArray("ServerCapabilities", reader::readString, String.class);
 
-        return new MdnsDiscoveryConfiguration(_mdnsServerName, _serverCapabilities);
+            return new MdnsDiscoveryConfiguration(_mdnsServerName, _serverCapabilities);
+        }
+
+        @Override
+        public void encode(SerializationContext context, MdnsDiscoveryConfiguration encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeString("MdnsServerName", encodable._mdnsServerName);
+            writer.writeArray("ServerCapabilities", encodable._serverCapabilities, writer::writeString);
+        }
     }
 
 }

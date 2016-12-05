@@ -17,9 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExtensionObject;
@@ -49,33 +55,21 @@ public class NotificationMessage implements UaStructure {
         this._notificationData = _notificationData;
     }
 
-    public UInteger getSequenceNumber() {
-        return _sequenceNumber;
-    }
+    public UInteger getSequenceNumber() { return _sequenceNumber; }
 
-    public DateTime getPublishTime() {
-        return _publishTime;
-    }
+    public DateTime getPublishTime() { return _publishTime; }
 
     @Nullable
-    public ExtensionObject[] getNotificationData() {
-        return _notificationData;
-    }
+    public ExtensionObject[] getNotificationData() { return _notificationData; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -86,18 +80,40 @@ public class NotificationMessage implements UaStructure {
             .toString();
     }
 
-    public static void encode(NotificationMessage notificationMessage, UaEncoder encoder) {
-        encoder.encodeUInt32("SequenceNumber", notificationMessage._sequenceNumber);
-        encoder.encodeDateTime("PublishTime", notificationMessage._publishTime);
-        encoder.encodeArray("NotificationData", notificationMessage._notificationData, encoder::encodeExtensionObject);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<NotificationMessage> {
+        @Override
+        public NotificationMessage decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            UInteger _sequenceNumber = reader.readUInt32();
+            DateTime _publishTime = reader.readDateTime();
+            ExtensionObject[] _notificationData = reader.readArray(reader::readExtensionObject, ExtensionObject.class);
+
+            return new NotificationMessage(_sequenceNumber, _publishTime, _notificationData);
+        }
+
+        @Override
+        public void encode(SerializationContext context, NotificationMessage encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeUInt32(encodable._sequenceNumber);
+            writer.writeDateTime(encodable._publishTime);
+            writer.writeArray(encodable._notificationData, writer::writeExtensionObject);
+        }
     }
 
-    public static NotificationMessage decode(UaDecoder decoder) {
-        UInteger _sequenceNumber = decoder.decodeUInt32("SequenceNumber");
-        DateTime _publishTime = decoder.decodeDateTime("PublishTime");
-        ExtensionObject[] _notificationData = decoder.decodeArray("NotificationData", decoder::decodeExtensionObject, ExtensionObject.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<NotificationMessage> {
+        @Override
+        public NotificationMessage decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            UInteger _sequenceNumber = reader.readUInt32("SequenceNumber");
+            DateTime _publishTime = reader.readDateTime("PublishTime");
+            ExtensionObject[] _notificationData = reader.readArray("NotificationData", reader::readExtensionObject, ExtensionObject.class);
 
-        return new NotificationMessage(_sequenceNumber, _publishTime, _notificationData);
+            return new NotificationMessage(_sequenceNumber, _publishTime, _notificationData);
+        }
+
+        @Override
+        public void encode(SerializationContext context, NotificationMessage encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeUInt32("SequenceNumber", encodable._sequenceNumber);
+            writer.writeDateTime("PublishTime", encodable._publishTime);
+            writer.writeArray("NotificationData", encodable._notificationData, writer::writeExtensionObject);
+        }
     }
 
 }

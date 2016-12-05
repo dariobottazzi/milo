@@ -17,9 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -66,57 +72,33 @@ public class SessionSecurityDiagnosticsDataType implements UaStructure {
         this._clientCertificate = _clientCertificate;
     }
 
-    public NodeId getSessionId() {
-        return _sessionId;
-    }
+    public NodeId getSessionId() { return _sessionId; }
 
-    public String getClientUserIdOfSession() {
-        return _clientUserIdOfSession;
-    }
+    public String getClientUserIdOfSession() { return _clientUserIdOfSession; }
 
     @Nullable
-    public String[] getClientUserIdHistory() {
-        return _clientUserIdHistory;
-    }
+    public String[] getClientUserIdHistory() { return _clientUserIdHistory; }
 
-    public String getAuthenticationMechanism() {
-        return _authenticationMechanism;
-    }
+    public String getAuthenticationMechanism() { return _authenticationMechanism; }
 
-    public String getEncoding() {
-        return _encoding;
-    }
+    public String getEncoding() { return _encoding; }
 
-    public String getTransportProtocol() {
-        return _transportProtocol;
-    }
+    public String getTransportProtocol() { return _transportProtocol; }
 
-    public MessageSecurityMode getSecurityMode() {
-        return _securityMode;
-    }
+    public MessageSecurityMode getSecurityMode() { return _securityMode; }
 
-    public String getSecurityPolicyUri() {
-        return _securityPolicyUri;
-    }
+    public String getSecurityPolicyUri() { return _securityPolicyUri; }
 
-    public ByteString getClientCertificate() {
-        return _clientCertificate;
-    }
+    public ByteString getClientCertificate() { return _clientCertificate; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -133,30 +115,64 @@ public class SessionSecurityDiagnosticsDataType implements UaStructure {
             .toString();
     }
 
-    public static void encode(SessionSecurityDiagnosticsDataType sessionSecurityDiagnosticsDataType, UaEncoder encoder) {
-        encoder.encodeNodeId("SessionId", sessionSecurityDiagnosticsDataType._sessionId);
-        encoder.encodeString("ClientUserIdOfSession", sessionSecurityDiagnosticsDataType._clientUserIdOfSession);
-        encoder.encodeArray("ClientUserIdHistory", sessionSecurityDiagnosticsDataType._clientUserIdHistory, encoder::encodeString);
-        encoder.encodeString("AuthenticationMechanism", sessionSecurityDiagnosticsDataType._authenticationMechanism);
-        encoder.encodeString("Encoding", sessionSecurityDiagnosticsDataType._encoding);
-        encoder.encodeString("TransportProtocol", sessionSecurityDiagnosticsDataType._transportProtocol);
-        encoder.encodeEnumeration("SecurityMode", sessionSecurityDiagnosticsDataType._securityMode);
-        encoder.encodeString("SecurityPolicyUri", sessionSecurityDiagnosticsDataType._securityPolicyUri);
-        encoder.encodeByteString("ClientCertificate", sessionSecurityDiagnosticsDataType._clientCertificate);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<SessionSecurityDiagnosticsDataType> {
+        @Override
+        public SessionSecurityDiagnosticsDataType decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            NodeId _sessionId = reader.readNodeId();
+            String _clientUserIdOfSession = reader.readString();
+            String[] _clientUserIdHistory = reader.readArray(reader::readString, String.class);
+            String _authenticationMechanism = reader.readString();
+            String _encoding = reader.readString();
+            String _transportProtocol = reader.readString();
+            MessageSecurityMode _securityMode = MessageSecurityMode.from(reader.readInt32());
+            String _securityPolicyUri = reader.readString();
+            ByteString _clientCertificate = reader.readByteString();
+
+            return new SessionSecurityDiagnosticsDataType(_sessionId, _clientUserIdOfSession, _clientUserIdHistory, _authenticationMechanism, _encoding, _transportProtocol, _securityMode, _securityPolicyUri, _clientCertificate);
+        }
+
+        @Override
+        public void encode(SerializationContext context, SessionSecurityDiagnosticsDataType encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId(encodable._sessionId);
+            writer.writeString(encodable._clientUserIdOfSession);
+            writer.writeArray(encodable._clientUserIdHistory, writer::writeString);
+            writer.writeString(encodable._authenticationMechanism);
+            writer.writeString(encodable._encoding);
+            writer.writeString(encodable._transportProtocol);
+            writer.writeInt32(encodable._securityMode != null ? encodable._securityMode.getValue() : 0);
+            writer.writeString(encodable._securityPolicyUri);
+            writer.writeByteString(encodable._clientCertificate);
+        }
     }
 
-    public static SessionSecurityDiagnosticsDataType decode(UaDecoder decoder) {
-        NodeId _sessionId = decoder.decodeNodeId("SessionId");
-        String _clientUserIdOfSession = decoder.decodeString("ClientUserIdOfSession");
-        String[] _clientUserIdHistory = decoder.decodeArray("ClientUserIdHistory", decoder::decodeString, String.class);
-        String _authenticationMechanism = decoder.decodeString("AuthenticationMechanism");
-        String _encoding = decoder.decodeString("Encoding");
-        String _transportProtocol = decoder.decodeString("TransportProtocol");
-        MessageSecurityMode _securityMode = decoder.decodeEnumeration("SecurityMode", MessageSecurityMode.class);
-        String _securityPolicyUri = decoder.decodeString("SecurityPolicyUri");
-        ByteString _clientCertificate = decoder.decodeByteString("ClientCertificate");
+    public static class XmlCodec implements OpcXmlTypeCodec<SessionSecurityDiagnosticsDataType> {
+        @Override
+        public SessionSecurityDiagnosticsDataType decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            NodeId _sessionId = reader.readNodeId("SessionId");
+            String _clientUserIdOfSession = reader.readString("ClientUserIdOfSession");
+            String[] _clientUserIdHistory = reader.readArray("ClientUserIdHistory", reader::readString, String.class);
+            String _authenticationMechanism = reader.readString("AuthenticationMechanism");
+            String _encoding = reader.readString("Encoding");
+            String _transportProtocol = reader.readString("TransportProtocol");
+            MessageSecurityMode _securityMode = MessageSecurityMode.from(reader.readInt32("SecurityMode"));
+            String _securityPolicyUri = reader.readString("SecurityPolicyUri");
+            ByteString _clientCertificate = reader.readByteString("ClientCertificate");
 
-        return new SessionSecurityDiagnosticsDataType(_sessionId, _clientUserIdOfSession, _clientUserIdHistory, _authenticationMechanism, _encoding, _transportProtocol, _securityMode, _securityPolicyUri, _clientCertificate);
+            return new SessionSecurityDiagnosticsDataType(_sessionId, _clientUserIdOfSession, _clientUserIdHistory, _authenticationMechanism, _encoding, _transportProtocol, _securityMode, _securityPolicyUri, _clientCertificate);
+        }
+
+        @Override
+        public void encode(SerializationContext context, SessionSecurityDiagnosticsDataType encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId("SessionId", encodable._sessionId);
+            writer.writeString("ClientUserIdOfSession", encodable._clientUserIdOfSession);
+            writer.writeArray("ClientUserIdHistory", encodable._clientUserIdHistory, writer::writeString);
+            writer.writeString("AuthenticationMechanism", encodable._authenticationMechanism);
+            writer.writeString("Encoding", encodable._encoding);
+            writer.writeString("TransportProtocol", encodable._transportProtocol);
+            writer.writeInt32("SecurityMode", encodable._securityMode != null ? encodable._securityMode.getValue() : 0);
+            writer.writeString("SecurityPolicyUri", encodable._securityPolicyUri);
+            writer.writeByteString("ClientCertificate", encodable._clientCertificate);
+        }
     }
 
 }

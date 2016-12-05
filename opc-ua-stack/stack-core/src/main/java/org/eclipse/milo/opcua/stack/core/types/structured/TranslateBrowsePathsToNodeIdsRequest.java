@@ -17,9 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
@@ -43,29 +50,19 @@ public class TranslateBrowsePathsToNodeIdsRequest implements UaRequestMessage {
         this._browsePaths = _browsePaths;
     }
 
-    public RequestHeader getRequestHeader() {
-        return _requestHeader;
-    }
+    public RequestHeader getRequestHeader() { return _requestHeader; }
 
     @Nullable
-    public BrowsePath[] getBrowsePaths() {
-        return _browsePaths;
-    }
+    public BrowsePath[] getBrowsePaths() { return _browsePaths; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -75,16 +72,54 @@ public class TranslateBrowsePathsToNodeIdsRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static void encode(TranslateBrowsePathsToNodeIdsRequest translateBrowsePathsToNodeIdsRequest, UaEncoder encoder) {
-        encoder.encodeSerializable("RequestHeader", translateBrowsePathsToNodeIdsRequest._requestHeader != null ? translateBrowsePathsToNodeIdsRequest._requestHeader : new RequestHeader());
-        encoder.encodeArray("BrowsePaths", translateBrowsePathsToNodeIdsRequest._browsePaths, encoder::encodeSerializable);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<TranslateBrowsePathsToNodeIdsRequest> {
+        @Override
+        public TranslateBrowsePathsToNodeIdsRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            BrowsePath[] _browsePaths =
+                reader.readArray(
+                    () -> (BrowsePath) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "BrowsePath", reader),
+                    BrowsePath.class
+                );
+
+            return new TranslateBrowsePathsToNodeIdsRequest(_requestHeader, _browsePaths);
+        }
+
+        @Override
+        public void encode(SerializationContext context, TranslateBrowsePathsToNodeIdsRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeArray(
+                encodable._browsePaths,
+                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "BrowsePath", e, writer)
+            );
+        }
     }
 
-    public static TranslateBrowsePathsToNodeIdsRequest decode(UaDecoder decoder) {
-        RequestHeader _requestHeader = decoder.decodeSerializable("RequestHeader", RequestHeader.class);
-        BrowsePath[] _browsePaths = decoder.decodeArray("BrowsePaths", decoder::decodeSerializable, BrowsePath.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<TranslateBrowsePathsToNodeIdsRequest> {
+        @Override
+        public TranslateBrowsePathsToNodeIdsRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            BrowsePath[] _browsePaths =
+                reader.readArray(
+                    "BrowsePaths",
+                    f -> (BrowsePath) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "BrowsePath", reader),
+                    BrowsePath.class
+                );
 
-        return new TranslateBrowsePathsToNodeIdsRequest(_requestHeader, _browsePaths);
+            return new TranslateBrowsePathsToNodeIdsRequest(_requestHeader, _browsePaths);
+        }
+
+        @Override
+        public void encode(SerializationContext context, TranslateBrowsePathsToNodeIdsRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeArray(
+                "BrowsePaths",
+                encodable._browsePaths,
+                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "BrowsePath", e, writer)
+            );
+        }
     }
 
 }

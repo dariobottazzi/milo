@@ -17,9 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DiagnosticInfo;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -52,39 +58,25 @@ public class CallMethodResult implements UaStructure {
         this._outputArguments = _outputArguments;
     }
 
-    public StatusCode getStatusCode() {
-        return _statusCode;
-    }
+    public StatusCode getStatusCode() { return _statusCode; }
 
     @Nullable
-    public StatusCode[] getInputArgumentResults() {
-        return _inputArgumentResults;
-    }
+    public StatusCode[] getInputArgumentResults() { return _inputArgumentResults; }
 
     @Nullable
-    public DiagnosticInfo[] getInputArgumentDiagnosticInfos() {
-        return _inputArgumentDiagnosticInfos;
-    }
+    public DiagnosticInfo[] getInputArgumentDiagnosticInfos() { return _inputArgumentDiagnosticInfos; }
 
     @Nullable
-    public Variant[] getOutputArguments() {
-        return _outputArguments;
-    }
+    public Variant[] getOutputArguments() { return _outputArguments; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -96,20 +88,44 @@ public class CallMethodResult implements UaStructure {
             .toString();
     }
 
-    public static void encode(CallMethodResult callMethodResult, UaEncoder encoder) {
-        encoder.encodeStatusCode("StatusCode", callMethodResult._statusCode);
-        encoder.encodeArray("InputArgumentResults", callMethodResult._inputArgumentResults, encoder::encodeStatusCode);
-        encoder.encodeArray("InputArgumentDiagnosticInfos", callMethodResult._inputArgumentDiagnosticInfos, encoder::encodeDiagnosticInfo);
-        encoder.encodeArray("OutputArguments", callMethodResult._outputArguments, encoder::encodeVariant);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<CallMethodResult> {
+        @Override
+        public CallMethodResult decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            StatusCode _statusCode = reader.readStatusCode();
+            StatusCode[] _inputArgumentResults = reader.readArray(reader::readStatusCode, StatusCode.class);
+            DiagnosticInfo[] _inputArgumentDiagnosticInfos = reader.readArray(reader::readDiagnosticInfo, DiagnosticInfo.class);
+            Variant[] _outputArguments = reader.readArray(reader::readVariant, Variant.class);
+
+            return new CallMethodResult(_statusCode, _inputArgumentResults, _inputArgumentDiagnosticInfos, _outputArguments);
+        }
+
+        @Override
+        public void encode(SerializationContext context, CallMethodResult encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeStatusCode(encodable._statusCode);
+            writer.writeArray(encodable._inputArgumentResults, writer::writeStatusCode);
+            writer.writeArray(encodable._inputArgumentDiagnosticInfos, writer::writeDiagnosticInfo);
+            writer.writeArray(encodable._outputArguments, writer::writeVariant);
+        }
     }
 
-    public static CallMethodResult decode(UaDecoder decoder) {
-        StatusCode _statusCode = decoder.decodeStatusCode("StatusCode");
-        StatusCode[] _inputArgumentResults = decoder.decodeArray("InputArgumentResults", decoder::decodeStatusCode, StatusCode.class);
-        DiagnosticInfo[] _inputArgumentDiagnosticInfos = decoder.decodeArray("InputArgumentDiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
-        Variant[] _outputArguments = decoder.decodeArray("OutputArguments", decoder::decodeVariant, Variant.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<CallMethodResult> {
+        @Override
+        public CallMethodResult decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            StatusCode _statusCode = reader.readStatusCode("StatusCode");
+            StatusCode[] _inputArgumentResults = reader.readArray("InputArgumentResults", reader::readStatusCode, StatusCode.class);
+            DiagnosticInfo[] _inputArgumentDiagnosticInfos = reader.readArray("InputArgumentDiagnosticInfos", reader::readDiagnosticInfo, DiagnosticInfo.class);
+            Variant[] _outputArguments = reader.readArray("OutputArguments", reader::readVariant, Variant.class);
 
-        return new CallMethodResult(_statusCode, _inputArgumentResults, _inputArgumentDiagnosticInfos, _outputArguments);
+            return new CallMethodResult(_statusCode, _inputArgumentResults, _inputArgumentDiagnosticInfos, _outputArguments);
+        }
+
+        @Override
+        public void encode(SerializationContext context, CallMethodResult encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeStatusCode("StatusCode", encodable._statusCode);
+            writer.writeArray("InputArgumentResults", encodable._inputArgumentResults, writer::writeStatusCode);
+            writer.writeArray("InputArgumentDiagnosticInfos", encodable._inputArgumentDiagnosticInfos, writer::writeDiagnosticInfo);
+            writer.writeArray("OutputArguments", encodable._outputArguments, writer::writeVariant);
+        }
     }
 
 }

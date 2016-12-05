@@ -17,9 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
@@ -43,29 +50,19 @@ public class NetworkGroupDataType implements UaStructure {
         this._networkPaths = _networkPaths;
     }
 
-    public String getServerUri() {
-        return _serverUri;
-    }
+    public String getServerUri() { return _serverUri; }
 
     @Nullable
-    public EndpointUrlListDataType[] getNetworkPaths() {
-        return _networkPaths;
-    }
+    public EndpointUrlListDataType[] getNetworkPaths() { return _networkPaths; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -75,16 +72,54 @@ public class NetworkGroupDataType implements UaStructure {
             .toString();
     }
 
-    public static void encode(NetworkGroupDataType networkGroupDataType, UaEncoder encoder) {
-        encoder.encodeString("ServerUri", networkGroupDataType._serverUri);
-        encoder.encodeArray("NetworkPaths", networkGroupDataType._networkPaths, encoder::encodeSerializable);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<NetworkGroupDataType> {
+        @Override
+        public NetworkGroupDataType decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            String _serverUri = reader.readString();
+            EndpointUrlListDataType[] _networkPaths =
+                reader.readArray(
+                    () -> (EndpointUrlListDataType) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "EndpointUrlListDataType", reader),
+                    EndpointUrlListDataType.class
+                );
+
+            return new NetworkGroupDataType(_serverUri, _networkPaths);
+        }
+
+        @Override
+        public void encode(SerializationContext context, NetworkGroupDataType encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeString(encodable._serverUri);
+            writer.writeArray(
+                encodable._networkPaths,
+                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "EndpointUrlListDataType", e, writer)
+            );
+        }
     }
 
-    public static NetworkGroupDataType decode(UaDecoder decoder) {
-        String _serverUri = decoder.decodeString("ServerUri");
-        EndpointUrlListDataType[] _networkPaths = decoder.decodeArray("NetworkPaths", decoder::decodeSerializable, EndpointUrlListDataType.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<NetworkGroupDataType> {
+        @Override
+        public NetworkGroupDataType decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            String _serverUri = reader.readString("ServerUri");
+            EndpointUrlListDataType[] _networkPaths =
+                reader.readArray(
+                    "NetworkPaths",
+                    f -> (EndpointUrlListDataType) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "EndpointUrlListDataType", reader),
+                    EndpointUrlListDataType.class
+                );
 
-        return new NetworkGroupDataType(_serverUri, _networkPaths);
+            return new NetworkGroupDataType(_serverUri, _networkPaths);
+        }
+
+        @Override
+        public void encode(SerializationContext context, NetworkGroupDataType encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeString("ServerUri", encodable._serverUri);
+            writer.writeArray(
+                "NetworkPaths",
+                encodable._networkPaths,
+                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "EndpointUrlListDataType", e, writer)
+            );
+        }
     }
 
 }

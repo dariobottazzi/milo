@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -54,44 +60,26 @@ public class BuildInfo implements UaStructure {
         this._buildDate = _buildDate;
     }
 
-    public String getProductUri() {
-        return _productUri;
-    }
+    public String getProductUri() { return _productUri; }
 
-    public String getManufacturerName() {
-        return _manufacturerName;
-    }
+    public String getManufacturerName() { return _manufacturerName; }
 
-    public String getProductName() {
-        return _productName;
-    }
+    public String getProductName() { return _productName; }
 
-    public String getSoftwareVersion() {
-        return _softwareVersion;
-    }
+    public String getSoftwareVersion() { return _softwareVersion; }
 
-    public String getBuildNumber() {
-        return _buildNumber;
-    }
+    public String getBuildNumber() { return _buildNumber; }
 
-    public DateTime getBuildDate() {
-        return _buildDate;
-    }
+    public DateTime getBuildDate() { return _buildDate; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -105,24 +93,52 @@ public class BuildInfo implements UaStructure {
             .toString();
     }
 
-    public static void encode(BuildInfo buildInfo, UaEncoder encoder) {
-        encoder.encodeString("ProductUri", buildInfo._productUri);
-        encoder.encodeString("ManufacturerName", buildInfo._manufacturerName);
-        encoder.encodeString("ProductName", buildInfo._productName);
-        encoder.encodeString("SoftwareVersion", buildInfo._softwareVersion);
-        encoder.encodeString("BuildNumber", buildInfo._buildNumber);
-        encoder.encodeDateTime("BuildDate", buildInfo._buildDate);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<BuildInfo> {
+        @Override
+        public BuildInfo decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            String _productUri = reader.readString();
+            String _manufacturerName = reader.readString();
+            String _productName = reader.readString();
+            String _softwareVersion = reader.readString();
+            String _buildNumber = reader.readString();
+            DateTime _buildDate = reader.readDateTime();
+
+            return new BuildInfo(_productUri, _manufacturerName, _productName, _softwareVersion, _buildNumber, _buildDate);
+        }
+
+        @Override
+        public void encode(SerializationContext context, BuildInfo encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeString(encodable._productUri);
+            writer.writeString(encodable._manufacturerName);
+            writer.writeString(encodable._productName);
+            writer.writeString(encodable._softwareVersion);
+            writer.writeString(encodable._buildNumber);
+            writer.writeDateTime(encodable._buildDate);
+        }
     }
 
-    public static BuildInfo decode(UaDecoder decoder) {
-        String _productUri = decoder.decodeString("ProductUri");
-        String _manufacturerName = decoder.decodeString("ManufacturerName");
-        String _productName = decoder.decodeString("ProductName");
-        String _softwareVersion = decoder.decodeString("SoftwareVersion");
-        String _buildNumber = decoder.decodeString("BuildNumber");
-        DateTime _buildDate = decoder.decodeDateTime("BuildDate");
+    public static class XmlCodec implements OpcXmlTypeCodec<BuildInfo> {
+        @Override
+        public BuildInfo decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            String _productUri = reader.readString("ProductUri");
+            String _manufacturerName = reader.readString("ManufacturerName");
+            String _productName = reader.readString("ProductName");
+            String _softwareVersion = reader.readString("SoftwareVersion");
+            String _buildNumber = reader.readString("BuildNumber");
+            DateTime _buildDate = reader.readDateTime("BuildDate");
 
-        return new BuildInfo(_productUri, _manufacturerName, _productName, _softwareVersion, _buildNumber, _buildDate);
+            return new BuildInfo(_productUri, _manufacturerName, _productName, _softwareVersion, _buildNumber, _buildDate);
+        }
+
+        @Override
+        public void encode(SerializationContext context, BuildInfo encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeString("ProductUri", encodable._productUri);
+            writer.writeString("ManufacturerName", encodable._manufacturerName);
+            writer.writeString("ProductName", encodable._productName);
+            writer.writeString("SoftwareVersion", encodable._softwareVersion);
+            writer.writeString("BuildNumber", encodable._buildNumber);
+            writer.writeDateTime("BuildDate", encodable._buildDate);
+        }
     }
 
 }

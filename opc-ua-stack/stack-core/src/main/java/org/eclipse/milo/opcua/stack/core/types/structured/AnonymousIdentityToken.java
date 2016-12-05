@@ -15,8 +15,14 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
@@ -38,19 +44,13 @@ public class AnonymousIdentityToken extends UserIdentityToken {
 
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -59,14 +59,32 @@ public class AnonymousIdentityToken extends UserIdentityToken {
             .toString();
     }
 
-    public static void encode(AnonymousIdentityToken anonymousIdentityToken, UaEncoder encoder) {
-        encoder.encodeString("PolicyId", anonymousIdentityToken._policyId);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<AnonymousIdentityToken> {
+        @Override
+        public AnonymousIdentityToken decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            String _policyId = reader.readString();
+
+            return new AnonymousIdentityToken(_policyId);
+        }
+
+        @Override
+        public void encode(SerializationContext context, AnonymousIdentityToken encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeString(encodable._policyId);
+        }
     }
 
-    public static AnonymousIdentityToken decode(UaDecoder decoder) {
-        String _policyId = decoder.decodeString("PolicyId");
+    public static class XmlCodec implements OpcXmlTypeCodec<AnonymousIdentityToken> {
+        @Override
+        public AnonymousIdentityToken decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            String _policyId = reader.readString("PolicyId");
 
-        return new AnonymousIdentityToken(_policyId);
+            return new AnonymousIdentityToken(_policyId);
+        }
+
+        @Override
+        public void encode(SerializationContext context, AnonymousIdentityToken encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeString("PolicyId", encodable._policyId);
+        }
     }
 
 }

@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
@@ -48,36 +54,22 @@ public class SamplingIntervalDiagnosticsDataType implements UaStructure {
         this._disabledMonitoredItemCount = _disabledMonitoredItemCount;
     }
 
-    public Double getSamplingInterval() {
-        return _samplingInterval;
-    }
+    public Double getSamplingInterval() { return _samplingInterval; }
 
-    public UInteger getMonitoredItemCount() {
-        return _monitoredItemCount;
-    }
+    public UInteger getMonitoredItemCount() { return _monitoredItemCount; }
 
-    public UInteger getMaxMonitoredItemCount() {
-        return _maxMonitoredItemCount;
-    }
+    public UInteger getMaxMonitoredItemCount() { return _maxMonitoredItemCount; }
 
-    public UInteger getDisabledMonitoredItemCount() {
-        return _disabledMonitoredItemCount;
-    }
+    public UInteger getDisabledMonitoredItemCount() { return _disabledMonitoredItemCount; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -89,20 +81,44 @@ public class SamplingIntervalDiagnosticsDataType implements UaStructure {
             .toString();
     }
 
-    public static void encode(SamplingIntervalDiagnosticsDataType samplingIntervalDiagnosticsDataType, UaEncoder encoder) {
-        encoder.encodeDouble("SamplingInterval", samplingIntervalDiagnosticsDataType._samplingInterval);
-        encoder.encodeUInt32("MonitoredItemCount", samplingIntervalDiagnosticsDataType._monitoredItemCount);
-        encoder.encodeUInt32("MaxMonitoredItemCount", samplingIntervalDiagnosticsDataType._maxMonitoredItemCount);
-        encoder.encodeUInt32("DisabledMonitoredItemCount", samplingIntervalDiagnosticsDataType._disabledMonitoredItemCount);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<SamplingIntervalDiagnosticsDataType> {
+        @Override
+        public SamplingIntervalDiagnosticsDataType decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            Double _samplingInterval = reader.readDouble();
+            UInteger _monitoredItemCount = reader.readUInt32();
+            UInteger _maxMonitoredItemCount = reader.readUInt32();
+            UInteger _disabledMonitoredItemCount = reader.readUInt32();
+
+            return new SamplingIntervalDiagnosticsDataType(_samplingInterval, _monitoredItemCount, _maxMonitoredItemCount, _disabledMonitoredItemCount);
+        }
+
+        @Override
+        public void encode(SerializationContext context, SamplingIntervalDiagnosticsDataType encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeDouble(encodable._samplingInterval);
+            writer.writeUInt32(encodable._monitoredItemCount);
+            writer.writeUInt32(encodable._maxMonitoredItemCount);
+            writer.writeUInt32(encodable._disabledMonitoredItemCount);
+        }
     }
 
-    public static SamplingIntervalDiagnosticsDataType decode(UaDecoder decoder) {
-        Double _samplingInterval = decoder.decodeDouble("SamplingInterval");
-        UInteger _monitoredItemCount = decoder.decodeUInt32("MonitoredItemCount");
-        UInteger _maxMonitoredItemCount = decoder.decodeUInt32("MaxMonitoredItemCount");
-        UInteger _disabledMonitoredItemCount = decoder.decodeUInt32("DisabledMonitoredItemCount");
+    public static class XmlCodec implements OpcXmlTypeCodec<SamplingIntervalDiagnosticsDataType> {
+        @Override
+        public SamplingIntervalDiagnosticsDataType decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            Double _samplingInterval = reader.readDouble("SamplingInterval");
+            UInteger _monitoredItemCount = reader.readUInt32("MonitoredItemCount");
+            UInteger _maxMonitoredItemCount = reader.readUInt32("MaxMonitoredItemCount");
+            UInteger _disabledMonitoredItemCount = reader.readUInt32("DisabledMonitoredItemCount");
 
-        return new SamplingIntervalDiagnosticsDataType(_samplingInterval, _monitoredItemCount, _maxMonitoredItemCount, _disabledMonitoredItemCount);
+            return new SamplingIntervalDiagnosticsDataType(_samplingInterval, _monitoredItemCount, _maxMonitoredItemCount, _disabledMonitoredItemCount);
+        }
+
+        @Override
+        public void encode(SerializationContext context, SamplingIntervalDiagnosticsDataType encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeDouble("SamplingInterval", encodable._samplingInterval);
+            writer.writeUInt32("MonitoredItemCount", encodable._monitoredItemCount);
+            writer.writeUInt32("MaxMonitoredItemCount", encodable._maxMonitoredItemCount);
+            writer.writeUInt32("DisabledMonitoredItemCount", encodable._disabledMonitoredItemCount);
+        }
     }
 
 }

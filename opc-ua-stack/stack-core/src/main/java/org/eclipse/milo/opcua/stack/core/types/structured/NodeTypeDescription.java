@@ -17,9 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -47,33 +54,21 @@ public class NodeTypeDescription implements UaStructure {
         this._dataToReturn = _dataToReturn;
     }
 
-    public ExpandedNodeId getTypeDefinitionNode() {
-        return _typeDefinitionNode;
-    }
+    public ExpandedNodeId getTypeDefinitionNode() { return _typeDefinitionNode; }
 
-    public Boolean getIncludeSubTypes() {
-        return _includeSubTypes;
-    }
+    public Boolean getIncludeSubTypes() { return _includeSubTypes; }
 
     @Nullable
-    public QueryDataDescription[] getDataToReturn() {
-        return _dataToReturn;
-    }
+    public QueryDataDescription[] getDataToReturn() { return _dataToReturn; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -84,18 +79,58 @@ public class NodeTypeDescription implements UaStructure {
             .toString();
     }
 
-    public static void encode(NodeTypeDescription nodeTypeDescription, UaEncoder encoder) {
-        encoder.encodeExpandedNodeId("TypeDefinitionNode", nodeTypeDescription._typeDefinitionNode);
-        encoder.encodeBoolean("IncludeSubTypes", nodeTypeDescription._includeSubTypes);
-        encoder.encodeArray("DataToReturn", nodeTypeDescription._dataToReturn, encoder::encodeSerializable);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<NodeTypeDescription> {
+        @Override
+        public NodeTypeDescription decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            ExpandedNodeId _typeDefinitionNode = reader.readExpandedNodeId();
+            Boolean _includeSubTypes = reader.readBoolean();
+            QueryDataDescription[] _dataToReturn =
+                reader.readArray(
+                    () -> (QueryDataDescription) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "QueryDataDescription", reader),
+                    QueryDataDescription.class
+                );
+
+            return new NodeTypeDescription(_typeDefinitionNode, _includeSubTypes, _dataToReturn);
+        }
+
+        @Override
+        public void encode(SerializationContext context, NodeTypeDescription encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeExpandedNodeId(encodable._typeDefinitionNode);
+            writer.writeBoolean(encodable._includeSubTypes);
+            writer.writeArray(
+                encodable._dataToReturn,
+                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "QueryDataDescription", e, writer)
+            );
+        }
     }
 
-    public static NodeTypeDescription decode(UaDecoder decoder) {
-        ExpandedNodeId _typeDefinitionNode = decoder.decodeExpandedNodeId("TypeDefinitionNode");
-        Boolean _includeSubTypes = decoder.decodeBoolean("IncludeSubTypes");
-        QueryDataDescription[] _dataToReturn = decoder.decodeArray("DataToReturn", decoder::decodeSerializable, QueryDataDescription.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<NodeTypeDescription> {
+        @Override
+        public NodeTypeDescription decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            ExpandedNodeId _typeDefinitionNode = reader.readExpandedNodeId("TypeDefinitionNode");
+            Boolean _includeSubTypes = reader.readBoolean("IncludeSubTypes");
+            QueryDataDescription[] _dataToReturn =
+                reader.readArray(
+                    "DataToReturn",
+                    f -> (QueryDataDescription) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "QueryDataDescription", reader),
+                    QueryDataDescription.class
+                );
 
-        return new NodeTypeDescription(_typeDefinitionNode, _includeSubTypes, _dataToReturn);
+            return new NodeTypeDescription(_typeDefinitionNode, _includeSubTypes, _dataToReturn);
+        }
+
+        @Override
+        public void encode(SerializationContext context, NodeTypeDescription encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeExpandedNodeId("TypeDefinitionNode", encodable._typeDefinitionNode);
+            writer.writeBoolean("IncludeSubTypes", encodable._includeSubTypes);
+            writer.writeArray(
+                "DataToReturn",
+                encodable._dataToReturn,
+                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "QueryDataDescription", e, writer)
+            );
+        }
     }
 
 }

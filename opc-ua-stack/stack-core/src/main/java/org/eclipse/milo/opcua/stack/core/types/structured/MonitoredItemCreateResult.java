@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExtensionObject;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -53,40 +59,24 @@ public class MonitoredItemCreateResult implements UaStructure {
         this._filterResult = _filterResult;
     }
 
-    public StatusCode getStatusCode() {
-        return _statusCode;
-    }
+    public StatusCode getStatusCode() { return _statusCode; }
 
-    public UInteger getMonitoredItemId() {
-        return _monitoredItemId;
-    }
+    public UInteger getMonitoredItemId() { return _monitoredItemId; }
 
-    public Double getRevisedSamplingInterval() {
-        return _revisedSamplingInterval;
-    }
+    public Double getRevisedSamplingInterval() { return _revisedSamplingInterval; }
 
-    public UInteger getRevisedQueueSize() {
-        return _revisedQueueSize;
-    }
+    public UInteger getRevisedQueueSize() { return _revisedQueueSize; }
 
-    public ExtensionObject getFilterResult() {
-        return _filterResult;
-    }
+    public ExtensionObject getFilterResult() { return _filterResult; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -99,22 +89,48 @@ public class MonitoredItemCreateResult implements UaStructure {
             .toString();
     }
 
-    public static void encode(MonitoredItemCreateResult monitoredItemCreateResult, UaEncoder encoder) {
-        encoder.encodeStatusCode("StatusCode", monitoredItemCreateResult._statusCode);
-        encoder.encodeUInt32("MonitoredItemId", monitoredItemCreateResult._monitoredItemId);
-        encoder.encodeDouble("RevisedSamplingInterval", monitoredItemCreateResult._revisedSamplingInterval);
-        encoder.encodeUInt32("RevisedQueueSize", monitoredItemCreateResult._revisedQueueSize);
-        encoder.encodeExtensionObject("FilterResult", monitoredItemCreateResult._filterResult);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<MonitoredItemCreateResult> {
+        @Override
+        public MonitoredItemCreateResult decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            StatusCode _statusCode = reader.readStatusCode();
+            UInteger _monitoredItemId = reader.readUInt32();
+            Double _revisedSamplingInterval = reader.readDouble();
+            UInteger _revisedQueueSize = reader.readUInt32();
+            ExtensionObject _filterResult = reader.readExtensionObject();
+
+            return new MonitoredItemCreateResult(_statusCode, _monitoredItemId, _revisedSamplingInterval, _revisedQueueSize, _filterResult);
+        }
+
+        @Override
+        public void encode(SerializationContext context, MonitoredItemCreateResult encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeStatusCode(encodable._statusCode);
+            writer.writeUInt32(encodable._monitoredItemId);
+            writer.writeDouble(encodable._revisedSamplingInterval);
+            writer.writeUInt32(encodable._revisedQueueSize);
+            writer.writeExtensionObject(encodable._filterResult);
+        }
     }
 
-    public static MonitoredItemCreateResult decode(UaDecoder decoder) {
-        StatusCode _statusCode = decoder.decodeStatusCode("StatusCode");
-        UInteger _monitoredItemId = decoder.decodeUInt32("MonitoredItemId");
-        Double _revisedSamplingInterval = decoder.decodeDouble("RevisedSamplingInterval");
-        UInteger _revisedQueueSize = decoder.decodeUInt32("RevisedQueueSize");
-        ExtensionObject _filterResult = decoder.decodeExtensionObject("FilterResult");
+    public static class XmlCodec implements OpcXmlTypeCodec<MonitoredItemCreateResult> {
+        @Override
+        public MonitoredItemCreateResult decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            StatusCode _statusCode = reader.readStatusCode("StatusCode");
+            UInteger _monitoredItemId = reader.readUInt32("MonitoredItemId");
+            Double _revisedSamplingInterval = reader.readDouble("RevisedSamplingInterval");
+            UInteger _revisedQueueSize = reader.readUInt32("RevisedQueueSize");
+            ExtensionObject _filterResult = reader.readExtensionObject("FilterResult");
 
-        return new MonitoredItemCreateResult(_statusCode, _monitoredItemId, _revisedSamplingInterval, _revisedQueueSize, _filterResult);
+            return new MonitoredItemCreateResult(_statusCode, _monitoredItemId, _revisedSamplingInterval, _revisedQueueSize, _filterResult);
+        }
+
+        @Override
+        public void encode(SerializationContext context, MonitoredItemCreateResult encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeStatusCode("StatusCode", encodable._statusCode);
+            writer.writeUInt32("MonitoredItemId", encodable._monitoredItemId);
+            writer.writeDouble("RevisedSamplingInterval", encodable._revisedSamplingInterval);
+            writer.writeUInt32("RevisedQueueSize", encodable._revisedQueueSize);
+            writer.writeExtensionObject("FilterResult", encodable._filterResult);
+        }
     }
 
 }

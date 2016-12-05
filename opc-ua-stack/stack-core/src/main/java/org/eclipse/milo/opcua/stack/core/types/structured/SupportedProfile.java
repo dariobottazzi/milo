@@ -17,9 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -57,45 +63,27 @@ public class SupportedProfile implements UaStructure {
         this._unsupportedUnitIds = _unsupportedUnitIds;
     }
 
-    public String getOrganizationUri() {
-        return _organizationUri;
-    }
+    public String getOrganizationUri() { return _organizationUri; }
 
-    public String getProfileId() {
-        return _profileId;
-    }
+    public String getProfileId() { return _profileId; }
 
-    public String getComplianceTool() {
-        return _complianceTool;
-    }
+    public String getComplianceTool() { return _complianceTool; }
 
-    public DateTime getComplianceDate() {
-        return _complianceDate;
-    }
+    public DateTime getComplianceDate() { return _complianceDate; }
 
-    public ComplianceLevel getComplianceLevel() {
-        return _complianceLevel;
-    }
+    public ComplianceLevel getComplianceLevel() { return _complianceLevel; }
 
     @Nullable
-    public String[] getUnsupportedUnitIds() {
-        return _unsupportedUnitIds;
-    }
+    public String[] getUnsupportedUnitIds() { return _unsupportedUnitIds; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -109,24 +97,52 @@ public class SupportedProfile implements UaStructure {
             .toString();
     }
 
-    public static void encode(SupportedProfile supportedProfile, UaEncoder encoder) {
-        encoder.encodeString("OrganizationUri", supportedProfile._organizationUri);
-        encoder.encodeString("ProfileId", supportedProfile._profileId);
-        encoder.encodeString("ComplianceTool", supportedProfile._complianceTool);
-        encoder.encodeDateTime("ComplianceDate", supportedProfile._complianceDate);
-        encoder.encodeEnumeration("ComplianceLevel", supportedProfile._complianceLevel);
-        encoder.encodeArray("UnsupportedUnitIds", supportedProfile._unsupportedUnitIds, encoder::encodeString);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<SupportedProfile> {
+        @Override
+        public SupportedProfile decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            String _organizationUri = reader.readString();
+            String _profileId = reader.readString();
+            String _complianceTool = reader.readString();
+            DateTime _complianceDate = reader.readDateTime();
+            ComplianceLevel _complianceLevel = ComplianceLevel.from(reader.readInt32());
+            String[] _unsupportedUnitIds = reader.readArray(reader::readString, String.class);
+
+            return new SupportedProfile(_organizationUri, _profileId, _complianceTool, _complianceDate, _complianceLevel, _unsupportedUnitIds);
+        }
+
+        @Override
+        public void encode(SerializationContext context, SupportedProfile encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeString(encodable._organizationUri);
+            writer.writeString(encodable._profileId);
+            writer.writeString(encodable._complianceTool);
+            writer.writeDateTime(encodable._complianceDate);
+            writer.writeInt32(encodable._complianceLevel != null ? encodable._complianceLevel.getValue() : 0);
+            writer.writeArray(encodable._unsupportedUnitIds, writer::writeString);
+        }
     }
 
-    public static SupportedProfile decode(UaDecoder decoder) {
-        String _organizationUri = decoder.decodeString("OrganizationUri");
-        String _profileId = decoder.decodeString("ProfileId");
-        String _complianceTool = decoder.decodeString("ComplianceTool");
-        DateTime _complianceDate = decoder.decodeDateTime("ComplianceDate");
-        ComplianceLevel _complianceLevel = decoder.decodeEnumeration("ComplianceLevel", ComplianceLevel.class);
-        String[] _unsupportedUnitIds = decoder.decodeArray("UnsupportedUnitIds", decoder::decodeString, String.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<SupportedProfile> {
+        @Override
+        public SupportedProfile decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            String _organizationUri = reader.readString("OrganizationUri");
+            String _profileId = reader.readString("ProfileId");
+            String _complianceTool = reader.readString("ComplianceTool");
+            DateTime _complianceDate = reader.readDateTime("ComplianceDate");
+            ComplianceLevel _complianceLevel = ComplianceLevel.from(reader.readInt32("ComplianceLevel"));
+            String[] _unsupportedUnitIds = reader.readArray("UnsupportedUnitIds", reader::readString, String.class);
 
-        return new SupportedProfile(_organizationUri, _profileId, _complianceTool, _complianceDate, _complianceLevel, _unsupportedUnitIds);
+            return new SupportedProfile(_organizationUri, _profileId, _complianceTool, _complianceDate, _complianceLevel, _unsupportedUnitIds);
+        }
+
+        @Override
+        public void encode(SerializationContext context, SupportedProfile encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeString("OrganizationUri", encodable._organizationUri);
+            writer.writeString("ProfileId", encodable._profileId);
+            writer.writeString("ComplianceTool", encodable._complianceTool);
+            writer.writeDateTime("ComplianceDate", encodable._complianceDate);
+            writer.writeInt32("ComplianceLevel", encodable._complianceLevel != null ? encodable._complianceLevel.getValue() : 0);
+            writer.writeArray("UnsupportedUnitIds", encodable._unsupportedUnitIds, writer::writeString);
+        }
     }
 
 }

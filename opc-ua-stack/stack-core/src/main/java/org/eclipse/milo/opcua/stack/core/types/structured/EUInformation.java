@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -48,36 +54,22 @@ public class EUInformation implements UaStructure {
         this._description = _description;
     }
 
-    public String getNamespaceUri() {
-        return _namespaceUri;
-    }
+    public String getNamespaceUri() { return _namespaceUri; }
 
-    public Integer getUnitId() {
-        return _unitId;
-    }
+    public Integer getUnitId() { return _unitId; }
 
-    public LocalizedText getDisplayName() {
-        return _displayName;
-    }
+    public LocalizedText getDisplayName() { return _displayName; }
 
-    public LocalizedText getDescription() {
-        return _description;
-    }
+    public LocalizedText getDescription() { return _description; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -89,20 +81,44 @@ public class EUInformation implements UaStructure {
             .toString();
     }
 
-    public static void encode(EUInformation eUInformation, UaEncoder encoder) {
-        encoder.encodeString("NamespaceUri", eUInformation._namespaceUri);
-        encoder.encodeInt32("UnitId", eUInformation._unitId);
-        encoder.encodeLocalizedText("DisplayName", eUInformation._displayName);
-        encoder.encodeLocalizedText("Description", eUInformation._description);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<EUInformation> {
+        @Override
+        public EUInformation decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            String _namespaceUri = reader.readString();
+            Integer _unitId = reader.readInt32();
+            LocalizedText _displayName = reader.readLocalizedText();
+            LocalizedText _description = reader.readLocalizedText();
+
+            return new EUInformation(_namespaceUri, _unitId, _displayName, _description);
+        }
+
+        @Override
+        public void encode(SerializationContext context, EUInformation encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeString(encodable._namespaceUri);
+            writer.writeInt32(encodable._unitId);
+            writer.writeLocalizedText(encodable._displayName);
+            writer.writeLocalizedText(encodable._description);
+        }
     }
 
-    public static EUInformation decode(UaDecoder decoder) {
-        String _namespaceUri = decoder.decodeString("NamespaceUri");
-        Integer _unitId = decoder.decodeInt32("UnitId");
-        LocalizedText _displayName = decoder.decodeLocalizedText("DisplayName");
-        LocalizedText _description = decoder.decodeLocalizedText("Description");
+    public static class XmlCodec implements OpcXmlTypeCodec<EUInformation> {
+        @Override
+        public EUInformation decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            String _namespaceUri = reader.readString("NamespaceUri");
+            Integer _unitId = reader.readInt32("UnitId");
+            LocalizedText _displayName = reader.readLocalizedText("DisplayName");
+            LocalizedText _description = reader.readLocalizedText("Description");
 
-        return new EUInformation(_namespaceUri, _unitId, _displayName, _description);
+            return new EUInformation(_namespaceUri, _unitId, _displayName, _description);
+        }
+
+        @Override
+        public void encode(SerializationContext context, EUInformation encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeString("NamespaceUri", encodable._namespaceUri);
+            writer.writeInt32("UnitId", encodable._unitId);
+            writer.writeLocalizedText("DisplayName", encodable._displayName);
+            writer.writeLocalizedText("Description", encodable._description);
+        }
     }
 
 }

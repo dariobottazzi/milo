@@ -17,8 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -46,29 +53,19 @@ public class HistoryModifiedData extends HistoryData {
     }
 
     @Nullable
-    public DataValue[] getDataValues() {
-        return _dataValues;
-    }
+    public DataValue[] getDataValues() { return _dataValues; }
 
     @Nullable
-    public ModificationInfo[] getModificationInfos() {
-        return _modificationInfos;
-    }
+    public ModificationInfo[] getModificationInfos() { return _modificationInfos; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -78,16 +75,54 @@ public class HistoryModifiedData extends HistoryData {
             .toString();
     }
 
-    public static void encode(HistoryModifiedData historyModifiedData, UaEncoder encoder) {
-        encoder.encodeArray("DataValues", historyModifiedData._dataValues, encoder::encodeDataValue);
-        encoder.encodeArray("ModificationInfos", historyModifiedData._modificationInfos, encoder::encodeSerializable);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<HistoryModifiedData> {
+        @Override
+        public HistoryModifiedData decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            DataValue[] _dataValues = reader.readArray(reader::readDataValue, DataValue.class);
+            ModificationInfo[] _modificationInfos =
+                reader.readArray(
+                    () -> (ModificationInfo) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "ModificationInfo", reader),
+                    ModificationInfo.class
+                );
+
+            return new HistoryModifiedData(_dataValues, _modificationInfos);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryModifiedData encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeArray(encodable._dataValues, writer::writeDataValue);
+            writer.writeArray(
+                encodable._modificationInfos,
+                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ModificationInfo", e, writer)
+            );
+        }
     }
 
-    public static HistoryModifiedData decode(UaDecoder decoder) {
-        DataValue[] _dataValues = decoder.decodeArray("DataValues", decoder::decodeDataValue, DataValue.class);
-        ModificationInfo[] _modificationInfos = decoder.decodeArray("ModificationInfos", decoder::decodeSerializable, ModificationInfo.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<HistoryModifiedData> {
+        @Override
+        public HistoryModifiedData decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            DataValue[] _dataValues = reader.readArray("DataValues", reader::readDataValue, DataValue.class);
+            ModificationInfo[] _modificationInfos =
+                reader.readArray(
+                    "ModificationInfos",
+                    f -> (ModificationInfo) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "ModificationInfo", reader),
+                    ModificationInfo.class
+                );
 
-        return new HistoryModifiedData(_dataValues, _modificationInfos);
+            return new HistoryModifiedData(_dataValues, _modificationInfos);
+        }
+
+        @Override
+        public void encode(SerializationContext context, HistoryModifiedData encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeArray("DataValues", encodable._dataValues, writer::writeDataValue);
+            writer.writeArray(
+                "ModificationInfos",
+                encodable._modificationInfos,
+                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ModificationInfo", e, writer)
+            );
+        }
     }
 
 }

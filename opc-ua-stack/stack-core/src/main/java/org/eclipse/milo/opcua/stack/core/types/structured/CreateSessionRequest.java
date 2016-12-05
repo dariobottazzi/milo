@@ -15,9 +15,16 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -64,56 +71,32 @@ public class CreateSessionRequest implements UaRequestMessage {
         this._maxResponseMessageSize = _maxResponseMessageSize;
     }
 
-    public RequestHeader getRequestHeader() {
-        return _requestHeader;
-    }
+    public RequestHeader getRequestHeader() { return _requestHeader; }
 
-    public ApplicationDescription getClientDescription() {
-        return _clientDescription;
-    }
+    public ApplicationDescription getClientDescription() { return _clientDescription; }
 
-    public String getServerUri() {
-        return _serverUri;
-    }
+    public String getServerUri() { return _serverUri; }
 
-    public String getEndpointUrl() {
-        return _endpointUrl;
-    }
+    public String getEndpointUrl() { return _endpointUrl; }
 
-    public String getSessionName() {
-        return _sessionName;
-    }
+    public String getSessionName() { return _sessionName; }
 
-    public ByteString getClientNonce() {
-        return _clientNonce;
-    }
+    public ByteString getClientNonce() { return _clientNonce; }
 
-    public ByteString getClientCertificate() {
-        return _clientCertificate;
-    }
+    public ByteString getClientCertificate() { return _clientCertificate; }
 
-    public Double getRequestedSessionTimeout() {
-        return _requestedSessionTimeout;
-    }
+    public Double getRequestedSessionTimeout() { return _requestedSessionTimeout; }
 
-    public UInteger getMaxResponseMessageSize() {
-        return _maxResponseMessageSize;
-    }
+    public UInteger getMaxResponseMessageSize() { return _maxResponseMessageSize; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -130,30 +113,64 @@ public class CreateSessionRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static void encode(CreateSessionRequest createSessionRequest, UaEncoder encoder) {
-        encoder.encodeSerializable("RequestHeader", createSessionRequest._requestHeader != null ? createSessionRequest._requestHeader : new RequestHeader());
-        encoder.encodeSerializable("ClientDescription", createSessionRequest._clientDescription != null ? createSessionRequest._clientDescription : new ApplicationDescription());
-        encoder.encodeString("ServerUri", createSessionRequest._serverUri);
-        encoder.encodeString("EndpointUrl", createSessionRequest._endpointUrl);
-        encoder.encodeString("SessionName", createSessionRequest._sessionName);
-        encoder.encodeByteString("ClientNonce", createSessionRequest._clientNonce);
-        encoder.encodeByteString("ClientCertificate", createSessionRequest._clientCertificate);
-        encoder.encodeDouble("RequestedSessionTimeout", createSessionRequest._requestedSessionTimeout);
-        encoder.encodeUInt32("MaxResponseMessageSize", createSessionRequest._maxResponseMessageSize);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<CreateSessionRequest> {
+        @Override
+        public CreateSessionRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            ApplicationDescription _clientDescription = (ApplicationDescription) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ApplicationDescription", reader);
+            String _serverUri = reader.readString();
+            String _endpointUrl = reader.readString();
+            String _sessionName = reader.readString();
+            ByteString _clientNonce = reader.readByteString();
+            ByteString _clientCertificate = reader.readByteString();
+            Double _requestedSessionTimeout = reader.readDouble();
+            UInteger _maxResponseMessageSize = reader.readUInt32();
+
+            return new CreateSessionRequest(_requestHeader, _clientDescription, _serverUri, _endpointUrl, _sessionName, _clientNonce, _clientCertificate, _requestedSessionTimeout, _maxResponseMessageSize);
+        }
+
+        @Override
+        public void encode(SerializationContext context, CreateSessionRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ApplicationDescription", encodable._clientDescription, writer);
+            writer.writeString(encodable._serverUri);
+            writer.writeString(encodable._endpointUrl);
+            writer.writeString(encodable._sessionName);
+            writer.writeByteString(encodable._clientNonce);
+            writer.writeByteString(encodable._clientCertificate);
+            writer.writeDouble(encodable._requestedSessionTimeout);
+            writer.writeUInt32(encodable._maxResponseMessageSize);
+        }
     }
 
-    public static CreateSessionRequest decode(UaDecoder decoder) {
-        RequestHeader _requestHeader = decoder.decodeSerializable("RequestHeader", RequestHeader.class);
-        ApplicationDescription _clientDescription = decoder.decodeSerializable("ClientDescription", ApplicationDescription.class);
-        String _serverUri = decoder.decodeString("ServerUri");
-        String _endpointUrl = decoder.decodeString("EndpointUrl");
-        String _sessionName = decoder.decodeString("SessionName");
-        ByteString _clientNonce = decoder.decodeByteString("ClientNonce");
-        ByteString _clientCertificate = decoder.decodeByteString("ClientCertificate");
-        Double _requestedSessionTimeout = decoder.decodeDouble("RequestedSessionTimeout");
-        UInteger _maxResponseMessageSize = decoder.decodeUInt32("MaxResponseMessageSize");
+    public static class XmlCodec implements OpcXmlTypeCodec<CreateSessionRequest> {
+        @Override
+        public CreateSessionRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            ApplicationDescription _clientDescription = (ApplicationDescription) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ApplicationDescription", reader);
+            String _serverUri = reader.readString("ServerUri");
+            String _endpointUrl = reader.readString("EndpointUrl");
+            String _sessionName = reader.readString("SessionName");
+            ByteString _clientNonce = reader.readByteString("ClientNonce");
+            ByteString _clientCertificate = reader.readByteString("ClientCertificate");
+            Double _requestedSessionTimeout = reader.readDouble("RequestedSessionTimeout");
+            UInteger _maxResponseMessageSize = reader.readUInt32("MaxResponseMessageSize");
 
-        return new CreateSessionRequest(_requestHeader, _clientDescription, _serverUri, _endpointUrl, _sessionName, _clientNonce, _clientCertificate, _requestedSessionTimeout, _maxResponseMessageSize);
+            return new CreateSessionRequest(_requestHeader, _clientDescription, _serverUri, _endpointUrl, _sessionName, _clientNonce, _clientCertificate, _requestedSessionTimeout, _maxResponseMessageSize);
+        }
+
+        @Override
+        public void encode(SerializationContext context, CreateSessionRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ApplicationDescription", encodable._clientDescription, writer);
+            writer.writeString("ServerUri", encodable._serverUri);
+            writer.writeString("EndpointUrl", encodable._endpointUrl);
+            writer.writeString("SessionName", encodable._sessionName);
+            writer.writeByteString("ClientNonce", encodable._clientNonce);
+            writer.writeByteString("ClientCertificate", encodable._clientCertificate);
+            writer.writeDouble("RequestedSessionTimeout", encodable._requestedSessionTimeout);
+            writer.writeUInt32("MaxResponseMessageSize", encodable._maxResponseMessageSize);
+        }
     }
 
 }

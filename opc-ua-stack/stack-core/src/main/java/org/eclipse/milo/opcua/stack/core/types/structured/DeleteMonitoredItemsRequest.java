@@ -17,9 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UInteger;
@@ -47,33 +54,21 @@ public class DeleteMonitoredItemsRequest implements UaRequestMessage {
         this._monitoredItemIds = _monitoredItemIds;
     }
 
-    public RequestHeader getRequestHeader() {
-        return _requestHeader;
-    }
+    public RequestHeader getRequestHeader() { return _requestHeader; }
 
-    public UInteger getSubscriptionId() {
-        return _subscriptionId;
-    }
+    public UInteger getSubscriptionId() { return _subscriptionId; }
 
     @Nullable
-    public UInteger[] getMonitoredItemIds() {
-        return _monitoredItemIds;
-    }
+    public UInteger[] getMonitoredItemIds() { return _monitoredItemIds; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -84,18 +79,40 @@ public class DeleteMonitoredItemsRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static void encode(DeleteMonitoredItemsRequest deleteMonitoredItemsRequest, UaEncoder encoder) {
-        encoder.encodeSerializable("RequestHeader", deleteMonitoredItemsRequest._requestHeader != null ? deleteMonitoredItemsRequest._requestHeader : new RequestHeader());
-        encoder.encodeUInt32("SubscriptionId", deleteMonitoredItemsRequest._subscriptionId);
-        encoder.encodeArray("MonitoredItemIds", deleteMonitoredItemsRequest._monitoredItemIds, encoder::encodeUInt32);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<DeleteMonitoredItemsRequest> {
+        @Override
+        public DeleteMonitoredItemsRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            UInteger _subscriptionId = reader.readUInt32();
+            UInteger[] _monitoredItemIds = reader.readArray(reader::readUInt32, UInteger.class);
+
+            return new DeleteMonitoredItemsRequest(_requestHeader, _subscriptionId, _monitoredItemIds);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteMonitoredItemsRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeUInt32(encodable._subscriptionId);
+            writer.writeArray(encodable._monitoredItemIds, writer::writeUInt32);
+        }
     }
 
-    public static DeleteMonitoredItemsRequest decode(UaDecoder decoder) {
-        RequestHeader _requestHeader = decoder.decodeSerializable("RequestHeader", RequestHeader.class);
-        UInteger _subscriptionId = decoder.decodeUInt32("SubscriptionId");
-        UInteger[] _monitoredItemIds = decoder.decodeArray("MonitoredItemIds", decoder::decodeUInt32, UInteger.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<DeleteMonitoredItemsRequest> {
+        @Override
+        public DeleteMonitoredItemsRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            UInteger _subscriptionId = reader.readUInt32("SubscriptionId");
+            UInteger[] _monitoredItemIds = reader.readArray("MonitoredItemIds", reader::readUInt32, UInteger.class);
 
-        return new DeleteMonitoredItemsRequest(_requestHeader, _subscriptionId, _monitoredItemIds);
+            return new DeleteMonitoredItemsRequest(_requestHeader, _subscriptionId, _monitoredItemIds);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteMonitoredItemsRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            writer.writeUInt32("SubscriptionId", encodable._subscriptionId);
+            writer.writeArray("MonitoredItemIds", encodable._monitoredItemIds, writer::writeUInt32);
+        }
     }
 
 }

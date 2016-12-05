@@ -17,8 +17,14 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -43,24 +49,16 @@ public class DeleteEventDetails extends HistoryUpdateDetails {
     }
 
     @Nullable
-    public ByteString[] getEventIds() {
-        return _eventIds;
-    }
+    public ByteString[] getEventIds() { return _eventIds; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -70,16 +68,36 @@ public class DeleteEventDetails extends HistoryUpdateDetails {
             .toString();
     }
 
-    public static void encode(DeleteEventDetails deleteEventDetails, UaEncoder encoder) {
-        encoder.encodeNodeId("NodeId", deleteEventDetails._nodeId);
-        encoder.encodeArray("EventIds", deleteEventDetails._eventIds, encoder::encodeByteString);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<DeleteEventDetails> {
+        @Override
+        public DeleteEventDetails decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            NodeId _nodeId = reader.readNodeId();
+            ByteString[] _eventIds = reader.readArray(reader::readByteString, ByteString.class);
+
+            return new DeleteEventDetails(_nodeId, _eventIds);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteEventDetails encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId(encodable._nodeId);
+            writer.writeArray(encodable._eventIds, writer::writeByteString);
+        }
     }
 
-    public static DeleteEventDetails decode(UaDecoder decoder) {
-        NodeId _nodeId = decoder.decodeNodeId("NodeId");
-        ByteString[] _eventIds = decoder.decodeArray("EventIds", decoder::decodeByteString, ByteString.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<DeleteEventDetails> {
+        @Override
+        public DeleteEventDetails decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            NodeId _nodeId = reader.readNodeId("NodeId");
+            ByteString[] _eventIds = reader.readArray("EventIds", reader::readByteString, ByteString.class);
 
-        return new DeleteEventDetails(_nodeId, _eventIds);
+            return new DeleteEventDetails(_nodeId, _eventIds);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteEventDetails encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId("NodeId", encodable._nodeId);
+            writer.writeArray("EventIds", encodable._eventIds, writer::writeByteString);
+        }
     }
 
 }

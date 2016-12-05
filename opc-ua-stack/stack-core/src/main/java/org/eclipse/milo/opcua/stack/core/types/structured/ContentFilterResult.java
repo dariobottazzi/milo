@@ -17,9 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DiagnosticInfo;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -45,29 +52,19 @@ public class ContentFilterResult implements UaStructure {
     }
 
     @Nullable
-    public ContentFilterElementResult[] getElementResults() {
-        return _elementResults;
-    }
+    public ContentFilterElementResult[] getElementResults() { return _elementResults; }
 
     @Nullable
-    public DiagnosticInfo[] getElementDiagnosticInfos() {
-        return _elementDiagnosticInfos;
-    }
+    public DiagnosticInfo[] getElementDiagnosticInfos() { return _elementDiagnosticInfos; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -77,16 +74,54 @@ public class ContentFilterResult implements UaStructure {
             .toString();
     }
 
-    public static void encode(ContentFilterResult contentFilterResult, UaEncoder encoder) {
-        encoder.encodeArray("ElementResults", contentFilterResult._elementResults, encoder::encodeSerializable);
-        encoder.encodeArray("ElementDiagnosticInfos", contentFilterResult._elementDiagnosticInfos, encoder::encodeDiagnosticInfo);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<ContentFilterResult> {
+        @Override
+        public ContentFilterResult decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            ContentFilterElementResult[] _elementResults =
+                reader.readArray(
+                    () -> (ContentFilterElementResult) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterElementResult", reader),
+                    ContentFilterElementResult.class
+                );
+            DiagnosticInfo[] _elementDiagnosticInfos = reader.readArray(reader::readDiagnosticInfo, DiagnosticInfo.class);
+
+            return new ContentFilterResult(_elementResults, _elementDiagnosticInfos);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ContentFilterResult encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeArray(
+                encodable._elementResults,
+                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterElementResult", e, writer)
+            );
+            writer.writeArray(encodable._elementDiagnosticInfos, writer::writeDiagnosticInfo);
+        }
     }
 
-    public static ContentFilterResult decode(UaDecoder decoder) {
-        ContentFilterElementResult[] _elementResults = decoder.decodeArray("ElementResults", decoder::decodeSerializable, ContentFilterElementResult.class);
-        DiagnosticInfo[] _elementDiagnosticInfos = decoder.decodeArray("ElementDiagnosticInfos", decoder::decodeDiagnosticInfo, DiagnosticInfo.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<ContentFilterResult> {
+        @Override
+        public ContentFilterResult decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            ContentFilterElementResult[] _elementResults =
+                reader.readArray(
+                    "ElementResults",
+                    f -> (ContentFilterElementResult) context.decode(
+                        OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterElementResult", reader),
+                    ContentFilterElementResult.class
+                );
+            DiagnosticInfo[] _elementDiagnosticInfos = reader.readArray("ElementDiagnosticInfos", reader::readDiagnosticInfo, DiagnosticInfo.class);
 
-        return new ContentFilterResult(_elementResults, _elementDiagnosticInfos);
+            return new ContentFilterResult(_elementResults, _elementDiagnosticInfos);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ContentFilterResult encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeArray(
+                "ElementResults",
+                encodable._elementResults,
+                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterElementResult", e, writer)
+            );
+            writer.writeArray("ElementDiagnosticInfos", encodable._elementDiagnosticInfos, writer::writeDiagnosticInfo);
+        }
     }
 
 }

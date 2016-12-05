@@ -17,9 +17,15 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -60,49 +66,29 @@ public class ApplicationDescription implements UaStructure {
         this._discoveryUrls = _discoveryUrls;
     }
 
-    public String getApplicationUri() {
-        return _applicationUri;
-    }
+    public String getApplicationUri() { return _applicationUri; }
 
-    public String getProductUri() {
-        return _productUri;
-    }
+    public String getProductUri() { return _productUri; }
 
-    public LocalizedText getApplicationName() {
-        return _applicationName;
-    }
+    public LocalizedText getApplicationName() { return _applicationName; }
 
-    public ApplicationType getApplicationType() {
-        return _applicationType;
-    }
+    public ApplicationType getApplicationType() { return _applicationType; }
 
-    public String getGatewayServerUri() {
-        return _gatewayServerUri;
-    }
+    public String getGatewayServerUri() { return _gatewayServerUri; }
 
-    public String getDiscoveryProfileUri() {
-        return _discoveryProfileUri;
-    }
+    public String getDiscoveryProfileUri() { return _discoveryProfileUri; }
 
     @Nullable
-    public String[] getDiscoveryUrls() {
-        return _discoveryUrls;
-    }
+    public String[] getDiscoveryUrls() { return _discoveryUrls; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -117,26 +103,56 @@ public class ApplicationDescription implements UaStructure {
             .toString();
     }
 
-    public static void encode(ApplicationDescription applicationDescription, UaEncoder encoder) {
-        encoder.encodeString("ApplicationUri", applicationDescription._applicationUri);
-        encoder.encodeString("ProductUri", applicationDescription._productUri);
-        encoder.encodeLocalizedText("ApplicationName", applicationDescription._applicationName);
-        encoder.encodeEnumeration("ApplicationType", applicationDescription._applicationType);
-        encoder.encodeString("GatewayServerUri", applicationDescription._gatewayServerUri);
-        encoder.encodeString("DiscoveryProfileUri", applicationDescription._discoveryProfileUri);
-        encoder.encodeArray("DiscoveryUrls", applicationDescription._discoveryUrls, encoder::encodeString);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<ApplicationDescription> {
+        @Override
+        public ApplicationDescription decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            String _applicationUri = reader.readString();
+            String _productUri = reader.readString();
+            LocalizedText _applicationName = reader.readLocalizedText();
+            ApplicationType _applicationType = ApplicationType.from(reader.readInt32());
+            String _gatewayServerUri = reader.readString();
+            String _discoveryProfileUri = reader.readString();
+            String[] _discoveryUrls = reader.readArray(reader::readString, String.class);
+
+            return new ApplicationDescription(_applicationUri, _productUri, _applicationName, _applicationType, _gatewayServerUri, _discoveryProfileUri, _discoveryUrls);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ApplicationDescription encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeString(encodable._applicationUri);
+            writer.writeString(encodable._productUri);
+            writer.writeLocalizedText(encodable._applicationName);
+            writer.writeInt32(encodable._applicationType != null ? encodable._applicationType.getValue() : 0);
+            writer.writeString(encodable._gatewayServerUri);
+            writer.writeString(encodable._discoveryProfileUri);
+            writer.writeArray(encodable._discoveryUrls, writer::writeString);
+        }
     }
 
-    public static ApplicationDescription decode(UaDecoder decoder) {
-        String _applicationUri = decoder.decodeString("ApplicationUri");
-        String _productUri = decoder.decodeString("ProductUri");
-        LocalizedText _applicationName = decoder.decodeLocalizedText("ApplicationName");
-        ApplicationType _applicationType = decoder.decodeEnumeration("ApplicationType", ApplicationType.class);
-        String _gatewayServerUri = decoder.decodeString("GatewayServerUri");
-        String _discoveryProfileUri = decoder.decodeString("DiscoveryProfileUri");
-        String[] _discoveryUrls = decoder.decodeArray("DiscoveryUrls", decoder::decodeString, String.class);
+    public static class XmlCodec implements OpcXmlTypeCodec<ApplicationDescription> {
+        @Override
+        public ApplicationDescription decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            String _applicationUri = reader.readString("ApplicationUri");
+            String _productUri = reader.readString("ProductUri");
+            LocalizedText _applicationName = reader.readLocalizedText("ApplicationName");
+            ApplicationType _applicationType = ApplicationType.from(reader.readInt32("ApplicationType"));
+            String _gatewayServerUri = reader.readString("GatewayServerUri");
+            String _discoveryProfileUri = reader.readString("DiscoveryProfileUri");
+            String[] _discoveryUrls = reader.readArray("DiscoveryUrls", reader::readString, String.class);
 
-        return new ApplicationDescription(_applicationUri, _productUri, _applicationName, _applicationType, _gatewayServerUri, _discoveryProfileUri, _discoveryUrls);
+            return new ApplicationDescription(_applicationUri, _productUri, _applicationName, _applicationType, _gatewayServerUri, _discoveryProfileUri, _discoveryUrls);
+        }
+
+        @Override
+        public void encode(SerializationContext context, ApplicationDescription encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeString("ApplicationUri", encodable._applicationUri);
+            writer.writeString("ProductUri", encodable._productUri);
+            writer.writeLocalizedText("ApplicationName", encodable._applicationName);
+            writer.writeInt32("ApplicationType", encodable._applicationType != null ? encodable._applicationType.getValue() : 0);
+            writer.writeString("GatewayServerUri", encodable._gatewayServerUri);
+            writer.writeString("DiscoveryProfileUri", encodable._discoveryProfileUri);
+            writer.writeArray("DiscoveryUrls", encodable._discoveryUrls, writer::writeString);
+        }
     }
 
 }

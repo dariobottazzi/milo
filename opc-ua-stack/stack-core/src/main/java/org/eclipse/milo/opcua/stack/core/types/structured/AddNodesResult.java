@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.StatusCode;
@@ -42,28 +48,18 @@ public class AddNodesResult implements UaStructure {
         this._addedNodeId = _addedNodeId;
     }
 
-    public StatusCode getStatusCode() {
-        return _statusCode;
-    }
+    public StatusCode getStatusCode() { return _statusCode; }
 
-    public NodeId getAddedNodeId() {
-        return _addedNodeId;
-    }
+    public NodeId getAddedNodeId() { return _addedNodeId; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -73,16 +69,36 @@ public class AddNodesResult implements UaStructure {
             .toString();
     }
 
-    public static void encode(AddNodesResult addNodesResult, UaEncoder encoder) {
-        encoder.encodeStatusCode("StatusCode", addNodesResult._statusCode);
-        encoder.encodeNodeId("AddedNodeId", addNodesResult._addedNodeId);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<AddNodesResult> {
+        @Override
+        public AddNodesResult decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            StatusCode _statusCode = reader.readStatusCode();
+            NodeId _addedNodeId = reader.readNodeId();
+
+            return new AddNodesResult(_statusCode, _addedNodeId);
+        }
+
+        @Override
+        public void encode(SerializationContext context, AddNodesResult encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeStatusCode(encodable._statusCode);
+            writer.writeNodeId(encodable._addedNodeId);
+        }
     }
 
-    public static AddNodesResult decode(UaDecoder decoder) {
-        StatusCode _statusCode = decoder.decodeStatusCode("StatusCode");
-        NodeId _addedNodeId = decoder.decodeNodeId("AddedNodeId");
+    public static class XmlCodec implements OpcXmlTypeCodec<AddNodesResult> {
+        @Override
+        public AddNodesResult decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            StatusCode _statusCode = reader.readStatusCode("StatusCode");
+            NodeId _addedNodeId = reader.readNodeId("AddedNodeId");
 
-        return new AddNodesResult(_statusCode, _addedNodeId);
+            return new AddNodesResult(_statusCode, _addedNodeId);
+        }
+
+        @Override
+        public void encode(SerializationContext context, AddNodesResult encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeStatusCode("StatusCode", encodable._statusCode);
+            writer.writeNodeId("AddedNodeId", encodable._addedNodeId);
+        }
     }
 
 }

@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -42,28 +48,18 @@ public class SignedSoftwareCertificate implements UaStructure {
         this._signature = _signature;
     }
 
-    public ByteString getCertificateData() {
-        return _certificateData;
-    }
+    public ByteString getCertificateData() { return _certificateData; }
 
-    public ByteString getSignature() {
-        return _signature;
-    }
+    public ByteString getSignature() { return _signature; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -73,16 +69,36 @@ public class SignedSoftwareCertificate implements UaStructure {
             .toString();
     }
 
-    public static void encode(SignedSoftwareCertificate signedSoftwareCertificate, UaEncoder encoder) {
-        encoder.encodeByteString("CertificateData", signedSoftwareCertificate._certificateData);
-        encoder.encodeByteString("Signature", signedSoftwareCertificate._signature);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<SignedSoftwareCertificate> {
+        @Override
+        public SignedSoftwareCertificate decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            ByteString _certificateData = reader.readByteString();
+            ByteString _signature = reader.readByteString();
+
+            return new SignedSoftwareCertificate(_certificateData, _signature);
+        }
+
+        @Override
+        public void encode(SerializationContext context, SignedSoftwareCertificate encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeByteString(encodable._certificateData);
+            writer.writeByteString(encodable._signature);
+        }
     }
 
-    public static SignedSoftwareCertificate decode(UaDecoder decoder) {
-        ByteString _certificateData = decoder.decodeByteString("CertificateData");
-        ByteString _signature = decoder.decodeByteString("Signature");
+    public static class XmlCodec implements OpcXmlTypeCodec<SignedSoftwareCertificate> {
+        @Override
+        public SignedSoftwareCertificate decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            ByteString _certificateData = reader.readByteString("CertificateData");
+            ByteString _signature = reader.readByteString("Signature");
 
-        return new SignedSoftwareCertificate(_certificateData, _signature);
+            return new SignedSoftwareCertificate(_certificateData, _signature);
+        }
+
+        @Override
+        public void encode(SerializationContext context, SignedSoftwareCertificate encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeByteString("CertificateData", encodable._certificateData);
+            writer.writeByteString("Signature", encodable._signature);
+        }
     }
 
 }

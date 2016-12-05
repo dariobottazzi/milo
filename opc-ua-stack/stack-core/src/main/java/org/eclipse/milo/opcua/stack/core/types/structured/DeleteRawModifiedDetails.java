@@ -15,8 +15,14 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -46,32 +52,20 @@ public class DeleteRawModifiedDetails extends HistoryUpdateDetails {
         this._endTime = _endTime;
     }
 
-    public Boolean getIsDeleteModified() {
-        return _isDeleteModified;
-    }
+    public Boolean getIsDeleteModified() { return _isDeleteModified; }
 
-    public DateTime getStartTime() {
-        return _startTime;
-    }
+    public DateTime getStartTime() { return _startTime; }
 
-    public DateTime getEndTime() {
-        return _endTime;
-    }
+    public DateTime getEndTime() { return _endTime; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -83,20 +77,44 @@ public class DeleteRawModifiedDetails extends HistoryUpdateDetails {
             .toString();
     }
 
-    public static void encode(DeleteRawModifiedDetails deleteRawModifiedDetails, UaEncoder encoder) {
-        encoder.encodeNodeId("NodeId", deleteRawModifiedDetails._nodeId);
-        encoder.encodeBoolean("IsDeleteModified", deleteRawModifiedDetails._isDeleteModified);
-        encoder.encodeDateTime("StartTime", deleteRawModifiedDetails._startTime);
-        encoder.encodeDateTime("EndTime", deleteRawModifiedDetails._endTime);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<DeleteRawModifiedDetails> {
+        @Override
+        public DeleteRawModifiedDetails decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            NodeId _nodeId = reader.readNodeId();
+            Boolean _isDeleteModified = reader.readBoolean();
+            DateTime _startTime = reader.readDateTime();
+            DateTime _endTime = reader.readDateTime();
+
+            return new DeleteRawModifiedDetails(_nodeId, _isDeleteModified, _startTime, _endTime);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteRawModifiedDetails encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId(encodable._nodeId);
+            writer.writeBoolean(encodable._isDeleteModified);
+            writer.writeDateTime(encodable._startTime);
+            writer.writeDateTime(encodable._endTime);
+        }
     }
 
-    public static DeleteRawModifiedDetails decode(UaDecoder decoder) {
-        NodeId _nodeId = decoder.decodeNodeId("NodeId");
-        Boolean _isDeleteModified = decoder.decodeBoolean("IsDeleteModified");
-        DateTime _startTime = decoder.decodeDateTime("StartTime");
-        DateTime _endTime = decoder.decodeDateTime("EndTime");
+    public static class XmlCodec implements OpcXmlTypeCodec<DeleteRawModifiedDetails> {
+        @Override
+        public DeleteRawModifiedDetails decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            NodeId _nodeId = reader.readNodeId("NodeId");
+            Boolean _isDeleteModified = reader.readBoolean("IsDeleteModified");
+            DateTime _startTime = reader.readDateTime("StartTime");
+            DateTime _endTime = reader.readDateTime("EndTime");
 
-        return new DeleteRawModifiedDetails(_nodeId, _isDeleteModified, _startTime, _endTime);
+            return new DeleteRawModifiedDetails(_nodeId, _isDeleteModified, _startTime, _endTime);
+        }
+
+        @Override
+        public void encode(SerializationContext context, DeleteRawModifiedDetails encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeNodeId("NodeId", encodable._nodeId);
+            writer.writeBoolean("IsDeleteModified", encodable._isDeleteModified);
+            writer.writeDateTime("StartTime", encodable._startTime);
+            writer.writeDateTime("EndTime", encodable._endTime);
+        }
     }
 
 }

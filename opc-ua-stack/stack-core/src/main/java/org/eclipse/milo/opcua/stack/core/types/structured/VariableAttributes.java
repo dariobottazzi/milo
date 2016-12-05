@@ -17,8 +17,14 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -66,53 +72,31 @@ public class VariableAttributes extends NodeAttributes {
         this._historizing = _historizing;
     }
 
-    public Variant getValue() {
-        return _value;
-    }
+    public Variant getValue() { return _value; }
 
-    public NodeId getDataType() {
-        return _dataType;
-    }
+    public NodeId getDataType() { return _dataType; }
 
-    public Integer getValueRank() {
-        return _valueRank;
-    }
+    public Integer getValueRank() { return _valueRank; }
 
     @Nullable
-    public UInteger[] getArrayDimensions() {
-        return _arrayDimensions;
-    }
+    public UInteger[] getArrayDimensions() { return _arrayDimensions; }
 
-    public UByte getAccessLevel() {
-        return _accessLevel;
-    }
+    public UByte getAccessLevel() { return _accessLevel; }
 
-    public UByte getUserAccessLevel() {
-        return _userAccessLevel;
-    }
+    public UByte getUserAccessLevel() { return _userAccessLevel; }
 
-    public Double getMinimumSamplingInterval() {
-        return _minimumSamplingInterval;
-    }
+    public Double getMinimumSamplingInterval() { return _minimumSamplingInterval; }
 
-    public Boolean getHistorizing() {
-        return _historizing;
-    }
+    public Boolean getHistorizing() { return _historizing; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -133,38 +117,80 @@ public class VariableAttributes extends NodeAttributes {
             .toString();
     }
 
-    public static void encode(VariableAttributes variableAttributes, UaEncoder encoder) {
-        encoder.encodeUInt32("SpecifiedAttributes", variableAttributes._specifiedAttributes);
-        encoder.encodeLocalizedText("DisplayName", variableAttributes._displayName);
-        encoder.encodeLocalizedText("Description", variableAttributes._description);
-        encoder.encodeUInt32("WriteMask", variableAttributes._writeMask);
-        encoder.encodeUInt32("UserWriteMask", variableAttributes._userWriteMask);
-        encoder.encodeVariant("Value", variableAttributes._value);
-        encoder.encodeNodeId("DataType", variableAttributes._dataType);
-        encoder.encodeInt32("ValueRank", variableAttributes._valueRank);
-        encoder.encodeArray("ArrayDimensions", variableAttributes._arrayDimensions, encoder::encodeUInt32);
-        encoder.encodeByte("AccessLevel", variableAttributes._accessLevel);
-        encoder.encodeByte("UserAccessLevel", variableAttributes._userAccessLevel);
-        encoder.encodeDouble("MinimumSamplingInterval", variableAttributes._minimumSamplingInterval);
-        encoder.encodeBoolean("Historizing", variableAttributes._historizing);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<VariableAttributes> {
+        @Override
+        public VariableAttributes decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            UInteger _specifiedAttributes = reader.readUInt32();
+            LocalizedText _displayName = reader.readLocalizedText();
+            LocalizedText _description = reader.readLocalizedText();
+            UInteger _writeMask = reader.readUInt32();
+            UInteger _userWriteMask = reader.readUInt32();
+            Variant _value = reader.readVariant();
+            NodeId _dataType = reader.readNodeId();
+            Integer _valueRank = reader.readInt32();
+            UInteger[] _arrayDimensions = reader.readArray(reader::readUInt32, UInteger.class);
+            UByte _accessLevel = reader.readByte();
+            UByte _userAccessLevel = reader.readByte();
+            Double _minimumSamplingInterval = reader.readDouble();
+            Boolean _historizing = reader.readBoolean();
+
+            return new VariableAttributes(_specifiedAttributes, _displayName, _description, _writeMask, _userWriteMask, _value, _dataType, _valueRank, _arrayDimensions, _accessLevel, _userAccessLevel, _minimumSamplingInterval, _historizing);
+        }
+
+        @Override
+        public void encode(SerializationContext context, VariableAttributes encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeUInt32(encodable._specifiedAttributes);
+            writer.writeLocalizedText(encodable._displayName);
+            writer.writeLocalizedText(encodable._description);
+            writer.writeUInt32(encodable._writeMask);
+            writer.writeUInt32(encodable._userWriteMask);
+            writer.writeVariant(encodable._value);
+            writer.writeNodeId(encodable._dataType);
+            writer.writeInt32(encodable._valueRank);
+            writer.writeArray(encodable._arrayDimensions, writer::writeUInt32);
+            writer.writeByte(encodable._accessLevel);
+            writer.writeByte(encodable._userAccessLevel);
+            writer.writeDouble(encodable._minimumSamplingInterval);
+            writer.writeBoolean(encodable._historizing);
+        }
     }
 
-    public static VariableAttributes decode(UaDecoder decoder) {
-        UInteger _specifiedAttributes = decoder.decodeUInt32("SpecifiedAttributes");
-        LocalizedText _displayName = decoder.decodeLocalizedText("DisplayName");
-        LocalizedText _description = decoder.decodeLocalizedText("Description");
-        UInteger _writeMask = decoder.decodeUInt32("WriteMask");
-        UInteger _userWriteMask = decoder.decodeUInt32("UserWriteMask");
-        Variant _value = decoder.decodeVariant("Value");
-        NodeId _dataType = decoder.decodeNodeId("DataType");
-        Integer _valueRank = decoder.decodeInt32("ValueRank");
-        UInteger[] _arrayDimensions = decoder.decodeArray("ArrayDimensions", decoder::decodeUInt32, UInteger.class);
-        UByte _accessLevel = decoder.decodeByte("AccessLevel");
-        UByte _userAccessLevel = decoder.decodeByte("UserAccessLevel");
-        Double _minimumSamplingInterval = decoder.decodeDouble("MinimumSamplingInterval");
-        Boolean _historizing = decoder.decodeBoolean("Historizing");
+    public static class XmlCodec implements OpcXmlTypeCodec<VariableAttributes> {
+        @Override
+        public VariableAttributes decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            UInteger _specifiedAttributes = reader.readUInt32("SpecifiedAttributes");
+            LocalizedText _displayName = reader.readLocalizedText("DisplayName");
+            LocalizedText _description = reader.readLocalizedText("Description");
+            UInteger _writeMask = reader.readUInt32("WriteMask");
+            UInteger _userWriteMask = reader.readUInt32("UserWriteMask");
+            Variant _value = reader.readVariant("Value");
+            NodeId _dataType = reader.readNodeId("DataType");
+            Integer _valueRank = reader.readInt32("ValueRank");
+            UInteger[] _arrayDimensions = reader.readArray("ArrayDimensions", reader::readUInt32, UInteger.class);
+            UByte _accessLevel = reader.readByte("AccessLevel");
+            UByte _userAccessLevel = reader.readByte("UserAccessLevel");
+            Double _minimumSamplingInterval = reader.readDouble("MinimumSamplingInterval");
+            Boolean _historizing = reader.readBoolean("Historizing");
 
-        return new VariableAttributes(_specifiedAttributes, _displayName, _description, _writeMask, _userWriteMask, _value, _dataType, _valueRank, _arrayDimensions, _accessLevel, _userAccessLevel, _minimumSamplingInterval, _historizing);
+            return new VariableAttributes(_specifiedAttributes, _displayName, _description, _writeMask, _userWriteMask, _value, _dataType, _valueRank, _arrayDimensions, _accessLevel, _userAccessLevel, _minimumSamplingInterval, _historizing);
+        }
+
+        @Override
+        public void encode(SerializationContext context, VariableAttributes encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeUInt32("SpecifiedAttributes", encodable._specifiedAttributes);
+            writer.writeLocalizedText("DisplayName", encodable._displayName);
+            writer.writeLocalizedText("Description", encodable._description);
+            writer.writeUInt32("WriteMask", encodable._writeMask);
+            writer.writeUInt32("UserWriteMask", encodable._userWriteMask);
+            writer.writeVariant("Value", encodable._value);
+            writer.writeNodeId("DataType", encodable._dataType);
+            writer.writeInt32("ValueRank", encodable._valueRank);
+            writer.writeArray("ArrayDimensions", encodable._arrayDimensions, writer::writeUInt32);
+            writer.writeByte("AccessLevel", encodable._accessLevel);
+            writer.writeByte("UserAccessLevel", encodable._userAccessLevel);
+            writer.writeDouble("MinimumSamplingInterval", encodable._minimumSamplingInterval);
+            writer.writeBoolean("Historizing", encodable._historizing);
+        }
     }
 
 }

@@ -15,9 +15,15 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
-import org.eclipse.milo.opcua.stack.core.serialization.UaEncoder;
+import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExtensionObject;
@@ -60,48 +66,28 @@ public class AddNodesItem implements UaStructure {
         this._typeDefinition = _typeDefinition;
     }
 
-    public ExpandedNodeId getParentNodeId() {
-        return _parentNodeId;
-    }
+    public ExpandedNodeId getParentNodeId() { return _parentNodeId; }
 
-    public NodeId getReferenceTypeId() {
-        return _referenceTypeId;
-    }
+    public NodeId getReferenceTypeId() { return _referenceTypeId; }
 
-    public ExpandedNodeId getRequestedNewNodeId() {
-        return _requestedNewNodeId;
-    }
+    public ExpandedNodeId getRequestedNewNodeId() { return _requestedNewNodeId; }
 
-    public QualifiedName getBrowseName() {
-        return _browseName;
-    }
+    public QualifiedName getBrowseName() { return _browseName; }
 
-    public NodeClass getNodeClass() {
-        return _nodeClass;
-    }
+    public NodeClass getNodeClass() { return _nodeClass; }
 
-    public ExtensionObject getNodeAttributes() {
-        return _nodeAttributes;
-    }
+    public ExtensionObject getNodeAttributes() { return _nodeAttributes; }
 
-    public ExpandedNodeId getTypeDefinition() {
-        return _typeDefinition;
-    }
+    public ExpandedNodeId getTypeDefinition() { return _typeDefinition; }
 
     @Override
-    public NodeId getTypeId() {
-        return TypeId;
-    }
+    public NodeId getTypeId() { return TypeId; }
 
     @Override
-    public NodeId getBinaryEncodingId() {
-        return BinaryEncodingId;
-    }
+    public NodeId getBinaryEncodingId() { return BinaryEncodingId; }
 
     @Override
-    public NodeId getXmlEncodingId() {
-        return XmlEncodingId;
-    }
+    public NodeId getXmlEncodingId() { return XmlEncodingId; }
 
     @Override
     public String toString() {
@@ -116,26 +102,56 @@ public class AddNodesItem implements UaStructure {
             .toString();
     }
 
-    public static void encode(AddNodesItem addNodesItem, UaEncoder encoder) {
-        encoder.encodeExpandedNodeId("ParentNodeId", addNodesItem._parentNodeId);
-        encoder.encodeNodeId("ReferenceTypeId", addNodesItem._referenceTypeId);
-        encoder.encodeExpandedNodeId("RequestedNewNodeId", addNodesItem._requestedNewNodeId);
-        encoder.encodeQualifiedName("BrowseName", addNodesItem._browseName);
-        encoder.encodeEnumeration("NodeClass", addNodesItem._nodeClass);
-        encoder.encodeExtensionObject("NodeAttributes", addNodesItem._nodeAttributes);
-        encoder.encodeExpandedNodeId("TypeDefinition", addNodesItem._typeDefinition);
+    public static class BinaryCodec implements OpcBinaryTypeCodec<AddNodesItem> {
+        @Override
+        public AddNodesItem decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
+            ExpandedNodeId _parentNodeId = reader.readExpandedNodeId();
+            NodeId _referenceTypeId = reader.readNodeId();
+            ExpandedNodeId _requestedNewNodeId = reader.readExpandedNodeId();
+            QualifiedName _browseName = reader.readQualifiedName();
+            NodeClass _nodeClass = NodeClass.from(reader.readInt32());
+            ExtensionObject _nodeAttributes = reader.readExtensionObject();
+            ExpandedNodeId _typeDefinition = reader.readExpandedNodeId();
+
+            return new AddNodesItem(_parentNodeId, _referenceTypeId, _requestedNewNodeId, _browseName, _nodeClass, _nodeAttributes, _typeDefinition);
+        }
+
+        @Override
+        public void encode(SerializationContext context, AddNodesItem encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
+            writer.writeExpandedNodeId(encodable._parentNodeId);
+            writer.writeNodeId(encodable._referenceTypeId);
+            writer.writeExpandedNodeId(encodable._requestedNewNodeId);
+            writer.writeQualifiedName(encodable._browseName);
+            writer.writeInt32(encodable._nodeClass != null ? encodable._nodeClass.getValue() : 0);
+            writer.writeExtensionObject(encodable._nodeAttributes);
+            writer.writeExpandedNodeId(encodable._typeDefinition);
+        }
     }
 
-    public static AddNodesItem decode(UaDecoder decoder) {
-        ExpandedNodeId _parentNodeId = decoder.decodeExpandedNodeId("ParentNodeId");
-        NodeId _referenceTypeId = decoder.decodeNodeId("ReferenceTypeId");
-        ExpandedNodeId _requestedNewNodeId = decoder.decodeExpandedNodeId("RequestedNewNodeId");
-        QualifiedName _browseName = decoder.decodeQualifiedName("BrowseName");
-        NodeClass _nodeClass = decoder.decodeEnumeration("NodeClass", NodeClass.class);
-        ExtensionObject _nodeAttributes = decoder.decodeExtensionObject("NodeAttributes");
-        ExpandedNodeId _typeDefinition = decoder.decodeExpandedNodeId("TypeDefinition");
+    public static class XmlCodec implements OpcXmlTypeCodec<AddNodesItem> {
+        @Override
+        public AddNodesItem decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
+            ExpandedNodeId _parentNodeId = reader.readExpandedNodeId("ParentNodeId");
+            NodeId _referenceTypeId = reader.readNodeId("ReferenceTypeId");
+            ExpandedNodeId _requestedNewNodeId = reader.readExpandedNodeId("RequestedNewNodeId");
+            QualifiedName _browseName = reader.readQualifiedName("BrowseName");
+            NodeClass _nodeClass = NodeClass.from(reader.readInt32("NodeClass"));
+            ExtensionObject _nodeAttributes = reader.readExtensionObject("NodeAttributes");
+            ExpandedNodeId _typeDefinition = reader.readExpandedNodeId("TypeDefinition");
 
-        return new AddNodesItem(_parentNodeId, _referenceTypeId, _requestedNewNodeId, _browseName, _nodeClass, _nodeAttributes, _typeDefinition);
+            return new AddNodesItem(_parentNodeId, _referenceTypeId, _requestedNewNodeId, _browseName, _nodeClass, _nodeAttributes, _typeDefinition);
+        }
+
+        @Override
+        public void encode(SerializationContext context, AddNodesItem encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
+            writer.writeExpandedNodeId("ParentNodeId", encodable._parentNodeId);
+            writer.writeNodeId("ReferenceTypeId", encodable._referenceTypeId);
+            writer.writeExpandedNodeId("RequestedNewNodeId", encodable._requestedNewNodeId);
+            writer.writeQualifiedName("BrowseName", encodable._browseName);
+            writer.writeInt32("NodeClass", encodable._nodeClass != null ? encodable._nodeClass.getValue() : 0);
+            writer.writeExtensionObject("NodeAttributes", encodable._nodeAttributes);
+            writer.writeExpandedNodeId("TypeDefinition", encodable._typeDefinition);
+        }
     }
 
 }
