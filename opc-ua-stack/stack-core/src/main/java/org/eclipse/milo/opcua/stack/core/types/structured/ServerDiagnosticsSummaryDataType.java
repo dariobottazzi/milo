@@ -17,12 +17,12 @@ import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -129,7 +129,7 @@ public class ServerDiagnosticsSummaryDataType implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<ServerDiagnosticsSummaryDataType> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<ServerDiagnosticsSummaryDataType> {
         @Override
         public ServerDiagnosticsSummaryDataType decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             UInteger _serverViewCount = reader.readUInt32();
@@ -165,7 +165,7 @@ public class ServerDiagnosticsSummaryDataType implements UaStructure {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<ServerDiagnosticsSummaryDataType> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<ServerDiagnosticsSummaryDataType> {
         @Override
         public ServerDiagnosticsSummaryDataType decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             UInteger _serverViewCount = reader.readUInt32("ServerViewCount");

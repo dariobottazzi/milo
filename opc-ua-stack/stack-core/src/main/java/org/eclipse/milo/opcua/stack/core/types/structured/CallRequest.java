@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -72,14 +72,14 @@ public class CallRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<CallRequest> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<CallRequest> {
         @Override
         public CallRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
             CallMethodRequest[] _methodsToCall =
                 reader.readArray(
                     () -> (CallMethodRequest) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "CallMethodRequest", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "CallMethodRequest", reader),
                     CallMethodRequest.class
                 );
 
@@ -88,23 +88,23 @@ public class CallRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, CallRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
             writer.writeArray(
                 encodable._methodsToCall,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "CallMethodRequest", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "CallMethodRequest", e, writer)
             );
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<CallRequest> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<CallRequest> {
         @Override
         public CallRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
             CallMethodRequest[] _methodsToCall =
                 reader.readArray(
                     "MethodsToCall",
                     f -> (CallMethodRequest) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "CallMethodRequest", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "CallMethodRequest", reader),
                     CallMethodRequest.class
                 );
 
@@ -113,11 +113,11 @@ public class CallRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, CallRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
             writer.writeArray(
                 "MethodsToCall",
                 encodable._methodsToCall,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "CallMethodRequest", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "CallMethodRequest", e, writer)
             );
         }
     }

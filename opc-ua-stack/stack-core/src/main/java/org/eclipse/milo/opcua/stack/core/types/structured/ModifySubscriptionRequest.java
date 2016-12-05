@@ -16,14 +16,14 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -101,10 +101,10 @@ public class ModifySubscriptionRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<ModifySubscriptionRequest> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<ModifySubscriptionRequest> {
         @Override
         public ModifySubscriptionRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
             UInteger _subscriptionId = reader.readUInt32();
             Double _requestedPublishingInterval = reader.readDouble();
             UInteger _requestedLifetimeCount = reader.readUInt32();
@@ -117,7 +117,7 @@ public class ModifySubscriptionRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, ModifySubscriptionRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
             writer.writeUInt32(encodable._subscriptionId);
             writer.writeDouble(encodable._requestedPublishingInterval);
             writer.writeUInt32(encodable._requestedLifetimeCount);
@@ -127,10 +127,10 @@ public class ModifySubscriptionRequest implements UaRequestMessage {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<ModifySubscriptionRequest> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<ModifySubscriptionRequest> {
         @Override
         public ModifySubscriptionRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
             UInteger _subscriptionId = reader.readUInt32("SubscriptionId");
             Double _requestedPublishingInterval = reader.readDouble("RequestedPublishingInterval");
             UInteger _requestedLifetimeCount = reader.readUInt32("RequestedLifetimeCount");
@@ -143,7 +143,7 @@ public class ModifySubscriptionRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, ModifySubscriptionRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
             writer.writeUInt32("SubscriptionId", encodable._subscriptionId);
             writer.writeDouble("RequestedPublishingInterval", encodable._requestedPublishingInterval);
             writer.writeUInt32("RequestedLifetimeCount", encodable._requestedLifetimeCount);

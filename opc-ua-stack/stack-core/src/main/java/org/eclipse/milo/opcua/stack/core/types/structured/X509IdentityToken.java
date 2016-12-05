@@ -16,12 +16,12 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
@@ -65,7 +65,7 @@ public class X509IdentityToken extends UserIdentityToken {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<X509IdentityToken> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<X509IdentityToken> {
         @Override
         public X509IdentityToken decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             String _policyId = reader.readString();
@@ -81,7 +81,7 @@ public class X509IdentityToken extends UserIdentityToken {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<X509IdentityToken> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<X509IdentityToken> {
         @Override
         public X509IdentityToken decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             String _policyId = reader.readString("PolicyId");

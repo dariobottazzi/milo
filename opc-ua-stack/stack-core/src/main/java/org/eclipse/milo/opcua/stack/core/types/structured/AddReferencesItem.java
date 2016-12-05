@@ -17,12 +17,12 @@ import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
@@ -94,7 +94,7 @@ public class AddReferencesItem implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<AddReferencesItem> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<AddReferencesItem> {
         @Override
         public AddReferencesItem decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             NodeId _sourceNodeId = reader.readNodeId();
@@ -118,7 +118,7 @@ public class AddReferencesItem implements UaStructure {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<AddReferencesItem> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<AddReferencesItem> {
         @Override
         public AddReferencesItem decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             NodeId _sourceNodeId = reader.readNodeId("SourceNodeId");

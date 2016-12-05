@@ -16,34 +16,34 @@ package org.eclipse.milo.opcua.stack.core.serialization.codec;
 import javax.annotation.Nullable;
 
 import org.eclipse.milo.opcua.stack.core.NamespaceTable;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
-public interface TypeManager {
+public interface DataTypeManager {
 
-    TypeManager BUILTIN = new TypeManagerImpl(new NamespaceTable(), OpcUaTypeDictionary.getInstance());
+    DataTypeManager BUILTIN = new DataTypeManagerImpl(new NamespaceTable(), OpcUaDataTypeDictionary.getInstance());
 
-    void registerTypeDictionary(String namespaceUri, TypeDictionary typeDictionary);
-
-    @Nullable
-    TypeDictionary getTypeDictionary(String namespaceUri);
+    void registerTypeDictionary(String namespaceUri, DataTypeDictionary dataTypeDictionary);
 
     @Nullable
-    OpcBinaryTypeCodec<?> getBinaryCodec(NodeId encodingId);
+    DataTypeDictionary getTypeDictionary(String namespaceUri);
 
     @Nullable
-    default OpcBinaryTypeCodec<?> getBinaryCodec(String namespaceUri, String typeName) {
-        TypeDictionary dictionary = getTypeDictionary(namespaceUri);
+    OpcBinaryDataTypeCodec<?> getBinaryCodec(NodeId encodingId);
+
+    @Nullable
+    default OpcBinaryDataTypeCodec<?> getBinaryCodec(String namespaceUri, String typeName) {
+        DataTypeDictionary dictionary = getTypeDictionary(namespaceUri);
 
         return dictionary != null ? dictionary.getBinaryCodec(typeName) : null;
     }
 
     @Nullable
-    OpcXmlTypeCodec<?> getXmlCodec(NodeId encodingId);
+    OpcXmlDataTypeCodec<?> getXmlCodec(NodeId encodingId);
 
     @Nullable
-    default OpcXmlTypeCodec<?> getXmlCodec(String namespaceUri, String typeName) {
-        TypeDictionary dictionary = getTypeDictionary(namespaceUri);
+    default OpcXmlDataTypeCodec<?> getXmlCodec(String namespaceUri, String typeName) {
+        DataTypeDictionary dictionary = getTypeDictionary(namespaceUri);
 
         return dictionary != null ? dictionary.getXmlCodec(typeName) : null;
     }

@@ -20,51 +20,51 @@ import com.google.common.collect.Maps;
 import org.eclipse.milo.opcua.stack.core.NamespaceTable;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
-public class TypeManagerImpl implements TypeManager {
+public class DataTypeManagerImpl implements DataTypeManager {
 
-    private final ConcurrentMap<String, TypeDictionary> typeDictionaries = Maps.newConcurrentMap();
+    private final ConcurrentMap<String, DataTypeDictionary> typeDictionaries = Maps.newConcurrentMap();
 
     private final NamespaceTable namespaceTable;
 
-    public TypeManagerImpl(NamespaceTable namespaceTable) {
+    public DataTypeManagerImpl(NamespaceTable namespaceTable) {
         this.namespaceTable = namespaceTable;
     }
 
-    public TypeManagerImpl(NamespaceTable namespaceTable, TypeDictionary... typeDictionaries) {
+    public DataTypeManagerImpl(NamespaceTable namespaceTable, DataTypeDictionary... typeDictionaries) {
         this.namespaceTable = namespaceTable;
 
-        for (TypeDictionary d : typeDictionaries) {
+        for (DataTypeDictionary d : typeDictionaries) {
             registerTypeDictionary(d.getNamespaceUri(), d);
         }
     }
 
     @Override
-    public void registerTypeDictionary(String namespaceUri, TypeDictionary typeDictionary) {
-        typeDictionaries.put(namespaceUri, typeDictionary);
+    public void registerTypeDictionary(String namespaceUri, DataTypeDictionary dataTypeDictionary) {
+        typeDictionaries.put(namespaceUri, dataTypeDictionary);
     }
 
     @Nullable
     @Override
-    public TypeDictionary getTypeDictionary(String namespaceUri) {
+    public DataTypeDictionary getTypeDictionary(String namespaceUri) {
         return typeDictionaries.get(namespaceUri);
     }
 
     @Nullable
     @Override
-    public OpcBinaryTypeCodec<?> getBinaryCodec(NodeId encodingId) {
+    public OpcBinaryDataTypeCodec<?> getBinaryCodec(NodeId encodingId) {
         String uri = namespaceTable.getUri(encodingId.getNamespaceIndex());
 
-        TypeDictionary dictionary = typeDictionaries.get(uri);
+        DataTypeDictionary dictionary = typeDictionaries.get(uri);
 
         return dictionary != null ? dictionary.getBinaryCodec(encodingId) : null;
     }
 
     @Nullable
     @Override
-    public OpcXmlTypeCodec<?> getXmlCodec(NodeId encodingId) {
+    public OpcXmlDataTypeCodec<?> getXmlCodec(NodeId encodingId) {
         String uri = namespaceTable.getUri(encodingId.getNamespaceIndex());
 
-        TypeDictionary dictionary = typeDictionaries.get(uri);
+        DataTypeDictionary dictionary = typeDictionaries.get(uri);
 
         return dictionary != null ? dictionary.getXmlCodec(encodingId) : null;
     }

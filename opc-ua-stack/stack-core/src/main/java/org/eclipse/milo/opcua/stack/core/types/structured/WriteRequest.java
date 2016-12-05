@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -72,14 +72,14 @@ public class WriteRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<WriteRequest> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<WriteRequest> {
         @Override
         public WriteRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
             WriteValue[] _nodesToWrite =
                 reader.readArray(
                     () -> (WriteValue) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "WriteValue", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "WriteValue", reader),
                     WriteValue.class
                 );
 
@@ -88,23 +88,23 @@ public class WriteRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, WriteRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
             writer.writeArray(
                 encodable._nodesToWrite,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "WriteValue", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "WriteValue", e, writer)
             );
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<WriteRequest> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<WriteRequest> {
         @Override
         public WriteRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
             WriteValue[] _nodesToWrite =
                 reader.readArray(
                     "NodesToWrite",
                     f -> (WriteValue) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "WriteValue", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "WriteValue", reader),
                     WriteValue.class
                 );
 
@@ -113,11 +113,11 @@ public class WriteRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, WriteRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
             writer.writeArray(
                 "NodesToWrite",
                 encodable._nodesToWrite,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "WriteValue", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "WriteValue", e, writer)
             );
         }
     }

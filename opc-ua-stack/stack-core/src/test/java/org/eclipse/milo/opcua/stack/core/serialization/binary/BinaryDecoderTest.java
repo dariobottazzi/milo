@@ -1,8 +1,8 @@
 package org.eclipse.milo.opcua.stack.core.serialization.binary;
 
 import org.eclipse.milo.opcua.stack.core.Identifiers;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.structured.Argument;
@@ -24,8 +24,8 @@ public class BinaryDecoderTest extends BinarySerializationFixture {
         );
 
         @SuppressWarnings("unchecked")
-        OpcBinaryTypeCodec<Argument> codec = (OpcBinaryTypeCodec<Argument>)
-            OpcUaTypeDictionary.getInstance().getBinaryCodec(Argument.BinaryEncodingId);
+        OpcBinaryDataTypeCodec<Argument> codec = (OpcBinaryDataTypeCodec<Argument>)
+            OpcUaDataTypeDictionary.getInstance().getBinaryCodec(Argument.BinaryEncodingId);
 
         codec.encode(SerializationContext.INTERNAL, argument, writer);
         Argument decoded = codec.decode(SerializationContext.INTERNAL, reader);

@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -79,10 +79,10 @@ public class TransferSubscriptionsRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<TransferSubscriptionsRequest> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<TransferSubscriptionsRequest> {
         @Override
         public TransferSubscriptionsRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
             UInteger[] _subscriptionIds = reader.readArray(reader::readUInt32, UInteger.class);
             Boolean _sendInitialValues = reader.readBoolean();
 
@@ -91,16 +91,16 @@ public class TransferSubscriptionsRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, TransferSubscriptionsRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
             writer.writeArray(encodable._subscriptionIds, writer::writeUInt32);
             writer.writeBoolean(encodable._sendInitialValues);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<TransferSubscriptionsRequest> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<TransferSubscriptionsRequest> {
         @Override
         public TransferSubscriptionsRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
             UInteger[] _subscriptionIds = reader.readArray("SubscriptionIds", reader::readUInt32, UInteger.class);
             Boolean _sendInitialValues = reader.readBoolean("SendInitialValues");
 
@@ -109,7 +109,7 @@ public class TransferSubscriptionsRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, TransferSubscriptionsRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
             writer.writeArray("SubscriptionIds", encodable._subscriptionIds, writer::writeUInt32);
             writer.writeBoolean("SendInitialValues", encodable._sendInitialValues);
         }

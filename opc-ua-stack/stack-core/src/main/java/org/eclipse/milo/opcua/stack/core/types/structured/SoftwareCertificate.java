@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
@@ -122,7 +122,7 @@ public class SoftwareCertificate implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<SoftwareCertificate> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<SoftwareCertificate> {
         @Override
         public SoftwareCertificate decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             String _productName = reader.readString();
@@ -137,7 +137,7 @@ public class SoftwareCertificate implements UaStructure {
             SupportedProfile[] _supportedProfiles =
                 reader.readArray(
                     () -> (SupportedProfile) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "SupportedProfile", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "SupportedProfile", reader),
                     SupportedProfile.class
                 );
 
@@ -157,12 +157,12 @@ public class SoftwareCertificate implements UaStructure {
             writer.writeDateTime(encodable._issueDate);
             writer.writeArray(
                 encodable._supportedProfiles,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "SupportedProfile", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "SupportedProfile", e, writer)
             );
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<SoftwareCertificate> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<SoftwareCertificate> {
         @Override
         public SoftwareCertificate decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             String _productName = reader.readString("ProductName");
@@ -178,7 +178,7 @@ public class SoftwareCertificate implements UaStructure {
                 reader.readArray(
                     "SupportedProfiles",
                     f -> (SupportedProfile) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "SupportedProfile", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "SupportedProfile", reader),
                     SupportedProfile.class
                 );
 
@@ -199,7 +199,7 @@ public class SoftwareCertificate implements UaStructure {
             writer.writeArray(
                 "SupportedProfiles",
                 encodable._supportedProfiles,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "SupportedProfile", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "SupportedProfile", e, writer)
             );
         }
     }

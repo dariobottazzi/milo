@@ -15,17 +15,17 @@ package org.eclipse.milo.opcua.stack.core.serialization.codec;
 
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
-public interface TypeDictionary {
+public interface DataTypeDictionary {
 
     /**
-     * @return the namespace URI this {@link TypeDictionary} belongs to.
+     * @return the namespace URI this {@link DataTypeDictionary} belongs to.
      */
     String getNamespaceUri();
 
     /**
      * Link the codec for an encoding id or type name.
      * <p>
-     * If a {@link OpcBinaryTypeCodec} is registered for either the encodingId or the typeName then it will be
+     * If a {@link OpcBinaryDataTypeCodec} is registered for either the encodingId or the typeName then it will be
      * registered to both after this call.
      *
      * @param encodingId the binary encoding id.
@@ -36,7 +36,7 @@ public interface TypeDictionary {
     /**
      * Link the codec for an encoding id or type name.
      * <p>
-     * If a {@link OpcXmlTypeCodec} is registered for either the encodingId or the typeName then it will be
+     * If a {@link OpcXmlDataTypeCodec} is registered for either the encodingId or the typeName then it will be
      * registered to both after this call.
      *
      * @param encodingId the XML encoding id.
@@ -44,20 +44,20 @@ public interface TypeDictionary {
      */
     void linkXmlCodec(NodeId encodingId, String typeName);
 
-    void registerBinaryCodec(OpcBinaryTypeCodec<?> codec, String typeName);
+    void registerBinaryCodec(OpcBinaryDataTypeCodec<?> codec, String typeName);
 
-    void registerBinaryCodec(OpcBinaryTypeCodec<?> codec, String typeName, NodeId binaryEncodingId);
+    void registerBinaryCodec(OpcBinaryDataTypeCodec<?> codec, String typeName, NodeId binaryEncodingId);
 
-    void registerXmlCodec(OpcXmlTypeCodec<?> codec, String typeName);
+    void registerXmlCodec(OpcXmlDataTypeCodec<?> codec, String typeName);
 
-    void registerXmlCodec(OpcXmlTypeCodec<?> codec, String typeName, NodeId xmlEncodingId);
+    void registerXmlCodec(OpcXmlDataTypeCodec<?> codec, String typeName, NodeId xmlEncodingId);
 
-    OpcBinaryTypeCodec<?> getBinaryCodec(NodeId encodingId);
+    OpcBinaryDataTypeCodec<?> getBinaryCodec(NodeId encodingId);
 
-    OpcBinaryTypeCodec<?> getBinaryCodec(String typeName);
+    OpcBinaryDataTypeCodec<?> getBinaryCodec(String typeName);
 
-    OpcXmlTypeCodec<?> getXmlCodec(NodeId encodingId);
+    OpcXmlDataTypeCodec<?> getXmlCodec(NodeId encodingId);
 
-    OpcXmlTypeCodec<?> getXmlCodec(String typeName);
+    OpcXmlDataTypeCodec<?> getXmlCodec(String typeName);
 
 }

@@ -18,7 +18,7 @@ import com.google.common.base.Objects;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.DataTypeEncoding;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.TypeManager;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.DataTypeManager;
 
 public final class ExtensionObject {
 
@@ -64,15 +64,15 @@ public final class ExtensionObject {
         return decode(DataTypeEncoding.OPC_UA);
     }
 
-    public <T> T decode(TypeManager typeManager) throws UaSerializationException {
-        return decode(DataTypeEncoding.OPC_UA, typeManager);
+    public <T> T decode(DataTypeManager dataTypeManager) throws UaSerializationException {
+        return decode(DataTypeEncoding.OPC_UA, dataTypeManager);
     }
 
     public <T> T decode(DataTypeEncoding encoding) throws UaSerializationException {
-        return decode(encoding, TypeManager.BUILTIN);
+        return decode(encoding, DataTypeManager.BUILTIN);
     }
 
-    public <T> T decode(DataTypeEncoding encoding, TypeManager typeManager) throws UaSerializationException {
+    public <T> T decode(DataTypeEncoding encoding, DataTypeManager dataTypeManager) throws UaSerializationException {
         if (decoded != null) return (T) decoded;
 
         switch (bodyType) {
@@ -81,7 +81,7 @@ public final class ExtensionObject {
                 if (bs == null || bs.isNull()) {
                     return null;
                 } else {
-                    decoded = encoding.decodeFromByteString((ByteString) encoded, encodingTypeId, typeManager);
+                    decoded = encoding.decodeFromByteString((ByteString) encoded, encodingTypeId, dataTypeManager);
                     return (T) decoded;
                 }
             }
@@ -91,7 +91,7 @@ public final class ExtensionObject {
                 if (e == null || e.isNull()) {
                     return null;
                 } else {
-                    decoded = encoding.decodeFromXmlElement((XmlElement) encoded, encodingTypeId, typeManager);
+                    decoded = encoding.decodeFromXmlElement((XmlElement) encoded, encodingTypeId, dataTypeManager);
                     return (T) decoded;
                 }
             }
@@ -106,9 +106,9 @@ public final class ExtensionObject {
     }
 
     public static ExtensionObject encode(UaStructure structure,
-                                         TypeManager typeManager) throws UaSerializationException {
+                                         DataTypeManager dataTypeManager) throws UaSerializationException {
 
-        return encodeAsByteString(structure, structure.getBinaryEncodingId(), typeManager);
+        return encodeAsByteString(structure, structure.getBinaryEncodingId(), dataTypeManager);
     }
 
     public static ExtensionObject encodeAsByteString(Object object,
@@ -119,24 +119,24 @@ public final class ExtensionObject {
 
     public static ExtensionObject encodeAsByteString(Object object,
                                                      NodeId encodingTypeId,
-                                                     TypeManager typeManager) throws UaSerializationException {
+                                                     DataTypeManager dataTypeManager) throws UaSerializationException {
 
-        return encodeAsByteString(object, encodingTypeId, DataTypeEncoding.OPC_UA, typeManager);
+        return encodeAsByteString(object, encodingTypeId, DataTypeEncoding.OPC_UA, dataTypeManager);
     }
 
     public static ExtensionObject encodeAsByteString(Object object,
                                                      NodeId encodingTypeId,
                                                      DataTypeEncoding context) throws UaSerializationException {
 
-        return encodeAsByteString(object, encodingTypeId, context, TypeManager.BUILTIN);
+        return encodeAsByteString(object, encodingTypeId, context, DataTypeManager.BUILTIN);
     }
 
     public static ExtensionObject encodeAsByteString(Object object,
                                                      NodeId encodingTypeId,
                                                      DataTypeEncoding context,
-                                                     TypeManager typeManager) throws UaSerializationException {
+                                                     DataTypeManager dataTypeManager) throws UaSerializationException {
 
-        ByteString encoded = context.encodeToByteString(object, encodingTypeId, typeManager);
+        ByteString encoded = context.encodeToByteString(object, encodingTypeId, dataTypeManager);
 
         return new ExtensionObject(encoded, encodingTypeId);
     }
@@ -149,24 +149,24 @@ public final class ExtensionObject {
 
     public static ExtensionObject encodeAsXmlElement(Object object,
                                                      NodeId encodingTypeId,
-                                                     TypeManager typeManager) throws UaSerializationException {
+                                                     DataTypeManager dataTypeManager) throws UaSerializationException {
 
-        return encodeAsXmlElement(object, encodingTypeId, DataTypeEncoding.OPC_UA, typeManager);
+        return encodeAsXmlElement(object, encodingTypeId, DataTypeEncoding.OPC_UA, dataTypeManager);
     }
 
     public static ExtensionObject encodeAsXmlElement(Object object,
                                                      NodeId encodingTypeId,
                                                      DataTypeEncoding context) throws UaSerializationException {
 
-        return encodeAsXmlElement(object, encodingTypeId, context, TypeManager.BUILTIN);
+        return encodeAsXmlElement(object, encodingTypeId, context, DataTypeManager.BUILTIN);
     }
 
     public static ExtensionObject encodeAsXmlElement(Object object,
                                                      NodeId encodingTypeId,
                                                      DataTypeEncoding context,
-                                                     TypeManager typeManager) throws UaSerializationException {
+                                                     DataTypeManager dataTypeManager) throws UaSerializationException {
 
-        XmlElement encoded = context.encodeToXmlElement(object, encodingTypeId, typeManager);
+        XmlElement encoded = context.encodeToXmlElement(object, encodingTypeId, dataTypeManager);
 
         return new ExtensionObject(encoded, encodingTypeId);
     }

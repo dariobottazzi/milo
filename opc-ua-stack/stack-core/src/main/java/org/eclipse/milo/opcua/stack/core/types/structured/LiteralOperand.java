@@ -16,12 +16,12 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -64,7 +64,7 @@ public class LiteralOperand extends FilterOperand {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<LiteralOperand> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<LiteralOperand> {
         @Override
         public LiteralOperand decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             Variant _value = reader.readVariant();
@@ -78,7 +78,7 @@ public class LiteralOperand extends FilterOperand {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<LiteralOperand> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<LiteralOperand> {
         @Override
         public LiteralOperand decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             Variant _value = reader.readVariant("Value");

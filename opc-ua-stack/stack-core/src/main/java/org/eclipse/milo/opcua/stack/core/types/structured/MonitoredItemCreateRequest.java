@@ -16,14 +16,14 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -76,39 +76,39 @@ public class MonitoredItemCreateRequest implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<MonitoredItemCreateRequest> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<MonitoredItemCreateRequest> {
         @Override
         public MonitoredItemCreateRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            ReadValueId _itemToMonitor = (ReadValueId) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ReadValueId", reader);
+            ReadValueId _itemToMonitor = (ReadValueId) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReadValueId", reader);
             MonitoringMode _monitoringMode = MonitoringMode.from(reader.readInt32());
-            MonitoringParameters _requestedParameters = (MonitoringParameters) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoringParameters", reader);
+            MonitoringParameters _requestedParameters = (MonitoringParameters) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoringParameters", reader);
 
             return new MonitoredItemCreateRequest(_itemToMonitor, _monitoringMode, _requestedParameters);
         }
 
         @Override
         public void encode(SerializationContext context, MonitoredItemCreateRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ReadValueId", encodable._itemToMonitor, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReadValueId", encodable._itemToMonitor, writer);
             writer.writeInt32(encodable._monitoringMode != null ? encodable._monitoringMode.getValue() : 0);
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoringParameters", encodable._requestedParameters, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoringParameters", encodable._requestedParameters, writer);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<MonitoredItemCreateRequest> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<MonitoredItemCreateRequest> {
         @Override
         public MonitoredItemCreateRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            ReadValueId _itemToMonitor = (ReadValueId) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ReadValueId", reader);
+            ReadValueId _itemToMonitor = (ReadValueId) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReadValueId", reader);
             MonitoringMode _monitoringMode = MonitoringMode.from(reader.readInt32("MonitoringMode"));
-            MonitoringParameters _requestedParameters = (MonitoringParameters) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoringParameters", reader);
+            MonitoringParameters _requestedParameters = (MonitoringParameters) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoringParameters", reader);
 
             return new MonitoredItemCreateRequest(_itemToMonitor, _monitoringMode, _requestedParameters);
         }
 
         @Override
         public void encode(SerializationContext context, MonitoredItemCreateRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ReadValueId", encodable._itemToMonitor, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReadValueId", encodable._itemToMonitor, writer);
             writer.writeInt32("MonitoringMode", encodable._monitoringMode != null ? encodable._monitoringMode.getValue() : 0);
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoringParameters", encodable._requestedParameters, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoringParameters", encodable._requestedParameters, writer);
         }
     }
 

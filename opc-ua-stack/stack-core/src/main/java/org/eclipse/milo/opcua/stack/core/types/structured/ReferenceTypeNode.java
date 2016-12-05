@@ -18,13 +18,13 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
@@ -96,7 +96,7 @@ public class ReferenceTypeNode extends TypeNode {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<ReferenceTypeNode> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<ReferenceTypeNode> {
         @Override
         public ReferenceTypeNode decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             NodeId _nodeId = reader.readNodeId();
@@ -109,7 +109,7 @@ public class ReferenceTypeNode extends TypeNode {
             ReferenceNode[] _references =
                 reader.readArray(
                     () -> (ReferenceNode) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceNode", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceNode", reader),
                     ReferenceNode.class
                 );
             Boolean _isAbstract = reader.readBoolean();
@@ -130,7 +130,7 @@ public class ReferenceTypeNode extends TypeNode {
             writer.writeUInt32(encodable._userWriteMask);
             writer.writeArray(
                 encodable._references,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceNode", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceNode", e, writer)
             );
             writer.writeBoolean(encodable._isAbstract);
             writer.writeBoolean(encodable._symmetric);
@@ -138,7 +138,7 @@ public class ReferenceTypeNode extends TypeNode {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<ReferenceTypeNode> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<ReferenceTypeNode> {
         @Override
         public ReferenceTypeNode decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             NodeId _nodeId = reader.readNodeId("NodeId");
@@ -152,7 +152,7 @@ public class ReferenceTypeNode extends TypeNode {
                 reader.readArray(
                     "References",
                     f -> (ReferenceNode) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceNode", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceNode", reader),
                     ReferenceNode.class
                 );
             Boolean _isAbstract = reader.readBoolean("IsAbstract");
@@ -174,7 +174,7 @@ public class ReferenceTypeNode extends TypeNode {
             writer.writeArray(
                 "References",
                 encodable._references,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceNode", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceNode", e, writer)
             );
             writer.writeBoolean("IsAbstract", encodable._isAbstract);
             writer.writeBoolean("Symmetric", encodable._symmetric);

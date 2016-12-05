@@ -17,12 +17,12 @@ import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -68,7 +68,7 @@ public class SemanticChangeStructureDataType implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<SemanticChangeStructureDataType> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<SemanticChangeStructureDataType> {
         @Override
         public SemanticChangeStructureDataType decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             NodeId _affected = reader.readNodeId();
@@ -84,7 +84,7 @@ public class SemanticChangeStructureDataType implements UaStructure {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<SemanticChangeStructureDataType> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<SemanticChangeStructureDataType> {
         @Override
         public SemanticChangeStructureDataType decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             NodeId _affected = reader.readNodeId("Affected");

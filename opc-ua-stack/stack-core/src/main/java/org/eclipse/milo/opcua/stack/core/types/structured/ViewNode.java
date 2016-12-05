@@ -16,13 +16,13 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
@@ -83,7 +83,7 @@ public class ViewNode extends InstanceNode {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<ViewNode> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<ViewNode> {
         @Override
         public ViewNode decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             NodeId _nodeId = reader.readNodeId();
@@ -96,7 +96,7 @@ public class ViewNode extends InstanceNode {
             ReferenceNode[] _references =
                 reader.readArray(
                     () -> (ReferenceNode) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceNode", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceNode", reader),
                     ReferenceNode.class
                 );
             Boolean _containsNoLoops = reader.readBoolean();
@@ -116,14 +116,14 @@ public class ViewNode extends InstanceNode {
             writer.writeUInt32(encodable._userWriteMask);
             writer.writeArray(
                 encodable._references,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceNode", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceNode", e, writer)
             );
             writer.writeBoolean(encodable._containsNoLoops);
             writer.writeByte(encodable._eventNotifier);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<ViewNode> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<ViewNode> {
         @Override
         public ViewNode decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             NodeId _nodeId = reader.readNodeId("NodeId");
@@ -137,7 +137,7 @@ public class ViewNode extends InstanceNode {
                 reader.readArray(
                     "References",
                     f -> (ReferenceNode) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceNode", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceNode", reader),
                     ReferenceNode.class
                 );
             Boolean _containsNoLoops = reader.readBoolean("ContainsNoLoops");
@@ -158,7 +158,7 @@ public class ViewNode extends InstanceNode {
             writer.writeArray(
                 "References",
                 encodable._references,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceNode", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceNode", e, writer)
             );
             writer.writeBoolean("ContainsNoLoops", encodable._containsNoLoops);
             writer.writeByte("EventNotifier", encodable._eventNotifier);

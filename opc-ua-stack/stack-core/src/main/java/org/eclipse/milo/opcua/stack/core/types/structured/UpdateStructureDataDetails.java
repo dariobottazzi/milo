@@ -18,12 +18,12 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
@@ -75,7 +75,7 @@ public class UpdateStructureDataDetails extends HistoryUpdateDetails {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<UpdateStructureDataDetails> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<UpdateStructureDataDetails> {
         @Override
         public UpdateStructureDataDetails decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             NodeId _nodeId = reader.readNodeId();
@@ -93,7 +93,7 @@ public class UpdateStructureDataDetails extends HistoryUpdateDetails {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<UpdateStructureDataDetails> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<UpdateStructureDataDetails> {
         @Override
         public UpdateStructureDataDetails decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             NodeId _nodeId = reader.readNodeId("NodeId");

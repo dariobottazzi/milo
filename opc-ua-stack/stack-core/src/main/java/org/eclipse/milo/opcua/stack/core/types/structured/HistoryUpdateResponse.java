@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DiagnosticInfo;
@@ -80,14 +80,14 @@ public class HistoryUpdateResponse implements UaResponseMessage {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<HistoryUpdateResponse> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<HistoryUpdateResponse> {
         @Override
         public HistoryUpdateResponse decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
+            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
             HistoryUpdateResult[] _results =
                 reader.readArray(
                     () -> (HistoryUpdateResult) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "HistoryUpdateResult", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "HistoryUpdateResult", reader),
                     HistoryUpdateResult.class
                 );
             DiagnosticInfo[] _diagnosticInfos = reader.readArray(reader::readDiagnosticInfo, DiagnosticInfo.class);
@@ -97,24 +97,24 @@ public class HistoryUpdateResponse implements UaResponseMessage {
 
         @Override
         public void encode(SerializationContext context, HistoryUpdateResponse encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
             writer.writeArray(
                 encodable._results,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "HistoryUpdateResult", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "HistoryUpdateResult", e, writer)
             );
             writer.writeArray(encodable._diagnosticInfos, writer::writeDiagnosticInfo);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<HistoryUpdateResponse> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<HistoryUpdateResponse> {
         @Override
         public HistoryUpdateResponse decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
+            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
             HistoryUpdateResult[] _results =
                 reader.readArray(
                     "Results",
                     f -> (HistoryUpdateResult) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "HistoryUpdateResult", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "HistoryUpdateResult", reader),
                     HistoryUpdateResult.class
                 );
             DiagnosticInfo[] _diagnosticInfos = reader.readArray("DiagnosticInfos", reader::readDiagnosticInfo, DiagnosticInfo.class);
@@ -124,11 +124,11 @@ public class HistoryUpdateResponse implements UaResponseMessage {
 
         @Override
         public void encode(SerializationContext context, HistoryUpdateResponse encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
             writer.writeArray(
                 "Results",
                 encodable._results,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "HistoryUpdateResult", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "HistoryUpdateResult", e, writer)
             );
             writer.writeArray("DiagnosticInfos", encodable._diagnosticInfos, writer::writeDiagnosticInfo);
         }

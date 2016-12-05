@@ -18,13 +18,13 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DiagnosticInfo;
@@ -75,13 +75,13 @@ public class DataChangeNotification extends NotificationData {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<DataChangeNotification> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<DataChangeNotification> {
         @Override
         public DataChangeNotification decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             MonitoredItemNotification[] _monitoredItems =
                 reader.readArray(
                     () -> (MonitoredItemNotification) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "MonitoredItemNotification", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoredItemNotification", reader),
                     MonitoredItemNotification.class
                 );
             DiagnosticInfo[] _diagnosticInfos = reader.readArray(reader::readDiagnosticInfo, DiagnosticInfo.class);
@@ -93,20 +93,20 @@ public class DataChangeNotification extends NotificationData {
         public void encode(SerializationContext context, DataChangeNotification encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
             writer.writeArray(
                 encodable._monitoredItems,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoredItemNotification", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoredItemNotification", e, writer)
             );
             writer.writeArray(encodable._diagnosticInfos, writer::writeDiagnosticInfo);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<DataChangeNotification> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<DataChangeNotification> {
         @Override
         public DataChangeNotification decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             MonitoredItemNotification[] _monitoredItems =
                 reader.readArray(
                     "MonitoredItems",
                     f -> (MonitoredItemNotification) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "MonitoredItemNotification", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoredItemNotification", reader),
                     MonitoredItemNotification.class
                 );
             DiagnosticInfo[] _diagnosticInfos = reader.readArray("DiagnosticInfos", reader::readDiagnosticInfo, DiagnosticInfo.class);
@@ -119,7 +119,7 @@ public class DataChangeNotification extends NotificationData {
             writer.writeArray(
                 "MonitoredItems",
                 encodable._monitoredItems,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoredItemNotification", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoredItemNotification", e, writer)
             );
             writer.writeArray("DiagnosticInfos", encodable._diagnosticInfos, writer::writeDiagnosticInfo);
         }

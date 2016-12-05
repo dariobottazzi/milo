@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -72,10 +72,10 @@ public class RegisterNodesResponse implements UaResponseMessage {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<RegisterNodesResponse> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<RegisterNodesResponse> {
         @Override
         public RegisterNodesResponse decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
+            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
             NodeId[] _registeredNodeIds = reader.readArray(reader::readNodeId, NodeId.class);
 
             return new RegisterNodesResponse(_responseHeader, _registeredNodeIds);
@@ -83,15 +83,15 @@ public class RegisterNodesResponse implements UaResponseMessage {
 
         @Override
         public void encode(SerializationContext context, RegisterNodesResponse encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
             writer.writeArray(encodable._registeredNodeIds, writer::writeNodeId);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<RegisterNodesResponse> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<RegisterNodesResponse> {
         @Override
         public RegisterNodesResponse decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
+            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
             NodeId[] _registeredNodeIds = reader.readArray("RegisteredNodeIds", reader::readNodeId, NodeId.class);
 
             return new RegisterNodesResponse(_responseHeader, _registeredNodeIds);
@@ -99,7 +99,7 @@ public class RegisterNodesResponse implements UaResponseMessage {
 
         @Override
         public void encode(SerializationContext context, RegisterNodesResponse encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
             writer.writeArray("RegisteredNodeIds", encodable._registeredNodeIds, writer::writeNodeId);
         }
     }

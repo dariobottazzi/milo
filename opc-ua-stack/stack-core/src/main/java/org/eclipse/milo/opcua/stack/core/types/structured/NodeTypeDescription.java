@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ExpandedNodeId;
@@ -79,7 +79,7 @@ public class NodeTypeDescription implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<NodeTypeDescription> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<NodeTypeDescription> {
         @Override
         public NodeTypeDescription decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             ExpandedNodeId _typeDefinitionNode = reader.readExpandedNodeId();
@@ -87,7 +87,7 @@ public class NodeTypeDescription implements UaStructure {
             QueryDataDescription[] _dataToReturn =
                 reader.readArray(
                     () -> (QueryDataDescription) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "QueryDataDescription", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "QueryDataDescription", reader),
                     QueryDataDescription.class
                 );
 
@@ -100,12 +100,12 @@ public class NodeTypeDescription implements UaStructure {
             writer.writeBoolean(encodable._includeSubTypes);
             writer.writeArray(
                 encodable._dataToReturn,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "QueryDataDescription", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "QueryDataDescription", e, writer)
             );
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<NodeTypeDescription> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<NodeTypeDescription> {
         @Override
         public NodeTypeDescription decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             ExpandedNodeId _typeDefinitionNode = reader.readExpandedNodeId("TypeDefinitionNode");
@@ -114,7 +114,7 @@ public class NodeTypeDescription implements UaStructure {
                 reader.readArray(
                     "DataToReturn",
                     f -> (QueryDataDescription) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "QueryDataDescription", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "QueryDataDescription", reader),
                     QueryDataDescription.class
                 );
 
@@ -128,7 +128,7 @@ public class NodeTypeDescription implements UaStructure {
             writer.writeArray(
                 "DataToReturn",
                 encodable._dataToReturn,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "QueryDataDescription", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "QueryDataDescription", e, writer)
             );
         }
     }

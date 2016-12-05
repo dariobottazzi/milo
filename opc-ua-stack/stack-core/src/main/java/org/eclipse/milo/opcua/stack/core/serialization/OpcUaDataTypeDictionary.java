@@ -17,13 +17,13 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.google.common.collect.Maps;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.TypeDictionary;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.TypeDictionaryImpl;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.DataTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.DataTypeDictionaryImpl;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
-public class OpcUaTypeDictionary {
+public class OpcUaDataTypeDictionary {
 
     public static final String NAMESPACE_URI = "http://opcfoundation.org/UA/";
 
@@ -32,29 +32,33 @@ public class OpcUaTypeDictionary {
      *
      * @return the singleton instance of the OPC UA namespace type dictionary.
      */
-    public static TypeDictionary getInstance() {
+    public static DataTypeDictionary getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
     private static class InstanceHolder {
-        private static final TypeDictionary INSTANCE = getOrInitialize();
+        private static final DataTypeDictionary INSTANCE = getOrInitialize();
     }
 
-    private static final ConcurrentMap<NodeId, OpcBinaryTypeCodec<?>> BINARY_CODECS_BY_ID = Maps.newConcurrentMap();
-    private static final ConcurrentMap<String, OpcBinaryTypeCodec<?>> BINARY_CODECS_BY_NAME = Maps.newConcurrentMap();
+    private static final ConcurrentMap<NodeId, OpcBinaryDataTypeCodec<?>> BINARY_CODECS_BY_ID
+        = Maps.newConcurrentMap();
+    private static final ConcurrentMap<String, OpcBinaryDataTypeCodec<?>> BINARY_CODECS_BY_NAME
+        = Maps.newConcurrentMap();
 
-    private static final ConcurrentMap<NodeId, OpcXmlTypeCodec<?>> XML_CODECS_BY_ID = Maps.newConcurrentMap();
-    private static final ConcurrentMap<String, OpcXmlTypeCodec<?>> XML_CODECS_BY_NAME = Maps.newConcurrentMap();
+    private static final ConcurrentMap<NodeId, OpcXmlDataTypeCodec<?>> XML_CODECS_BY_ID
+        = Maps.newConcurrentMap();
+    private static final ConcurrentMap<String, OpcXmlDataTypeCodec<?>> XML_CODECS_BY_NAME
+        = Maps.newConcurrentMap();
 
-    private static final AtomicReference<TypeDictionary> INSTANCE_REF = new AtomicReference<>();
+    private static final AtomicReference<DataTypeDictionary> INSTANCE_REF = new AtomicReference<>();
 
-    private static synchronized TypeDictionary getOrInitialize() {
-        TypeDictionary instance = INSTANCE_REF.get();
+    private static synchronized DataTypeDictionary getOrInitialize() {
+        DataTypeDictionary instance = INSTANCE_REF.get();
 
         if (instance == null) {
-            OpcUaTypeDictionaryInitializer.initialize();
+            OpcUaDataTypeDictionaryInitializer.initialize();
 
-            instance = new TypeDictionaryImpl(
+            instance = new DataTypeDictionaryImpl(
                 NAMESPACE_URI,
                 BINARY_CODECS_BY_ID,
                 BINARY_CODECS_BY_NAME,
@@ -75,23 +79,23 @@ public class OpcUaTypeDictionary {
     public static synchronized <T> void register(
         String typeName,
         NodeId binaryEncodingId,
-        OpcBinaryTypeCodec<T> binaryTypeCodec,
+        OpcBinaryDataTypeCodec<T> binaryTypeCodec,
         NodeId xmlEncodingId,
-        OpcXmlTypeCodec<T> xmlTypeCodec) {
+        OpcXmlDataTypeCodec<T> xmlTypeCodec) {
 
         registerBinaryCodec(binaryTypeCodec, binaryEncodingId, typeName);
         registerXmlCodec(xmlTypeCodec, xmlEncodingId, typeName);
     }
 
     public static synchronized <T> void registerBinaryCodec(
-        OpcBinaryTypeCodec<T> codec, NodeId encodingId, String typeName) {
+        OpcBinaryDataTypeCodec<T> codec, NodeId encodingId, String typeName) {
 
         BINARY_CODECS_BY_ID.put(encodingId, codec);
         BINARY_CODECS_BY_NAME.put(typeName, codec);
     }
 
     public static synchronized <T> void registerXmlCodec(
-        OpcXmlTypeCodec<T> codec, NodeId encodingId, String typeName) {
+        OpcXmlDataTypeCodec<T> codec, NodeId encodingId, String typeName) {
 
         XML_CODECS_BY_ID.put(encodingId, codec);
         XML_CODECS_BY_NAME.put(typeName, codec);

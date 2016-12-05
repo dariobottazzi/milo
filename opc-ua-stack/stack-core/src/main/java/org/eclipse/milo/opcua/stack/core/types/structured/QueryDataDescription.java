@@ -16,14 +16,14 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -76,10 +76,10 @@ public class QueryDataDescription implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<QueryDataDescription> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<QueryDataDescription> {
         @Override
         public QueryDataDescription decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            RelativePath _relativePath = (RelativePath) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePath", reader);
+            RelativePath _relativePath = (RelativePath) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePath", reader);
             UInteger _attributeId = reader.readUInt32();
             String _indexRange = reader.readString();
 
@@ -88,16 +88,16 @@ public class QueryDataDescription implements UaStructure {
 
         @Override
         public void encode(SerializationContext context, QueryDataDescription encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePath", encodable._relativePath, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePath", encodable._relativePath, writer);
             writer.writeUInt32(encodable._attributeId);
             writer.writeString(encodable._indexRange);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<QueryDataDescription> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<QueryDataDescription> {
         @Override
         public QueryDataDescription decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            RelativePath _relativePath = (RelativePath) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePath", reader);
+            RelativePath _relativePath = (RelativePath) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePath", reader);
             UInteger _attributeId = reader.readUInt32("AttributeId");
             String _indexRange = reader.readString("IndexRange");
 
@@ -106,7 +106,7 @@ public class QueryDataDescription implements UaStructure {
 
         @Override
         public void encode(SerializationContext context, QueryDataDescription encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePath", encodable._relativePath, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePath", encodable._relativePath, writer);
             writer.writeUInt32("AttributeId", encodable._attributeId);
             writer.writeString("IndexRange", encodable._indexRange);
         }

@@ -18,16 +18,16 @@ import java.util.concurrent.ConcurrentMap;
 import com.google.common.collect.Maps;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
-public class TypeDictionaryImpl implements TypeDictionary {
+public class DataTypeDictionaryImpl implements DataTypeDictionary {
 
     private final String namespaceUri;
 
-    private final ConcurrentMap<NodeId, OpcBinaryTypeCodec<?>> binaryCodecsById;
-    private final ConcurrentMap<String, OpcBinaryTypeCodec<?>> binaryCodecsByName;
-    private final ConcurrentMap<NodeId, OpcXmlTypeCodec<?>> xmlCodecsById;
-    private final ConcurrentMap<String, OpcXmlTypeCodec<?>> xmlCodecsByName;
+    private final ConcurrentMap<NodeId, OpcBinaryDataTypeCodec<?>> binaryCodecsById;
+    private final ConcurrentMap<String, OpcBinaryDataTypeCodec<?>> binaryCodecsByName;
+    private final ConcurrentMap<NodeId, OpcXmlDataTypeCodec<?>> xmlCodecsById;
+    private final ConcurrentMap<String, OpcXmlDataTypeCodec<?>> xmlCodecsByName;
 
-    public TypeDictionaryImpl(String namespaceUri) {
+    public DataTypeDictionaryImpl(String namespaceUri) {
         this(namespaceUri,
             Maps.newConcurrentMap(),
             Maps.newConcurrentMap(),
@@ -35,12 +35,12 @@ public class TypeDictionaryImpl implements TypeDictionary {
             Maps.newConcurrentMap());
     }
 
-    public TypeDictionaryImpl(
+    public DataTypeDictionaryImpl(
         String namespaceUri,
-        ConcurrentMap<NodeId, OpcBinaryTypeCodec<?>> binaryCodecsById,
-        ConcurrentMap<String, OpcBinaryTypeCodec<?>> binaryCodecsByName,
-        ConcurrentMap<NodeId, OpcXmlTypeCodec<?>> xmlCodecsById,
-        ConcurrentMap<String, OpcXmlTypeCodec<?>> xmlCodecsByName) {
+        ConcurrentMap<NodeId, OpcBinaryDataTypeCodec<?>> binaryCodecsById,
+        ConcurrentMap<String, OpcBinaryDataTypeCodec<?>> binaryCodecsByName,
+        ConcurrentMap<NodeId, OpcXmlDataTypeCodec<?>> xmlCodecsById,
+        ConcurrentMap<String, OpcXmlDataTypeCodec<?>> xmlCodecsByName) {
 
         this.namespaceUri = namespaceUri;
         this.binaryCodecsById = binaryCodecsById;
@@ -56,7 +56,7 @@ public class TypeDictionaryImpl implements TypeDictionary {
 
     @Override
     public void linkBinaryCodec(NodeId encodingId, String typeName) {
-        OpcBinaryTypeCodec<?> codec = binaryCodecsById.get(encodingId);
+        OpcBinaryDataTypeCodec<?> codec = binaryCodecsById.get(encodingId);
         if (codec != null) {
             binaryCodecsByName.putIfAbsent(typeName, codec);
         } else {
@@ -69,7 +69,7 @@ public class TypeDictionaryImpl implements TypeDictionary {
 
     @Override
     public void linkXmlCodec(NodeId encodingId, String typeName) {
-        OpcXmlTypeCodec<?> codec = xmlCodecsById.get(encodingId);
+        OpcXmlDataTypeCodec<?> codec = xmlCodecsById.get(encodingId);
         if (codec != null) {
             xmlCodecsByName.putIfAbsent(typeName, codec);
         } else {
@@ -81,44 +81,44 @@ public class TypeDictionaryImpl implements TypeDictionary {
     }
 
     @Override
-    public void registerBinaryCodec(OpcBinaryTypeCodec<?> codec, String typeName) {
+    public void registerBinaryCodec(OpcBinaryDataTypeCodec<?> codec, String typeName) {
         binaryCodecsByName.put(typeName, codec);
     }
 
     @Override
-    public void registerBinaryCodec(OpcBinaryTypeCodec<?> codec, String typeName, NodeId binaryEncodingId) {
+    public void registerBinaryCodec(OpcBinaryDataTypeCodec<?> codec, String typeName, NodeId binaryEncodingId) {
         binaryCodecsByName.put(typeName, codec);
         binaryCodecsById.put(binaryEncodingId, codec);
     }
 
     @Override
-    public void registerXmlCodec(OpcXmlTypeCodec<?> codec, String typeName) {
+    public void registerXmlCodec(OpcXmlDataTypeCodec<?> codec, String typeName) {
         xmlCodecsByName.put(typeName, codec);
     }
 
     @Override
-    public void registerXmlCodec(OpcXmlTypeCodec<?> codec, String typeName, NodeId xmlEncodingId) {
+    public void registerXmlCodec(OpcXmlDataTypeCodec<?> codec, String typeName, NodeId xmlEncodingId) {
         xmlCodecsByName.put(typeName, codec);
         xmlCodecsById.put(xmlEncodingId, codec);
     }
 
     @Override
-    public OpcBinaryTypeCodec<?> getBinaryCodec(NodeId encodingId) {
+    public OpcBinaryDataTypeCodec<?> getBinaryCodec(NodeId encodingId) {
         return binaryCodecsById.get(encodingId);
     }
 
     @Override
-    public OpcBinaryTypeCodec<?> getBinaryCodec(String typeName) {
+    public OpcBinaryDataTypeCodec<?> getBinaryCodec(String typeName) {
         return binaryCodecsByName.get(typeName);
     }
 
     @Override
-    public OpcXmlTypeCodec<?> getXmlCodec(NodeId encodingId) {
+    public OpcXmlDataTypeCodec<?> getXmlCodec(NodeId encodingId) {
         return xmlCodecsById.get(encodingId);
     }
 
     @Override
-    public OpcXmlTypeCodec<?> getXmlCodec(String typeName) {
+    public OpcXmlDataTypeCodec<?> getXmlCodec(String typeName) {
         return xmlCodecsByName.get(typeName);
     }
 

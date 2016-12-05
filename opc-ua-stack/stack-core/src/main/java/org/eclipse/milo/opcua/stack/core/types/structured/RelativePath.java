@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -66,13 +66,13 @@ public class RelativePath implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<RelativePath> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<RelativePath> {
         @Override
         public RelativePath decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             RelativePathElement[] _elements =
                 reader.readArray(
                     () -> (RelativePathElement) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "RelativePathElement", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePathElement", reader),
                     RelativePathElement.class
                 );
 
@@ -83,19 +83,19 @@ public class RelativePath implements UaStructure {
         public void encode(SerializationContext context, RelativePath encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
             writer.writeArray(
                 encodable._elements,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePathElement", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePathElement", e, writer)
             );
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<RelativePath> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<RelativePath> {
         @Override
         public RelativePath decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             RelativePathElement[] _elements =
                 reader.readArray(
                     "Elements",
                     f -> (RelativePathElement) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "RelativePathElement", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePathElement", reader),
                     RelativePathElement.class
                 );
 
@@ -107,7 +107,7 @@ public class RelativePath implements UaStructure {
             writer.writeArray(
                 "Elements",
                 encodable._elements,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePathElement", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePathElement", e, writer)
             );
         }
     }

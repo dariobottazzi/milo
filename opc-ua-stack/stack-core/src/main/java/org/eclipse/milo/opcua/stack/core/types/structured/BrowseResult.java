@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
@@ -80,7 +80,7 @@ public class BrowseResult implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<BrowseResult> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<BrowseResult> {
         @Override
         public BrowseResult decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             StatusCode _statusCode = reader.readStatusCode();
@@ -88,7 +88,7 @@ public class BrowseResult implements UaStructure {
             ReferenceDescription[] _references =
                 reader.readArray(
                     () -> (ReferenceDescription) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceDescription", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceDescription", reader),
                     ReferenceDescription.class
                 );
 
@@ -101,12 +101,12 @@ public class BrowseResult implements UaStructure {
             writer.writeByteString(encodable._continuationPoint);
             writer.writeArray(
                 encodable._references,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceDescription", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceDescription", e, writer)
             );
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<BrowseResult> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<BrowseResult> {
         @Override
         public BrowseResult decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             StatusCode _statusCode = reader.readStatusCode("StatusCode");
@@ -115,7 +115,7 @@ public class BrowseResult implements UaStructure {
                 reader.readArray(
                     "References",
                     f -> (ReferenceDescription) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceDescription", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceDescription", reader),
                     ReferenceDescription.class
                 );
 
@@ -129,7 +129,7 @@ public class BrowseResult implements UaStructure {
             writer.writeArray(
                 "References",
                 encodable._references,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ReferenceDescription", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ReferenceDescription", e, writer)
             );
         }
     }

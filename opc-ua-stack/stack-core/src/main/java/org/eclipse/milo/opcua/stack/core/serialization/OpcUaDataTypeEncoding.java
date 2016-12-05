@@ -21,13 +21,13 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import org.eclipse.milo.opcua.stack.core.StatusCodes;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.DataTypeManager;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.TypeManager;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.XmlElement;
@@ -40,18 +40,18 @@ public class OpcUaDataTypeEncoding implements DataTypeEncoding {
     public ByteString encodeToByteString(
         Object object,
         NodeId encodingTypeId,
-        TypeManager typeManager) throws UaSerializationException {
+        DataTypeManager dataTypeManager) throws UaSerializationException {
 
         try {
             @SuppressWarnings("unchecked")
-            OpcBinaryTypeCodec<Object> codec =
-                (OpcBinaryTypeCodec<Object>) typeManager.getBinaryCodec(encodingTypeId);
+            OpcBinaryDataTypeCodec<Object> codec =
+                (OpcBinaryDataTypeCodec<Object>) dataTypeManager.getBinaryCodec(encodingTypeId);
 
             ByteBuf buffer = allocator.buffer().order(ByteOrder.LITTLE_ENDIAN);
 
             OpcBinaryStreamWriter writer = new OpcBinaryStreamWriter(buffer);
 
-            codec.encode(() -> typeManager, object, writer);
+            codec.encode(() -> dataTypeManager, object, writer);
 
             byte[] bs = new byte[buffer.readableBytes()];
             buffer.readBytes(bs);
@@ -67,18 +67,18 @@ public class OpcUaDataTypeEncoding implements DataTypeEncoding {
     public XmlElement encodeToXmlElement(
         Object object,
         NodeId encodingTypeId,
-        TypeManager typeManager) throws UaSerializationException {
+        DataTypeManager dataTypeManager) throws UaSerializationException {
 
         try {
             @SuppressWarnings("unchecked")
-            OpcXmlTypeCodec<Object> codec =
-                (OpcXmlTypeCodec<Object>) typeManager.getXmlCodec(encodingTypeId);
+            OpcXmlDataTypeCodec<Object> codec =
+                (OpcXmlDataTypeCodec<Object>) dataTypeManager.getXmlCodec(encodingTypeId);
 
             StringWriter stringWriter = new StringWriter();
 
             OpcXmlStreamWriter writer = null; // TODO
 
-            codec.encode(() -> typeManager, object, writer);
+            codec.encode(() -> dataTypeManager, object, writer);
 
             return new XmlElement(stringWriter.toString());
         } catch (ClassCastException e) {
@@ -90,12 +90,12 @@ public class OpcUaDataTypeEncoding implements DataTypeEncoding {
     public Object decodeFromByteString(
         ByteString encoded,
         NodeId encodingTypeId,
-        TypeManager typeManager) throws UaSerializationException {
+        DataTypeManager dataTypeManager) throws UaSerializationException {
 
         try {
             @SuppressWarnings("unchecked")
-            OpcBinaryTypeCodec<Object> codec =
-                (OpcBinaryTypeCodec<Object>) typeManager.getBinaryCodec(encodingTypeId);
+            OpcBinaryDataTypeCodec<Object> codec =
+                (OpcBinaryDataTypeCodec<Object>) dataTypeManager.getBinaryCodec(encodingTypeId);
 
             byte[] bs = encoded.bytes();
             if (bs == null) bs = new byte[0];
@@ -106,7 +106,7 @@ public class OpcUaDataTypeEncoding implements DataTypeEncoding {
 
             OpcBinaryStreamReader reader = new OpcBinaryStreamReader(buffer);
 
-            return codec.decode(() -> typeManager, reader);
+            return codec.decode(() -> dataTypeManager, reader);
         } catch (ClassCastException e) {
             throw new UaSerializationException(StatusCodes.Bad_DecodingError, e);
         }
@@ -116,16 +116,16 @@ public class OpcUaDataTypeEncoding implements DataTypeEncoding {
     public Object decodeFromXmlElement(
         XmlElement encoded,
         NodeId encodingTypeId,
-        TypeManager typeManager) throws UaSerializationException {
+        DataTypeManager dataTypeManager) throws UaSerializationException {
 
         try {
             @SuppressWarnings("unchecked")
-            OpcXmlTypeCodec<Object> codec =
-                (OpcXmlTypeCodec<Object>) typeManager.getXmlCodec(encodingTypeId);
+            OpcXmlDataTypeCodec<Object> codec =
+                (OpcXmlDataTypeCodec<Object>) dataTypeManager.getXmlCodec(encodingTypeId);
 
             OpcXmlStreamReader reader = null; // TODO
 
-            return codec.decode(() -> typeManager, reader);
+            return codec.decode(() -> dataTypeManager, reader);
         } catch (ClassCastException e) {
             throw new UaSerializationException(StatusCodes.Bad_DecodingError, e);
         }

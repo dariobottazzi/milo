@@ -18,12 +18,12 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DateTime;
@@ -73,7 +73,7 @@ public class ReadAtTimeDetails extends HistoryReadDetails {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<ReadAtTimeDetails> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<ReadAtTimeDetails> {
         @Override
         public ReadAtTimeDetails decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             DateTime[] _reqTimes = reader.readArray(reader::readDateTime, DateTime.class);
@@ -89,7 +89,7 @@ public class ReadAtTimeDetails extends HistoryReadDetails {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<ReadAtTimeDetails> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<ReadAtTimeDetails> {
         @Override
         public ReadAtTimeDetails decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             DateTime[] _reqTimes = reader.readArray("ReqTimes", reader::readDateTime, DateTime.class);

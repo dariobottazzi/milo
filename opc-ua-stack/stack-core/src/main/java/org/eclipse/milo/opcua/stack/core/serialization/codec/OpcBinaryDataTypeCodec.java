@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.serialization.codec;
 
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 
-public interface OpcBinaryTypeCodec<T> {
+public interface OpcBinaryDataTypeCodec<T> {
 
     T decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException;
 

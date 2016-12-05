@@ -19,17 +19,17 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
 public interface SerializationContext {
 
-    SerializationContext INTERNAL = () -> TypeManager.BUILTIN;
+    SerializationContext INTERNAL = () -> DataTypeManager.BUILTIN;
 
-    TypeManager getTypeManager();
+    DataTypeManager getTypeManager();
 
     default Object decode(NodeId encodingId, OpcBinaryStreamReader reader) throws UaSerializationException {
-        OpcBinaryTypeCodec<?> codec = getTypeManager().getBinaryCodec(encodingId);
+        OpcBinaryDataTypeCodec<?> codec = getTypeManager().getBinaryCodec(encodingId);
 
         if (codec == null) {
             throw new UaSerializationException(
                 StatusCodes.Bad_DecodingError,
-                String.format("no OpcBinaryTypeCodec registered for encodingId=%s", encodingId)
+                String.format("no OpcBinaryDataTypeCodec registered for encodingId=%s", encodingId)
             );
         }
 
@@ -37,12 +37,12 @@ public interface SerializationContext {
     }
 
     default Object decode(NodeId encodingId, OpcXmlStreamReader reader) throws UaSerializationException {
-        OpcXmlTypeCodec<?> codec = getTypeManager().getXmlCodec(encodingId);
+        OpcXmlDataTypeCodec<?> codec = getTypeManager().getXmlCodec(encodingId);
 
         if (codec == null) {
             throw new UaSerializationException(
                 StatusCodes.Bad_DecodingError,
-                String.format("no OpcXmlTypeCodec registered for encodingId=%s", encodingId)
+                String.format("no OpcXmlDataTypeCodec registered for encodingId=%s", encodingId)
             );
         }
 
@@ -54,13 +54,13 @@ public interface SerializationContext {
         String typeName,
         OpcBinaryStreamReader reader) throws UaSerializationException {
 
-        OpcBinaryTypeCodec<?> codec = getTypeManager().getBinaryCodec(namespaceUri, typeName);
+        OpcBinaryDataTypeCodec<?> codec = getTypeManager().getBinaryCodec(namespaceUri, typeName);
 
         if (codec == null) {
             throw new UaSerializationException(
                 StatusCodes.Bad_DecodingError,
                 String.format(
-                    "no OpcBinaryTypeCodec registered for typeName=%s under namespaceUri=%s",
+                    "no OpcBinaryDataTypeCodec registered for typeName=%s under namespaceUri=%s",
                     typeName, namespaceUri)
             );
         }
@@ -73,13 +73,13 @@ public interface SerializationContext {
         String typeName,
         OpcXmlStreamReader reader) throws UaSerializationException {
 
-        OpcXmlTypeCodec<?> codec = getTypeManager().getXmlCodec(namespaceUri, typeName);
+        OpcXmlDataTypeCodec<?> codec = getTypeManager().getXmlCodec(namespaceUri, typeName);
 
         if (codec == null) {
             throw new UaSerializationException(
                 StatusCodes.Bad_DecodingError,
                 String.format(
-                    "no OpcXmlTypeCodec registered for typeName=%s under namespaceUri=%s",
+                    "no OpcXmlDataTypeCodec registered for typeName=%s under namespaceUri=%s",
                     typeName, namespaceUri)
             );
         }
@@ -93,13 +93,13 @@ public interface SerializationContext {
         OpcBinaryStreamWriter writer) throws UaSerializationException {
 
         @SuppressWarnings("unchecked")
-        OpcBinaryTypeCodec<Object> codec =
-            (OpcBinaryTypeCodec<Object>) getTypeManager().getBinaryCodec(encodingId);
+        OpcBinaryDataTypeCodec<Object> codec =
+            (OpcBinaryDataTypeCodec<Object>) getTypeManager().getBinaryCodec(encodingId);
 
         if (codec == null) {
             throw new UaSerializationException(
                 StatusCodes.Bad_EncodingError,
-                String.format("no OpcBinaryTypeCodec registered for encodingId=%s", encodingId));
+                String.format("no OpcBinaryDataTypeCodec registered for encodingId=%s", encodingId));
         }
 
         codec.encode(this, encodable, writer);
@@ -112,14 +112,14 @@ public interface SerializationContext {
         OpcBinaryStreamWriter writer) throws UaSerializationException {
 
         @SuppressWarnings("unchecked")
-        OpcBinaryTypeCodec<Object> codec =
-            (OpcBinaryTypeCodec<Object>) getTypeManager().getBinaryCodec(namespaceUri, typeName);
+        OpcBinaryDataTypeCodec<Object> codec =
+            (OpcBinaryDataTypeCodec<Object>) getTypeManager().getBinaryCodec(namespaceUri, typeName);
 
         if (codec == null) {
             throw new UaSerializationException(
                 StatusCodes.Bad_EncodingError,
                 String.format(
-                    "no OpcBinaryTypeCodec registered for typeName=%s under namespaceUri=%s",
+                    "no OpcBinaryDataTypeCodec registered for typeName=%s under namespaceUri=%s",
                     typeName, namespaceUri)
             );
         }
@@ -134,14 +134,14 @@ public interface SerializationContext {
         OpcXmlStreamWriter writer) throws UaSerializationException {
 
         @SuppressWarnings("unchecked")
-        OpcXmlTypeCodec<Object> codec =
-            (OpcXmlTypeCodec<Object>) getTypeManager().getXmlCodec(namespaceUri, typeName);
+        OpcXmlDataTypeCodec<Object> codec =
+            (OpcXmlDataTypeCodec<Object>) getTypeManager().getXmlCodec(namespaceUri, typeName);
 
         if (codec == null) {
             throw new UaSerializationException(
                 StatusCodes.Bad_EncodingError,
                 String.format(
-                    "no OpcXmlTypeCodec registered for typeName=%s under namespaceUri=%s",
+                    "no OpcXmlDataTypeCodec registered for typeName=%s under namespaceUri=%s",
                     typeName, namespaceUri)
             );
         }

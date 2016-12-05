@@ -53,7 +53,7 @@
 //
 //public class BinaryEncoder implements UaEncoder {
 //
-//    private static final OpcUaTypeDictionary TYPE_DICTIONARY = OpcUaTypeDictionary.getInstance();
+//    private static final OpcUaDataTypeDictionary TYPE_DICTIONARY = OpcUaDataTypeDictionary.getInstance();
 //
 //    private volatile ByteBuf buffer;
 //
@@ -631,12 +631,12 @@
 //        T value,
 //        String namespaceUri) throws UaSerializationException {
 //
-//        TypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
+//        DataTypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
 //
 //        if (typeDictionary == null) {
 //            throw new UaSerializationException(
 //                StatusCodes.Bad_EncodingError,
-//                "no TypeDictionary registered for namespaceUri=" + namespaceUri);
+//                "no DataTypeDictionary registered for namespaceUri=" + namespaceUri);
 //        }
 //
 //        try {
@@ -667,12 +667,12 @@
 //        String namespaceUri,
 //        String typeName) throws UaSerializationException {
 //
-//        TypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
+//        DataTypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
 //
 //        if (typeDictionary == null) {
 //            throw new UaSerializationException(
 //                StatusCodes.Bad_EncodingError,
-//                "no TypeDictionary registered for namespaceUri=" + namespaceUri);
+//                "no DataTypeDictionary registered for namespaceUri=" + namespaceUri);
 //        }
 //
 //        try {

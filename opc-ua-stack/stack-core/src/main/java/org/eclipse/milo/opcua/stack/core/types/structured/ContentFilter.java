@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -66,13 +66,13 @@ public class ContentFilter implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<ContentFilter> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<ContentFilter> {
         @Override
         public ContentFilter decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             ContentFilterElement[] _elements =
                 reader.readArray(
                     () -> (ContentFilterElement) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterElement", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "ContentFilterElement", reader),
                     ContentFilterElement.class
                 );
 
@@ -83,19 +83,19 @@ public class ContentFilter implements UaStructure {
         public void encode(SerializationContext context, ContentFilter encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
             writer.writeArray(
                 encodable._elements,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterElement", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ContentFilterElement", e, writer)
             );
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<ContentFilter> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<ContentFilter> {
         @Override
         public ContentFilter decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             ContentFilterElement[] _elements =
                 reader.readArray(
                     "Elements",
                     f -> (ContentFilterElement) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterElement", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "ContentFilterElement", reader),
                     ContentFilterElement.class
                 );
 
@@ -107,7 +107,7 @@ public class ContentFilter implements UaStructure {
             writer.writeArray(
                 "Elements",
                 encodable._elements,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilterElement", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ContentFilterElement", e, writer)
             );
         }
     }

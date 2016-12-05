@@ -16,14 +16,14 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaRequestMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
@@ -113,11 +113,11 @@ public class CreateSessionRequest implements UaRequestMessage {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<CreateSessionRequest> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<CreateSessionRequest> {
         @Override
         public CreateSessionRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
-            ApplicationDescription _clientDescription = (ApplicationDescription) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ApplicationDescription", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            ApplicationDescription _clientDescription = (ApplicationDescription) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ApplicationDescription", reader);
             String _serverUri = reader.readString();
             String _endpointUrl = reader.readString();
             String _sessionName = reader.readString();
@@ -131,8 +131,8 @@ public class CreateSessionRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, CreateSessionRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ApplicationDescription", encodable._clientDescription, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ApplicationDescription", encodable._clientDescription, writer);
             writer.writeString(encodable._serverUri);
             writer.writeString(encodable._endpointUrl);
             writer.writeString(encodable._sessionName);
@@ -143,11 +143,11 @@ public class CreateSessionRequest implements UaRequestMessage {
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<CreateSessionRequest> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<CreateSessionRequest> {
         @Override
         public CreateSessionRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
-            ApplicationDescription _clientDescription = (ApplicationDescription) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ApplicationDescription", reader);
+            RequestHeader _requestHeader = (RequestHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", reader);
+            ApplicationDescription _clientDescription = (ApplicationDescription) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ApplicationDescription", reader);
             String _serverUri = reader.readString("ServerUri");
             String _endpointUrl = reader.readString("EndpointUrl");
             String _sessionName = reader.readString("SessionName");
@@ -161,8 +161,8 @@ public class CreateSessionRequest implements UaRequestMessage {
 
         @Override
         public void encode(SerializationContext context, CreateSessionRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ApplicationDescription", encodable._clientDescription, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RequestHeader", encodable._requestHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ApplicationDescription", encodable._clientDescription, writer);
             writer.writeString("ServerUri", encodable._serverUri);
             writer.writeString("EndpointUrl", encodable._endpointUrl);
             writer.writeString("SessionName", encodable._sessionName);

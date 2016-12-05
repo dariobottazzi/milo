@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaResponseMessage;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.ByteString;
@@ -88,10 +88,10 @@ public class ActivateSessionResponse implements UaResponseMessage {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<ActivateSessionResponse> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<ActivateSessionResponse> {
         @Override
         public ActivateSessionResponse decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
-            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
+            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
             ByteString _serverNonce = reader.readByteString();
             StatusCode[] _results = reader.readArray(reader::readStatusCode, StatusCode.class);
             DiagnosticInfo[] _diagnosticInfos = reader.readArray(reader::readDiagnosticInfo, DiagnosticInfo.class);
@@ -101,17 +101,17 @@ public class ActivateSessionResponse implements UaResponseMessage {
 
         @Override
         public void encode(SerializationContext context, ActivateSessionResponse encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
             writer.writeByteString(encodable._serverNonce);
             writer.writeArray(encodable._results, writer::writeStatusCode);
             writer.writeArray(encodable._diagnosticInfos, writer::writeDiagnosticInfo);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<ActivateSessionResponse> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<ActivateSessionResponse> {
         @Override
         public ActivateSessionResponse decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
-            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
+            ResponseHeader _responseHeader = (ResponseHeader) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", reader);
             ByteString _serverNonce = reader.readByteString("ServerNonce");
             StatusCode[] _results = reader.readArray("Results", reader::readStatusCode, StatusCode.class);
             DiagnosticInfo[] _diagnosticInfos = reader.readArray("DiagnosticInfos", reader::readDiagnosticInfo, DiagnosticInfo.class);
@@ -121,7 +121,7 @@ public class ActivateSessionResponse implements UaResponseMessage {
 
         @Override
         public void encode(SerializationContext context, ActivateSessionResponse encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ResponseHeader", encodable._responseHeader, writer);
             writer.writeByteString("ServerNonce", encodable._serverNonce);
             writer.writeArray("Results", encodable._results, writer::writeStatusCode);
             writer.writeArray("DiagnosticInfos", encodable._diagnosticInfos, writer::writeDiagnosticInfo);

@@ -7,11 +7,11 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
 
-public class OpcUaTypeDictionaryInitializerTest {
+public class OpcUaDataTypeDictionaryInitializerTest {
 
     @Test
     public void testInitialize() throws Exception {
-        OpcUaTypeDictionaryInitializer.initialize();
+        OpcUaDataTypeDictionaryInitializer.initialize();
 
         ClassLoader classLoader = getClass().getClassLoader();
         ClassPath classPath = ClassPath.from(classLoader);
@@ -25,12 +25,12 @@ public class OpcUaTypeDictionaryInitializerTest {
             Class<?> clazz = classInfo.load();
 
             assertNotNull(
-                OpcUaTypeDictionary.getInstance().getBinaryCodec(clazz.getSimpleName()),
+                OpcUaDataTypeDictionary.getInstance().getBinaryCodec(clazz.getSimpleName()),
                 "no binary codec found for " + clazz.getSimpleName()
             );
 
             assertNotNull(
-                OpcUaTypeDictionary.getInstance().getXmlCodec(clazz.getSimpleName()),
+                OpcUaDataTypeDictionary.getInstance().getXmlCodec(clazz.getSimpleName()),
                 "no xml codec found for " + clazz.getSimpleName()
             );
         }

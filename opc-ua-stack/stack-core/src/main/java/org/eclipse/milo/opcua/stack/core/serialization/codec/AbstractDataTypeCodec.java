@@ -15,7 +15,7 @@ package org.eclipse.milo.opcua.stack.core.serialization.codec;
 
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 
-public abstract class AbstractTypeCodec<T> implements OpcBinaryTypeCodec<T>, OpcXmlTypeCodec<T> {
+public abstract class AbstractDataTypeCodec<T> implements OpcBinaryDataTypeCodec<T>, OpcXmlDataTypeCodec<T> {
 
     // TODO measure performance of ThreadLocal vs just creating new instances
 

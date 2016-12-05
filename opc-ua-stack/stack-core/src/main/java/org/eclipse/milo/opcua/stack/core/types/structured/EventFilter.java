@@ -18,13 +18,13 @@ import javax.annotation.Nullable;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -73,16 +73,16 @@ public class EventFilter extends MonitoringFilter {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<EventFilter> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<EventFilter> {
         @Override
         public EventFilter decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             SimpleAttributeOperand[] _selectClauses =
                 reader.readArray(
                     () -> (SimpleAttributeOperand) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "SimpleAttributeOperand", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "SimpleAttributeOperand", reader),
                     SimpleAttributeOperand.class
                 );
-            ContentFilter _whereClause = (ContentFilter) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilter", reader);
+            ContentFilter _whereClause = (ContentFilter) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ContentFilter", reader);
 
             return new EventFilter(_selectClauses, _whereClause);
         }
@@ -91,23 +91,23 @@ public class EventFilter extends MonitoringFilter {
         public void encode(SerializationContext context, EventFilter encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
             writer.writeArray(
                 encodable._selectClauses,
-                e -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "SimpleAttributeOperand", e, writer)
+                e -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "SimpleAttributeOperand", e, writer)
             );
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilter", encodable._whereClause, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ContentFilter", encodable._whereClause, writer);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<EventFilter> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<EventFilter> {
         @Override
         public EventFilter decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             SimpleAttributeOperand[] _selectClauses =
                 reader.readArray(
                     "SelectClauses",
                     f -> (SimpleAttributeOperand) context.decode(
-                        OpcUaTypeDictionary.NAMESPACE_URI, "SimpleAttributeOperand", reader),
+                        OpcUaDataTypeDictionary.NAMESPACE_URI, "SimpleAttributeOperand", reader),
                     SimpleAttributeOperand.class
                 );
-            ContentFilter _whereClause = (ContentFilter) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilter", reader);
+            ContentFilter _whereClause = (ContentFilter) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ContentFilter", reader);
 
             return new EventFilter(_selectClauses, _whereClause);
         }
@@ -117,9 +117,9 @@ public class EventFilter extends MonitoringFilter {
             writer.writeArray(
                 "SelectClauses",
                 encodable._selectClauses,
-                (f, e) -> context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "SimpleAttributeOperand", e, writer)
+                (f, e) -> context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "SimpleAttributeOperand", e, writer)
             );
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "ContentFilter", encodable._whereClause, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "ContentFilter", encodable._whereClause, writer);
         }
     }
 

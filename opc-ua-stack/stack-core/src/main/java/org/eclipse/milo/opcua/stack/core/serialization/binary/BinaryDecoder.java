@@ -25,9 +25,9 @@
 //import org.eclipse.milo.opcua.stack.core.StatusCodes;
 //import org.eclipse.milo.opcua.stack.core.UaSerializationException;
 //import org.eclipse.milo.opcua.stack.core.channel.ChannelConfig;
-//import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+//import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 //import org.eclipse.milo.opcua.stack.core.serialization.TypeDecoder;
-//import org.eclipse.milo.opcua.stack.core.serialization.TypeDictionary;
+//import org.eclipse.milo.opcua.stack.core.serialization.DataTypeDictionary;
 //import org.eclipse.milo.opcua.stack.core.serialization.UaDecoder;
 //import org.eclipse.milo.opcua.stack.core.serialization.UaEnumeration;
 //import org.eclipse.milo.opcua.stack.core.serialization.UaSerializable;
@@ -54,7 +54,7 @@
 //
 //public class BinaryDecoder implements UaDecoder {
 //
-//    private static final OpcUaTypeDictionary.Instance TYPE_DICTIONARY = OpcUaTypeDictionary.getInstance();
+//    private static final OpcUaDataTypeDictionary.Instance TYPE_DICTIONARY = OpcUaDataTypeDictionary.getInstance();
 //
 //    private volatile ByteBuf buffer;
 //
@@ -414,11 +414,11 @@
 //        String namespaceUri,
 //        Class<T> typeClass) throws UaSerializationException {
 //
-//        TypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
+//        DataTypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
 //        if (typeDictionary == null) {
 //            throw new UaSerializationException(
 //                StatusCodes.Bad_DecodingError,
-//                "no TypeDictionary registered for namespaceUri=" + namespaceUri);
+//                "no DataTypeDictionary registered for namespaceUri=" + namespaceUri);
 //        }
 //
 //        TypeDecoder<?> decoder = typeDictionary.getDecoder(typeClass);
@@ -446,11 +446,11 @@
 //        String namespaceUri,
 //        String typeName) throws UaSerializationException {
 //
-//        TypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
+//        DataTypeDictionary typeDictionary = typeManager.getTypeDictionary(namespaceUri);
 //        if (typeDictionary == null) {
 //            throw new UaSerializationException(
 //                StatusCodes.Bad_DecodingError,
-//                "no TypeDictionary registered for namespaceUri=" + namespaceUri);
+//                "no DataTypeDictionary registered for namespaceUri=" + namespaceUri);
 //        }
 //
 //        TypeDecoder<?> decoder = typeDictionary.getDecoder(typeName);

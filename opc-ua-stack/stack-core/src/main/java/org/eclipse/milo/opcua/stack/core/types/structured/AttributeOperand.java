@@ -16,13 +16,13 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -89,12 +89,12 @@ public class AttributeOperand extends FilterOperand {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<AttributeOperand> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<AttributeOperand> {
         @Override
         public AttributeOperand decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             NodeId _nodeId = reader.readNodeId();
             String _alias = reader.readString();
-            RelativePath _browsePath = (RelativePath) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePath", reader);
+            RelativePath _browsePath = (RelativePath) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePath", reader);
             UInteger _attributeId = reader.readUInt32();
             String _indexRange = reader.readString();
 
@@ -105,18 +105,18 @@ public class AttributeOperand extends FilterOperand {
         public void encode(SerializationContext context, AttributeOperand encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
             writer.writeNodeId(encodable._nodeId);
             writer.writeString(encodable._alias);
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePath", encodable._browsePath, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePath", encodable._browsePath, writer);
             writer.writeUInt32(encodable._attributeId);
             writer.writeString(encodable._indexRange);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<AttributeOperand> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<AttributeOperand> {
         @Override
         public AttributeOperand decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             NodeId _nodeId = reader.readNodeId("NodeId");
             String _alias = reader.readString("Alias");
-            RelativePath _browsePath = (RelativePath) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePath", reader);
+            RelativePath _browsePath = (RelativePath) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePath", reader);
             UInteger _attributeId = reader.readUInt32("AttributeId");
             String _indexRange = reader.readString("IndexRange");
 
@@ -127,7 +127,7 @@ public class AttributeOperand extends FilterOperand {
         public void encode(SerializationContext context, AttributeOperand encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
             writer.writeNodeId("NodeId", encodable._nodeId);
             writer.writeString("Alias", encodable._alias);
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "RelativePath", encodable._browsePath, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "RelativePath", encodable._browsePath, writer);
             writer.writeUInt32("AttributeId", encodable._attributeId);
             writer.writeString("IndexRange", encodable._indexRange);
         }

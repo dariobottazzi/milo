@@ -16,14 +16,14 @@ package org.eclipse.milo.opcua.stack.core.types.structured;
 import com.google.common.base.MoreObjects;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaSerializationException;
-import org.eclipse.milo.opcua.stack.core.serialization.OpcUaTypeDictionary;
+import org.eclipse.milo.opcua.stack.core.serialization.OpcUaDataTypeDictionary;
 import org.eclipse.milo.opcua.stack.core.serialization.UaStructure;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcBinaryTypeCodec;
+import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlDataTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamReader;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlStreamWriter;
-import org.eclipse.milo.opcua.stack.core.serialization.codec.OpcXmlTypeCodec;
 import org.eclipse.milo.opcua.stack.core.serialization.codec.SerializationContext;
 import org.eclipse.milo.opcua.stack.core.types.UaDataType;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
@@ -70,11 +70,11 @@ public class MonitoredItemModifyRequest implements UaStructure {
             .toString();
     }
 
-    public static class BinaryCodec implements OpcBinaryTypeCodec<MonitoredItemModifyRequest> {
+    public static class BinaryCodec implements OpcBinaryDataTypeCodec<MonitoredItemModifyRequest> {
         @Override
         public MonitoredItemModifyRequest decode(SerializationContext context, OpcBinaryStreamReader reader) throws UaSerializationException {
             UInteger _monitoredItemId = reader.readUInt32();
-            MonitoringParameters _requestedParameters = (MonitoringParameters) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoringParameters", reader);
+            MonitoringParameters _requestedParameters = (MonitoringParameters) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoringParameters", reader);
 
             return new MonitoredItemModifyRequest(_monitoredItemId, _requestedParameters);
         }
@@ -82,15 +82,15 @@ public class MonitoredItemModifyRequest implements UaStructure {
         @Override
         public void encode(SerializationContext context, MonitoredItemModifyRequest encodable, OpcBinaryStreamWriter writer) throws UaSerializationException {
             writer.writeUInt32(encodable._monitoredItemId);
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoringParameters", encodable._requestedParameters, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoringParameters", encodable._requestedParameters, writer);
         }
     }
 
-    public static class XmlCodec implements OpcXmlTypeCodec<MonitoredItemModifyRequest> {
+    public static class XmlCodec implements OpcXmlDataTypeCodec<MonitoredItemModifyRequest> {
         @Override
         public MonitoredItemModifyRequest decode(SerializationContext context, OpcXmlStreamReader reader) throws UaSerializationException {
             UInteger _monitoredItemId = reader.readUInt32("MonitoredItemId");
-            MonitoringParameters _requestedParameters = (MonitoringParameters) context.decode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoringParameters", reader);
+            MonitoringParameters _requestedParameters = (MonitoringParameters) context.decode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoringParameters", reader);
 
             return new MonitoredItemModifyRequest(_monitoredItemId, _requestedParameters);
         }
@@ -98,7 +98,7 @@ public class MonitoredItemModifyRequest implements UaStructure {
         @Override
         public void encode(SerializationContext context, MonitoredItemModifyRequest encodable, OpcXmlStreamWriter writer) throws UaSerializationException {
             writer.writeUInt32("MonitoredItemId", encodable._monitoredItemId);
-            context.encode(OpcUaTypeDictionary.NAMESPACE_URI, "MonitoringParameters", encodable._requestedParameters, writer);
+            context.encode(OpcUaDataTypeDictionary.NAMESPACE_URI, "MonitoringParameters", encodable._requestedParameters, writer);
         }
     }
 
