@@ -106,11 +106,12 @@ public class OpcBinaryStreamWriter {
     }
 
     public void writeBit(int value) throws UaSerializationException {
-        currentByte = (currentByte << 1) | (value & 1);
+        currentByte = currentByte | ((value & 1) << bitCount);
         bitCount++;
 
         if (bitCount == 8) {
             buffer.writeByte(currentByte);
+            currentByte = 0;
             bitCount = 0;
         }
     }
