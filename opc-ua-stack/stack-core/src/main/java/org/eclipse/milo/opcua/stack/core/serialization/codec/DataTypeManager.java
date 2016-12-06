@@ -23,7 +23,7 @@ public interface DataTypeManager {
 
     DataTypeManager BUILTIN = new DataTypeManagerImpl(new NamespaceTable(), OpcUaDataTypeDictionary.getInstance());
 
-    void registerTypeDictionary(String namespaceUri, DataTypeDictionary dataTypeDictionary);
+    void registerTypeDictionary(DataTypeDictionary dataTypeDictionary);
 
     @Nullable
     DataTypeDictionary getTypeDictionary(String namespaceUri);
@@ -47,6 +47,5 @@ public interface DataTypeManager {
 
         return dictionary != null ? dictionary.getXmlCodec(typeName) : null;
     }
-
 
 }

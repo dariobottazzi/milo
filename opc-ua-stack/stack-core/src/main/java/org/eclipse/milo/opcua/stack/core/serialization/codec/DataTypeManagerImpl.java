@@ -34,13 +34,13 @@ public class DataTypeManagerImpl implements DataTypeManager {
         this.namespaceTable = namespaceTable;
 
         for (DataTypeDictionary d : typeDictionaries) {
-            registerTypeDictionary(d.getNamespaceUri(), d);
+            registerTypeDictionary(d);
         }
     }
 
     @Override
-    public void registerTypeDictionary(String namespaceUri, DataTypeDictionary dataTypeDictionary) {
-        typeDictionaries.put(namespaceUri, dataTypeDictionary);
+    public void registerTypeDictionary(DataTypeDictionary dataTypeDictionary) {
+        typeDictionaries.put(dataTypeDictionary.getNamespaceUri(), dataTypeDictionary);
     }
 
     @Nullable
