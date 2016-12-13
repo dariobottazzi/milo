@@ -13,6 +13,7 @@
 
 package org.eclipse.milo.opcua.stack.core.serialization.codec;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 import javax.annotation.Nullable;
 
@@ -31,6 +32,14 @@ public class DataTypeManagerImpl implements DataTypeManager {
     }
 
     public DataTypeManagerImpl(NamespaceTable namespaceTable, DataTypeDictionary... typeDictionaries) {
+        this.namespaceTable = namespaceTable;
+
+        for (DataTypeDictionary d : typeDictionaries) {
+            registerTypeDictionary(d);
+        }
+    }
+
+    public DataTypeManagerImpl(NamespaceTable namespaceTable, List<DataTypeDictionary> typeDictionaries) {
         this.namespaceTable = namespaceTable;
 
         for (DataTypeDictionary d : typeDictionaries) {
